@@ -1,5 +1,13 @@
+import { Outlet } from "react-router-dom"
+import { Navbar } from "./components/navbar"
+
 export const AdminLayout = () => {
   return (
-    <div>AdminLayout</div>
+    <div >
+      <Navbar />
+      <div className="container">
+        <Outlet />
+      </div>
+    </div>
   )
 }

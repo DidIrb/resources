@@ -25,3 +25,6 @@
 .markdown > * {
     all: revert;
 }
+.icon-link {
+  @apply h-4 w-4 cursor-pointer hover:text-blue-600;
+}

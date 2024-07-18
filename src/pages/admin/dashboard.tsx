@@ -1,5 +1,8 @@
 export const Dashboard = () => {
   return (
-    <div>Dashboard</div>
+    <div>
+      {/* TODO create form to add resources */}
+      
+    </div>
   )
 }

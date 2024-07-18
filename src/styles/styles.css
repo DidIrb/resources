@@ -1,0 +1,27 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Removing unnecesary code */
+
+.flex-center {
+    @apply flex flex-col justify-center items-center ;
+}
+.w-c {
+    @apply md:w-[640px] w-full;
+}
+.icon {
+    @apply h-[1.3rem] w-[1.3rem] ;
+}
+.sc-full {
+  @apply  w-full h-[100vh] flex justify-center items-center
+}
+
+.md-file * {
+    @apply !-my-1 !p-2;
+}
+
+.markdown > * {
+    all: revert;
+}

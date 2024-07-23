@@ -4,38 +4,46 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useAuth } from "@/context/auth.context";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export const UserDropDown = () => {
-    const { session } = useAuth();
+    const { session, signout } = useAuth();
     const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const signout = () => {
 
+    const logout = async () => {
+        try {
+            const res = await signout();
+            toast.success(res.data.message);
+        } catch (error) {
+            // Handle the error
+            toast.error("Error signing out");
+        }
     }
     return (
         <div>
             <Alert
                 title="Confirm Signout"
                 message="Are you sure you want to Sign out? Any unsaved changes will be lost.?"
-                onConfirm={() => signout()}
+                onConfirm={() => logout()}
                 onCancel={() => setIsDialogOpen(false)} // Pass the cancel handler
                 isOpen={isDialogOpen}
             />
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <Button variant="secondary" size="icon" className="rounded-full">
+                    <Button variant="secondary" size="icon" className="rounded-full h-8 w-8">
                         <Avatar>
-                            <AvatarImage src="https://github.com/shadcn.png" />
-                            <AvatarFallback>CN</AvatarFallback>
+                            <AvatarImage src={session?.avatar} />
+                            <AvatarFallback>{session.username.charAt(0).toUpperCase()}</AvatarFallback>
                         </Avatar>
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                    <DropdownMenuLabel className="flex gap-3 items-center">
-                        { session?.user?.email || "randomemail@mail.com"} 
+                    <DropdownMenuLabel className="flex flex-col gap-1">
+                        {session?.email}
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem>Settings</DropdownMenuItem>
-                    <DropdownMenuItem>Support</DropdownMenuItem>
+                    <DropdownMenuItem>Profile</DropdownMenuItem>
                     <DropdownMenuItem onClick={() => setIsDialogOpen(true)}>Logout</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>

@@ -2,21 +2,24 @@ import { LoadingButton } from '@/components/custom/loading.btn';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { SignupFormData } from '@/types/forms.types';
+import { SigninFormData } from '@/types/forms.types';
 import { EyeNoneIcon, EyeOpenIcon } from '@radix-ui/react-icons';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/context/auth.context';
 
 export function Signin() {
-  // const navigate = useNavigate(); 
-  const { handleSubmit, control, formState: { errors } } = useForm<SignupFormData>({
+  const navigate = useNavigate();
+  const { handleSubmit, control, formState: { errors } } = useForm<SigninFormData>({
     defaultValues: {
-      email: '',
+      username: '',
       password: '',
     },
   });
+
+  const { signin } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,15 +28,18 @@ export function Signin() {
     setShowPassword((prev) => !prev);
   };
 
-  const onSubmit = async (val: SignupFormData) => {
-    setIsLoading(true)
+  const onSubmit = async (val: SigninFormData) => {
+    setIsLoading(true);
     try {
-      console.log(val)
+      const response = await signin(val);
+      console.log(response.data);
+      toast.success("Successfully logged in");
+      navigate("/dashboard")
     } catch (error) {
-      console.error(JSON.stringify(error));
-      toast.error("Wrong Username and password combination")
+      console.error(error);
+      toast.error("Wrong Username and password combination");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -42,61 +48,61 @@ export function Signin() {
       <CardHeader>
         <CardTitle className="text-2xl">Signin</CardTitle>
         <CardDescription>
-          Enter your email below to login to your account
+          Enter your username below to login to your account
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="username">Username</Label>
               <Controller
-                name="email"
+                name="username"
                 control={control}
-                rules={{ required: 'Email is required', pattern: { value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i, message: 'Invalid email format' } }}
+                rules={{ required: 'username is required' }}
                 render={({ field }) => (
                   <Input
                     {...field}
-                    id="email"
-                    type="email"
+                    id="username"
+                    type="text"
                     placeholder="m@example.com"
                   />
                 )}
               />
-              {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+              {errors.username && <p className="text-red-500 text-sm md:text-xs">{errors.username.message}</p>}
             </div>
             <div className="grid gap-2">
               <div className='relative'>
-              <Controller
-                name="password"
-                control={control}
-                rules={{
-                  required: 'Password is required',
-                  minLength: {
-                    value: 8,
-                    message: 'Password must be at least 8 characters long',
-                  },
-                  maxLength: {
-                    value: 50,
-                    message: 'Password cannot exceed 50 characters',
-                  },
-                }}
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    id="password"
-                    placeholder="complex password"
-                    type={showPassword ? 'text' : 'password'}
-                  />
-                )}
-              />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2"
-              >
-                {showPassword ? <EyeOpenIcon /> : <EyeNoneIcon /> }
-              </button>
+                <Controller
+                  name="password"
+                  control={control}
+                  rules={{
+                    required: 'Password is required',
+                    minLength: {
+                      value: 8,
+                      message: 'Password must be at least 8 characters long',
+                    },
+                    maxLength: {
+                      value: 50,
+                      message: 'Password cannot exceed 50 characters',
+                    },
+                  }}
+                  render={({ field }) => (
+                    <Input
+                      {...field}
+                      id="password"
+                      placeholder="complex password"
+                      type={showPassword ? 'text' : 'password'}
+                    />
+                  )}
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2"
+                >
+                  {showPassword ? <EyeOpenIcon /> : <EyeNoneIcon />}
+                </button>
               </div>
               {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
             </div>

@@ -16,7 +16,7 @@ export const Alert: React.FC<AlertProps> = ({ title, message, onConfirm, onCance
     };
 
     return (
-        <AlertDialog open={isOpen}>
+        <AlertDialog open={isOpen} >
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>{title}</AlertDialogTitle>

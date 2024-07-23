@@ -12,13 +12,13 @@ export function DropdownMenuCheckboxes() {
   const [showPanel, setShowPanel] = React.useState<Checked>(false)
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+    <DropdownMenu >
+      <DropdownMenuTrigger asChild >
       <Button variant="ghost" type="button" className="h-8 w-8 rounded-full" size="icon">
         <ListFilter className="icon" />
       </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent className="w-56" align="start">
         <DropdownMenuLabel>Appearance</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuCheckboxItem

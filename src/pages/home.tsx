@@ -1,37 +1,29 @@
-import { Navbar } from "@/layouts/components/navbar"
-import Resource from "./components/resource"
-import { useState, useEffect } from "react";
-import axios from 'axios';
-export const api = import.meta.env.VITE_BACKEND_URL
+import { useApp } from "@/context/app.context";
+import { Navbar } from "@/layouts/components/navbar";
+import { useEffect } from "react";
+import Resource from "./components/resource";
 
 export const Home = () => {
-    // USE AXIOS TO GET DATA FROM OUR API THAT WE WILL USE IN OUR APP
-    const [resources, setResources] = useState([]);
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`${api}/resources`);
-                setResources(response.data);
-                console.log(response)
-            } catch (error) {
-                console.error(error);
-            }
-        };
+    const { resources, fetchData } = useApp();
+    useEffect(() => {  fetchData() }, []);
 
-        fetchData();
-    }, []);
-    
     return (
         <div>
             <Navbar />
-            <div className="container pb-3">
-               {/* <Resource item={{
-                    icon: "https/image.image",
-                    name: "name",
-                    description: "Description",
-                    date: "January 2022",
-                    website: "Https://website.com"
-                }} /> */}
+            <div className="container flex gap-6 py-3">
+                {resources.length > 0 ?
+                    resources.map((item: any, index: number) => <Resource key={index} item={
+                        {
+                            icon: item.icon,
+                            title: item.title,
+                            description: item.description,
+                            date: item.date,
+                            website: item.link
+                        }
+                    } />)
+                    :
+                    "No resources found"
+                }
             </div>
         </div>
     )

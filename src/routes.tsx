@@ -9,6 +9,7 @@ import { Dashboard } from "./pages/admin/dashboard";
 import { LandingPage } from "./pages/landing.page";
 import { RouteType } from "./types/data.types";
 import { Home } from "./pages/home";
+export const loginRoute = import.meta.env.VITE_ADMIN_LOGIN_URL
 
 const renderRoutes = (routes: RouteType[]) => {
   return routes.map(({ path, element, children = [] }) => (
@@ -28,16 +29,16 @@ const Router = () => {
     // AUTHENTICATION
     {
       path: "/",
-      element: !session ? <AuthLayout /> : <Navigate to="/" />,
+      element: !session ? <AuthLayout /> : <Navigate to="/home" />,
       children: [
-        { path: "signin", element: <Signin /> },
+        { path: `signin`, element: <Signin /> },
       ],
     },
 
     // ADMIN LAYOUT
     {
       path: "/",
-      element: !session ? ( <AdminLayout /> ) : ( <Navigate to="/signin" /> ),
+      element: !session ? ( <AdminLayout /> ) : ( <Navigate to="/home" /> ),
       children: [
         { path: "/dashboard", element: <Dashboard /> },
         { path: "/profile", element: <Profile /> }

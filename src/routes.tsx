@@ -38,7 +38,7 @@ const Router = () => {
     // ADMIN LAYOUT
     {
       path: "/",
-      element: !session ? ( <AdminLayout /> ) : ( <Navigate to="/home" /> ),
+      element: session ? ( <AdminLayout /> ) : ( <Navigate to="/home" /> ),
       children: [
         { path: "/dashboard", element: <Dashboard /> },
         { path: "/profile", element: <Profile /> }

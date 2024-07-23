@@ -1,53 +1,55 @@
-import React from 'react';
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import { CalendarDays, Edit2Icon, Globe } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import { Pencil1Icon } from '@radix-ui/react-icons';
-import { useAuth } from '@/context/auth.context';
 import { useApp } from '@/context/app.context';
-
-type Item = {
-    icon: string;
-    title: string;
-    description: string;
-    date: string;
-    website: string;
-};
+import { useAuth } from '@/context/auth.context';
+import { ResourceValues } from "@/types/data.types";
+import { Pencil1Icon } from '@radix-ui/react-icons';
+import { CalendarDays, Globe } from 'lucide-react';
+import moment from "moment";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { ResourceDetails } from "./resource.details";
 
 type ResourceProps = {
-    item: Item;
+    item: ResourceValues;
 };
 
 const Resource: React.FC<ResourceProps> = ({ item }) => {
     const { session } = useAuth();
     const { openEditForm } = useApp()
     return (
-        <div className="border shadow-sm w-80 p-3 rounded-md">
+        <div className="border shadow-sm sm:w-72 w-full p-3 rounded-md">
             <div className="flex items-center justify-between mb-2">
-                <div className='flex items-center  gap-2'>
 
-                    <Avatar className="w-7 h-7">
-                        <AvatarImage src={item.icon} />
-                        <AvatarFallback>{item.title.charAt(0).toUpperCase()}</AvatarFallback>
-                    </Avatar>
-                    <h4 className="font-semibold capitalize">{item.title}</h4>
-                </div>
+                < ResourceDetails data={item} />
 
-                {!session && <Pencil1Icon className='icon cursor-pointer' onClick={() => openEditForm(item)} />}
+                {session && <Pencil1Icon className='icon-sm cursor-pointer' onClick={() => openEditForm(item)} />}
             </div>
             <div className="space-y-1">
-                <p className="text-sm">
+                <p className="text-sm relative" style={{ WebkitLineClamp: 2, display: "-webkit-box", WebkitBoxOrient: "vertical", overflow: "hidden", textOverflow: "ellipsis" }}>
                     {item.description}
+                    {/* {item.description.length > 65 && (
+                        <Link to={item.link} target="_blank" className=" absolute bg-background pl-1 bottom-0 right-0 bg font-medium">
+                            <Button variant="link" className="pl-1 flex items-center gap-1 px-0 h-0">
+                                <span>...
+                                </span>  <span className="text-blue-800">Read more</span>
+                            </Button>
+                        </Link>
+
+                    )} */}
                 </p>
                 <div className="flex items-center justify-between pt-2">
                     <div className="flex">
                         <CalendarDays className="mr-2 h-4 w-4 opacity-70" />{" "}
                         <span className="text-xs text-muted-foreground">
-                            {item.date}
+                            {item.updatedAt ?
+                                moment.utc(item?.updatedAt).local().fromNow()
+                                :
+                                moment.utc(item?.createdAt).local().fromNow()
+                            }
                         </span>
                     </div>
-                    <Link to={item.website} target="_blank" className="text-muted-foreground text-xs items-center flex gap-1">
+                    <Link to={item.link} target="_blank" className="text-muted-foreground hover:text-blue-700 text-xs items-center flex gap-1">
                         <Globe className="icon-link" />
+                        Website
                     </Link>
                 </div>
             </div>

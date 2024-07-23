@@ -11,7 +11,9 @@ interface TagsFilterProps {
 
 const TagsFilter: React.FC<TagsFilterProps> = ({ allTags, error, onTagSelect }) => {
     const { resource } = useApp();
-    let defTags: string[] | (() => string[]) = [];
+    // let defTags: string[] | (() => string[]) = [];
+    // let defTags
+    let defTags = resource?.tags || [];
     
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [selectedTags, setSelectedTags] = useState<string[]>(defTags);
@@ -59,7 +61,7 @@ const TagsFilter: React.FC<TagsFilterProps> = ({ allTags, error, onTagSelect }) 
             <div className={`${error && selectedTags.length == 0 && "text-red-700 border-red-600"} border bg-background p-2`}>
                 {selectedTags.length == 0 ?
                     <div className="text-sm">
-                        Choose tags for snippet
+                        Choose tags
                     </div>
                     :
                     <div className='flex flex-wrap gap-1'>

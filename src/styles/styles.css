@@ -28,3 +28,18 @@
 .icon-link {
   @apply h-4 w-4 cursor-pointer hover:text-blue-600;
 }
+.truncated-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    position: relative;
+}
+
+.read-more {
+    position: absolute;
+    bottom: 0;
+    right: 20px; /* Adjust padding as needed */
+    background: white; /* Adjust background as needed */
+    padding-left: 5px;
+}

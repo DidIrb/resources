@@ -4,13 +4,14 @@ import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import TagsFilter from "./tags.filter";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import api from "@/lib/api";
 import { toast } from "sonner";
+import { useApp } from "@/context/app.context";
 
 
 export type Tag = string;
@@ -32,9 +33,10 @@ type Props = {
 };
 
 export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
+    const { resource } = useApp();
+    const allTags = ["coding", "github"];
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
-    const allTags = ["coding", "github"];
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
     const handleTagSelect = (tags: any) => {
@@ -48,7 +50,7 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
         }),
         description: z.string().min(2, {
             message: "This field is required!",
-        }), 
+        }),
         type: z.string().min(2, {
             message: "This field is required!",
         }),
@@ -73,7 +75,25 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
         },
     });
 
-    // SET THE VALUES WHEN THERE IS DATA COMING FROM THE EDIT METHOD
+    useEffect(() => {
+        
+        if (resource !== null) {
+            form.reset({
+                icon: resource.icon,
+                type: resource.type,
+                title: resource.title,
+                description: resource.description,
+                link: resource.link,
+            });
+            if (resource.tags == null) {
+                setSelectedTags([]);
+            } else {
+                setSelectedTags(resource?.tags);
+            }
+        } else {
+            form.reset();
+        }
+    }, [resource]);
 
 
     const onSubmit = async (data: Resources) => {
@@ -82,14 +102,19 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
         } else {
             setIsLoading(true);
             try {
+                let response
                 data.tags = selectedTags;
-                const response = await api.post("/resources", data);
+                if(resource) {
+                    response = await api.put(`/resources/${resource.id}`, data);
+                } else {
+                    response = await api.post("/resources", data);
+                }
                 toast.success(response?.data?.message)
                 if (response.status == 200) {
                     toggleOpenState(false);
                     setSelectedTags([]);
                     setError("");
-                    form.reset()
+                    form.reset();
                 }
             } catch (error: any) {
                 console.log(error);
@@ -106,7 +131,7 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
         <Sheet open={open} onOpenChange={toggleOpenState}>
             <SheetContent className="sm:max-w-xl overflow-auto " side={"left"}>
                 <SheetHeader>
-                    <SheetTitle>Resources</SheetTitle>
+                    <SheetTitle>{resource ? "Edit" : "Create" } Resources</SheetTitle>
                     <SheetDescription>There are millions of resources out there, Document Your Favorite Here. </SheetDescription>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
@@ -187,7 +212,7 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
                                     </FormItem>
                                 )}
                             />
-                            <div className="bg-gray-200 p-3 rounded-lg">
+                            <div className="border p-3 rounded-lg">
                                 <TagsFilter allTags={allTags} error={error} onTagSelect={handleTagSelect} />
                             </div>
                             <FormField

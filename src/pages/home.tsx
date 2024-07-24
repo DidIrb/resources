@@ -3,13 +3,13 @@ import { Navbar } from "@/layouts/components/navbar";
 import Resource from "./components/resource";
 
 export const Home = () => {
-    const { resources } = useApp();
+    const { filteredResources } = useApp();
     return (
         <div>
             <Navbar />
             <div className="container flex flex-wrap gap-6 py-3">
-                {resources.length > 0 ? (
-                    resources.map((resource: any) => (
+                {filteredResources.length > 0 ? (
+                    filteredResources.map((resource: any) => (
                         <div key={resource.id} className="flex flex-col gap-1 p-2">
                             <Resource item={resource} />
                         </div>

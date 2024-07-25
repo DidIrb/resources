@@ -11,8 +11,6 @@ interface TagsFilterProps {
 
 const TagsFilter: React.FC<TagsFilterProps> = ({ allTags, error, onTagSelect }) => {
     const { resource } = useApp();
-    // let defTags: string[] | (() => string[]) = [];
-    // let defTags
     let defTags = resource?.tags || [];
     
     const [searchTerm, setSearchTerm] = useState<string>('');
@@ -51,7 +49,7 @@ const TagsFilter: React.FC<TagsFilterProps> = ({ allTags, error, onTagSelect }) 
             />
             <div className="flex flex-wrap my-2 gap-1 text-sm">
                 {filteredTags.map((tag) => (
-                    <div className={`${isHighlighted(tag) ? 'bg-green-200  dark:bg-gray-400' : 'bg-gray-100  dark:bg-gray-800'} cursor-pointer px-3 rounded relative min-w-24 max-w-[48%]`} key={tag} onClick={() => handleTagSelect(tag)}>
+                    <div className={`${isHighlighted(tag) ? 'bg-green-200  dark:bg-gray-400' : 'bg-gray-100  dark:bg-gray-800'} cursor-pointer px-3 rounded relative max-w-[48%]`} key={tag} onClick={() => handleTagSelect(tag)}>
                         {tag}
                     </div>
                 ))}

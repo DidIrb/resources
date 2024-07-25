@@ -22,15 +22,15 @@ export const Profile: React.FC = () => {
     return (
       <div key={key} className="py-2 sm:py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
         <dt className="text-sm font-medium text-gray-500">{label}</dt>
-        <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">{value as React.ReactNode}</dd>
+        <dd className="mt-1 text-sm sm:mt-0 sm:col-span-2">{value as React.ReactNode}</dd>
       </div>
     );
   });
 
   return (
-      <Card className="bg-white overflow-hidden shadow rounded-lg border md:w-[500px] w-full justify-center px-3 items-center">
+      <Card className=" column--shrunk overflow-hidden  md:w-[500px] align-top w-full justify-center px-3 items-center">
         <div className="py-2">
-          <h3 className="text-lg leading-6 font-medium text-gray-900">Profile</h3>
+          <h3 className="text-lg leading-6 font-medium">Profile</h3>
           <p className="mt-1 max-w-2xl text-sm text-gray-500">This is your Information</p>
         </div>
         <div className="border-t border-gray-200 px-2 py-2 sm:p-0">

@@ -1,3 +1,4 @@
+// TypesForm.tsx
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import api from '@/lib/api';
@@ -18,7 +19,7 @@ interface InputFormProps {
   onSuccess: () => void;
 }
 
-const TagsForm: React.FC<InputFormProps> = ({ onClose, onSuccess }) => {
+const TypesForm: React.FC<InputFormProps> = ({ onClose, onSuccess }) => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -28,12 +29,12 @@ const TagsForm: React.FC<InputFormProps> = ({ onClose, onSuccess }) => {
 
   const handleFormSubmit = async (data: FormSchema) => {
     try {
-      const response = await api.post('/enum/tags', { data: data.value });
+      const response = await api.post('/enum/types', { data: data.value });
       toast.success(response?.data?.message);
-      console.log(response)
+      console.log(response);
       if (response.status === 200) {
         onSuccess();
-        reset({ value: '' });
+        reset({ value: ''});
         onClose();
       }
     } catch (error: any) {
@@ -44,7 +45,7 @@ const TagsForm: React.FC<InputFormProps> = ({ onClose, onSuccess }) => {
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className='border mt-2 p-2 md:w-[50%] w-full'>
-      <div className="text-sm text-gray-700 mb-1">Tags</div>
+      <div className="text-sm text-gray-700 mb-1">Types</div>
       <div className="flex items-center gap-2">
         <div className="w-full relative">
           <Input
@@ -54,7 +55,6 @@ const TagsForm: React.FC<InputFormProps> = ({ onClose, onSuccess }) => {
         </div>
         <Button type="submit"> Submit </Button>
         <Button variant="secondary" type="button" onClick={onClose}> Close </Button>
-
       </div>
       {errors.value && (
         <p className="text-red-500 text-sm mt-1">{errors.value.message}</p>
@@ -63,4 +63,4 @@ const TagsForm: React.FC<InputFormProps> = ({ onClose, onSuccess }) => {
   );
 };
 
-export default TagsForm;
+export default TypesForm;

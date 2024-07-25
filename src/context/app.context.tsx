@@ -1,4 +1,3 @@
-import api from '@/lib/api';
 import { Resources, User } from '@/types/forms.types';
 import axios, { AxiosResponse } from 'axios';
 import { createContext, useContext, useEffect, useState } from "react";

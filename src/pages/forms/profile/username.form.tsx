@@ -1,14 +1,13 @@
 // UsernameForm.tsx
-import React, { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { XIcon } from 'lucide-react';
-import { toast } from 'sonner';
-import api from '@/lib/api';
 import { useAuth } from '@/context/auth.context';
+import api from '@/lib/api';
+import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 const usernameSchema = z.string().min(3, { message: "Username must be at least 3 characters" });
 
@@ -48,7 +47,7 @@ const UsernameForm: React.FC<UsernameFormProps> = ({ userId, currentUsername, on
             }
         } catch (error: any) {
             console.log(error);
-            toast.error(error.response.data.ERROR);
+            toast.error(error.response.data.error);
         }
     };
 
@@ -62,12 +61,8 @@ const UsernameForm: React.FC<UsernameFormProps> = ({ userId, currentUsername, on
                         {...register('username')}
                     />
                 </div>
-                <Button type="submit">
-                    Update
-                </Button>
-                <Button size="icon" className='icon rounded-full' variant="outline" type="button" onClick={onClose}>
-                    <XIcon className='icon-link' />
-                </Button>
+                <Button type="submit"> Update </Button>
+                <Button variant="secondary" type="button" onClick={onClose}> Close </Button>
             </div>
             {errors.username && (
                 <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>

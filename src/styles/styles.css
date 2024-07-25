@@ -43,3 +43,8 @@
     background: white; /* Adjust background as needed */
     padding-left: 5px;
 }
+
+.column--shrunk {
+    align-self: start;  
+  }
+  

@@ -13,6 +13,7 @@ import api from "@/lib/api";
 import { toast } from "sonner";
 import { useApp } from "@/context/app.context";
 import { Resources } from "@/types/forms.types";
+import { useData } from "@/context/data.context";
 
 type Props = {
     open: boolean;
@@ -21,7 +22,8 @@ type Props = {
 
 export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
     const { resource } = useApp();
-    const allTags = ["coding", "github"];
+    const { tags, types } = useData();
+
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -63,7 +65,7 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
     });
 
     useEffect(() => {
-        
+
         if (resource !== null) {
             form.reset({
                 icon: resource.icon,
@@ -91,7 +93,7 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
             try {
                 let response
                 data.tags = selectedTags;
-                if(resource) {
+                if (resource) {
                     response = await api.put(`/resources/${resource.id}`, data);
                 } else {
                     response = await api.post("/resources", data);
@@ -118,7 +120,7 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
         <Sheet open={open} onOpenChange={toggleOpenState}>
             <SheetContent className="sm:max-w-xl overflow-auto " side={"left"}>
                 <SheetHeader>
-                    <SheetTitle>{resource ? "Edit" : "Create" } Resources</SheetTitle>
+                    <SheetTitle>{resource ? "Edit" : "Create"} Resources</SheetTitle>
                     <SheetDescription>There are millions of resources out there, Document Your Favorite Here. </SheetDescription>
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
@@ -161,9 +163,11 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectGroup>
-                                                        <SelectItem value="tool">Tool</SelectItem>
-                                                        <SelectItem value="website">Website</SelectItem>
-                                                        <SelectItem value="app">App</SelectItem>
+                                                        {types.map((type) => (
+                                                            <SelectItem key={type} value={type}>
+                                                                {type}
+                                                            </SelectItem>
+                                                        ))}
                                                     </SelectGroup>
                                                 </SelectContent>
                                             </Select>
@@ -200,7 +204,7 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
                                 )}
                             />
                             <div className="border p-3 rounded-lg">
-                                <TagsFilter allTags={allTags} error={error} onTagSelect={handleTagSelect} />
+                                <TagsFilter allTags={tags} error={error} onTagSelect={handleTagSelect} />
                             </div>
                             <FormField
                                 control={form.control}

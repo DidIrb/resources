@@ -1,6 +1,7 @@
 import api from "@/lib/api";
 import { SigninFormData } from "@/types/forms.types";
 import { createContext, useContext, useState } from "react";
+import DataProvider from "./data.context";
 
 interface AuthContextType {
     session: any;
@@ -24,11 +25,9 @@ const data = {
     username: "test6",
     email: "test_admin@email.com",
     role: "user"
-}
+};
 
-const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-    children,
-}) => {
+const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [session, setSession] = useState<any | null>(data);
 
     const signin = async (data: SigninFormData) => {
@@ -40,7 +39,8 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             console.error(error);
             throw error;
         }
-    }
+    };
+
     const signout = async () => {
         try {
             const response = await api.post(`/auth/signout`);
@@ -50,10 +50,12 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
             console.error(error);
             throw error;
         }
-    }
+    };
 
     return (
-        <AuthContext.Provider value={{ session, signin, signout, setSession }}>{children}</AuthContext.Provider>
+        <AuthContext.Provider value={{ session, signin, signout, setSession }}>
+            <DataProvider>{children}</DataProvider>
+        </AuthContext.Provider>
     );
 };
 

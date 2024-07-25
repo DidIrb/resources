@@ -45,7 +45,6 @@ export const UsersTable = forwardRef((_props, ref) => {
             setIsLoading(true);
             const response: AxiosResponse<User[]> = await api.get<User[]>(`${url}/users`);
             setUsers(response.data);
-            console.log(response);
             if (response.status === 200) {
                 setOpen(false);
             }

@@ -28,7 +28,7 @@ export const Users = () => {
         <div className="md:w-[800px] w-full">
           <UsersTable ref={childRef}/> 
         </div>
-        <div className="flex justify-end h-16">
+        <div className="flex justify-end column--shrunk">
           {session &&
             <div className="flex gap-2 mb-2 items-center">
               <Button variant="outline" className={`h-7 ${isLoading && 'w-7'} rounded-full`} size={`${isLoading ? 'icon' : 'default'}`} onClick={handleFetchUsersData} >

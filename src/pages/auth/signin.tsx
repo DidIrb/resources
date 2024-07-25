@@ -24,9 +24,6 @@ export function Signin() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
-  };
 
   const onSubmit = async (val: SigninFormData) => {
     setIsLoading(true);
@@ -98,7 +95,7 @@ export function Signin() {
                 />
                 <button
                   type="button"
-                  onClick={togglePasswordVisibility}
+                  onClick={() => setShowPassword((prev) => !prev)}
                   className="absolute right-2 top-1/2 transform -translate-y-1/2"
                 >
                   {showPassword ? <EyeOpenIcon /> : <EyeNoneIcon />}

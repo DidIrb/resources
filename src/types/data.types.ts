@@ -4,8 +4,6 @@ export interface RouteType {
     children?: RouteType[];
 }
 
-
-
 export type ResourceValues = {
     icon: string;
     title: string;

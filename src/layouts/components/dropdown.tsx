@@ -47,9 +47,6 @@ export const UserDropDown = () => {
                     <Link to="/dashboard">
                         <DropdownMenuItem className="cursor-pointer" >Dashboard</DropdownMenuItem>
                     </Link>
-                    <Link to="/profile">
-                        <DropdownMenuItem className="cursor-pointer">Profile</DropdownMenuItem>
-                    </Link>
                     <Link to="/users">
                         <DropdownMenuItem className="cursor-pointer">Users</DropdownMenuItem>
                     </Link>

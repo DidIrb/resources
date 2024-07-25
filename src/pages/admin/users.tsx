@@ -25,7 +25,7 @@ export const Users = () => {
   return (
     <div className="px-4">
       <div className="flex justify-between md:flex-row  flex-col-reverse gap-3">
-        <div className="md:w-[800px] w-full p-2">
+        <div className="md:w-[800px] w-full">
           <UsersTable ref={childRef}/> 
         </div>
         <div className="flex justify-end h-16">

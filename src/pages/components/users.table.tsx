@@ -1,5 +1,6 @@
 import { Alert } from "@/components/custom/alert.dialog";
 import { Button } from '@/components/ui/button';
+import { Card } from "@/components/ui/card";
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { url, useApp } from "@/context/app.context";
@@ -74,7 +75,7 @@ export const UsersTable = forwardRef((_props, ref) => {
     }, []);
 
     return (
-        <div>
+        <Card className="w-full p-1 pb-3">
             <Table>
                 <TableCaption>List of users</TableCaption>
                 <TableHeader>
@@ -138,6 +139,6 @@ export const UsersTable = forwardRef((_props, ref) => {
                     </form>
                 </div>
             }
-        </div>
+        </Card>
     )
 })

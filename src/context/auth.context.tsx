@@ -6,6 +6,7 @@ interface AuthContextType {
     session: any;
     signin: (data: SigninFormData) => Promise<any>;
     signout: () => Promise<any>;
+    setSession: (data: any) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -52,7 +53,7 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     return (
-        <AuthContext.Provider value={{ session, signin, signout }}>{children}</AuthContext.Provider>
+        <AuthContext.Provider value={{ session, signin, signout, setSession }}>{children}</AuthContext.Provider>
     );
 };
 

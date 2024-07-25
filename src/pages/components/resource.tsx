@@ -14,7 +14,7 @@ type ResourceProps = {
 
 const Resource: React.FC<ResourceProps> = ({ item }) => {
   const { session } = useAuth();
-  const { openEditForm } = useApp();
+  const { openEditResource } = useApp();
   return (
     <div className="border shadow-sm sm:w-72 w-full p-3 rounded-md">
       <div className="flex items-center justify-between mb-2">
@@ -22,7 +22,7 @@ const Resource: React.FC<ResourceProps> = ({ item }) => {
         {session && (
           <Pencil1Icon
             className="icon-sm cursor-pointer"
-            onClick={() => openEditForm(item)}
+            onClick={() => openEditResource(item)}
           />
         )}
       </div>

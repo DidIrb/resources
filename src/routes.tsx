@@ -9,6 +9,8 @@ import { Dashboard } from "./pages/admin/dashboard";
 import { LandingPage } from "./pages/landing.page";
 import { RouteType } from "./types/data.types";
 import { Home } from "./pages/home";
+import { Settings } from "./pages/admin/settings";
+import { Users } from "./pages/admin/users";
 export const loginRoute = import.meta.env.VITE_ADMIN_LOGIN_URL
 
 const renderRoutes = (routes: RouteType[]) => {
@@ -41,7 +43,9 @@ const Router = () => {
       element: session ? ( <AdminLayout /> ) : ( <Navigate to="/home" /> ),
       children: [
         { path: "/dashboard", element: <Dashboard /> },
-        { path: "/profile", element: <Profile /> }
+        { path: "/profile", element: <Profile /> },
+        { path: "/settings", element: <Settings /> },
+        { path: "/users", element: <Users /> }
       ],
     },
     

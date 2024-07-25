@@ -7,25 +7,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import TagsFilter from "./tags.filter";
+import TagsFilter from "../components/tags.filter";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import api from "@/lib/api";
 import { toast } from "sonner";
 import { useApp } from "@/context/app.context";
-
-
-export type Tag = string;
-export type ResourceType = string;
-
-export interface Resources {
-    icon: string;
-    type: ResourceType;
-    title: string;
-    description: string;
-    tags: Tag[];
-    link: string;
-    secret: string;
-}
+import { Resources } from "@/types/forms.types";
 
 type Props = {
     open: boolean;
@@ -118,7 +105,7 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
                 }
             } catch (error: any) {
                 console.log(error);
-                toast.error(error.response.data.message)
+                toast.error(error.response.data.error)
             } finally {
                 setIsLoading(false);
             }
@@ -168,7 +155,7 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
                                     <FormItem>
                                         <FormLabel>Type</FormLabel>
                                         <FormControl>
-                                            <Select onValueChange={field.onChange} >
+                                            <Select onValueChange={field.onChange} value={field.value}>
                                                 <SelectTrigger>
                                                     <SelectValue placeholder="Select a type" />
                                                 </SelectTrigger>

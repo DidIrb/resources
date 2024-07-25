@@ -18,10 +18,17 @@ export const useAuth = () => {
     return context;
 };
 
+const data = {
+    id: 1,
+    username: "test6",
+    email: "test_admin@email.com",
+    role: "user"
+}
+
 const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
-    const [session, setSession] = useState<any | null>(null);
+    const [session, setSession] = useState<any | null>(data);
 
     const signin = async (data: SigninFormData) => {
         try {

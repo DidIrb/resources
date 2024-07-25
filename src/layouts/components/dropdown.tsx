@@ -38,16 +38,26 @@ export const UserDropDown = () => {
                         </Avatar>
                     </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                    <DropdownMenuLabel className="flex flex-col gap-1">
-                        {session?.email}
+                <DropdownMenuContent align="end" className="w-48">
+                    <DropdownMenuLabel>
+                        Manage Resources
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>Settings</DropdownMenuItem>
-                    <Link to="/profile">
-                        <DropdownMenuItem>Profile</DropdownMenuItem>
+
+                    <Link to="/dashboard">
+                        <DropdownMenuItem className="cursor-pointer" >Dashboard</DropdownMenuItem>
                     </Link>
-                    <DropdownMenuItem onClick={() => setIsDialogOpen(true)}>Logout</DropdownMenuItem>
+                    <Link to="/profile">
+                        <DropdownMenuItem className="cursor-pointer">Profile</DropdownMenuItem>
+                    </Link>
+                    <Link to="/users">
+                        <DropdownMenuItem className="cursor-pointer">Users</DropdownMenuItem>
+                    </Link>
+                    <Link to="/settings">
+                        <DropdownMenuItem className="cursor-pointer">Settings</DropdownMenuItem>
+                    </Link>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => setIsDialogOpen(true)} className="cursor-pointer">Logout</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
         </div>

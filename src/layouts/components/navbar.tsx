@@ -15,6 +15,7 @@ export const Navbar = () => {
                     <BoxIcon className="h-6 w-6 rotate-45" />
                     Resources</Link>
                 <div className="flex gap-1">
+                    
                     <div className="hidden sm:block">
                         <SearchBar />
                     </div>                

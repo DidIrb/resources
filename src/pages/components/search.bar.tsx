@@ -1,13 +1,19 @@
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useApp } from "@/context/app.context";
 import { debounce, filterByValue } from "@/lib/func";
-import { Search } from "lucide-react";
-import { ChangeEvent, useCallback } from "react";
+import { GridIcon } from "@radix-ui/react-icons";
+import { List, Search } from "lucide-react";
+import { ChangeEvent, useCallback, useState } from "react";
 import { DropdownMenuCheckboxes } from "./filter";
 
 export const SearchBar = () => {
   const { resources, setFilteredResources } = useApp();
+  const [isGrid, setIsGrid] = useState(true);
 
+  const handleToggle = () => {
+    setIsGrid(!isGrid);
+  };
 
 
   const handleSearch = useCallback(
@@ -15,7 +21,6 @@ export const SearchBar = () => {
       const filteredData = filterByValue(resources, query);
       if (filteredData.length === 0) {
         console.log("searching database");
-
       }
       setFilteredResources(filteredData);
     }, 1000),
@@ -28,7 +33,12 @@ export const SearchBar = () => {
 
   return (
     <div className="ml-auto flex gap-2 flex-1 sm:flex-initial">
-      <DropdownMenuCheckboxes />
+      <div className="flex gap-1 justify-end">
+        <Button variant="outline" className="w-8 rounded-full" size="icon" onClick={handleToggle}>
+          {isGrid ? <GridIcon className="icon" /> : <List className="icon" />}
+        </Button>
+        <DropdownMenuCheckboxes />
+      </div>
       <div className="relative w-full flex items-center">
         <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input

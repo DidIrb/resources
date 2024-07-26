@@ -14,14 +14,14 @@ export const Dashboard = () => {
       <div className="px-2 flex justify-end">
         {session &&
           <div className="flex gap-2 mb-2 items-center">
-            <Button variant="outline" className={`h-7 ${isLoading && 'w-7'} rounded-full`}  size={`${isLoading ? 'icon' : 'default'}`} onClick={fetchData} >
+            <Button variant="outline" className={`h-8 ${isLoading && 'w-8'} rounded-full`}  size={`${isLoading ? 'icon' : 'default'}`} onClick={fetchData} >
               {isLoading ?
                 <ReloadIcon className={`icon ${isLoading ? 'animate-spin infinite' : ''} cursor-pointer`} />
                 :
                 "Reload"
               }
             </Button>
-            <Button className="h-7 rounded-full" onClick={() => openEditResource(null)} >
+            <Button className=" rounded-full" onClick={() => openEditResource(null)} >
               Create
             </Button>
           </div>

@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import api from '@/lib/api';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -43,23 +44,25 @@ const TagsForm: React.FC<InputFormProps> = ({ onClose, onSuccess }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className='border mt-2 p-2 md:w-[50%] w-full'>
-      <div className="text-sm text-gray-700 mb-1">Tags</div>
-      <div className="flex items-center gap-2">
-        <div className="w-full relative">
-          <Input
-            type="text"
-            {...register('value')}
-          />
-        </div>
-        <Button type="submit"> Submit </Button>
-        <Button variant="secondary" type="button" onClick={onClose}> Close </Button>
+    <Card className='border mt-2 p-2 md:w-[50%] w-full'>
+      <form onSubmit={handleSubmit(handleFormSubmit)} >
+        <div className="text-sm text-gray-700 mb-1">Tags</div>
+        <div className="flex items-center gap-2">
+          <div className="w-full relative">
+            <Input
+              type="text"
+              {...register('value')}
+            />
+          </div>
+          <Button type="submit"> Submit </Button>
+          <Button variant="secondary" type="button" onClick={onClose}> Close </Button>
 
-      </div>
-      {errors.value && (
-        <p className="text-red-500 text-sm mt-1">{errors.value.message}</p>
-      )}
-    </form>
+        </div>
+        {errors.value && (
+          <p className="text-red-500 text-sm mt-1">{errors.value.message}</p>
+        )}
+      </form>
+    </Card>
   );
 };
 

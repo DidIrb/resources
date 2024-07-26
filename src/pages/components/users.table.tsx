@@ -74,7 +74,7 @@ export const UsersTable = forwardRef((_props, ref) => {
     }, []);
 
     return (
-        <Card className="w-full p-1 pb-3">
+        <Card className="md:w-[700px] w-full p-1 pb-3">
             <Table>
                 <TableCaption>List of users</TableCaption>
                 <TableHeader>

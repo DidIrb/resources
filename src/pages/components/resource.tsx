@@ -7,6 +7,7 @@ import moment from "moment";
 import React from "react";
 import { Link } from "react-router-dom";
 import { ResourceDetails } from "./resource.details";
+import { Card } from "@/components/ui/card";
 
 type ResourceProps = {
   item: ResourceValues;
@@ -16,7 +17,7 @@ const Resource: React.FC<ResourceProps> = ({ item }) => {
   const { session } = useAuth();
   const { openEditResource } = useApp();
   return (
-    <div className="border shadow-sm sm:w-72 w-full p-3 rounded-md">
+    <Card className="p-3">
       <div className="flex items-center justify-between mb-2">
         <ResourceDetails data={item} />
         {session && (
@@ -66,7 +67,7 @@ const Resource: React.FC<ResourceProps> = ({ item }) => {
           </Link>
         </div>
       </div>
-    </div>
+    </Card>
   );
 };
 

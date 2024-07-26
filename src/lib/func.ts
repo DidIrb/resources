@@ -1,3 +1,5 @@
+import { Resources } from "@/types/forms.types";
+import _ from "lodash";
 export function filterByValue(array: any[], value: string) {
     return array.filter((data) => JSON.stringify(data).toLowerCase().indexOf(value.toLowerCase()) !== -1);
 }
@@ -10,6 +12,10 @@ export function debounce<T extends (...args: any[]) => void>(func: T, wait: numb
     } as T;
 }
 
+export function hasDuplicates(arr: Record<string, any>[]): boolean {
+    const uniqueObjects = _.uniqWith(arr, _.isEqual);
+    return uniqueObjects.length !== arr.length;
+}
 
 export const filterResourcesBySelectedTypes = (resources: any[], selectedTypes: string | any[]) => {
     return resources.filter(resource => selectedTypes.includes(resource.type));
@@ -21,4 +27,8 @@ export const filterTypes = (resources: any[], selectedTypes: string[]) => {
 
 export const filterTags = (resources: any[], selectedTags: string[]) => {
     return resources.filter(resource => selectedTags.includes(resource.tags));
+};
+
+export const saveToLocalStorage = (resources: Resources[]) => {
+    localStorage.setItem('resources', JSON.stringify(resources));
 };

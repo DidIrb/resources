@@ -6,9 +6,10 @@ import { List, Search } from "lucide-react";
 import { ChangeEvent, useCallback, useState } from "react";
 import { DropdownMenuCheckboxes } from "./filter";
 import { useSearch } from "@/context/search.context";
+import { toast } from "sonner";
 
 export const SearchBar = () => {
-  const { resources, setFilteredResources, search, selectedFields, selectedTypes, selectedTags } = useSearch(); 
+  const { resources, setFilteredResources, search, selectedFields, selectedTypes, selectedTags } = useSearch();
   const [isGrid, setIsGrid] = useState(true);
 
   const handleToggle = () => {
@@ -20,7 +21,12 @@ export const SearchBar = () => {
       const filteredData = filterByValue(resources, query);
       if (filteredData.length === 0) {
         console.log("searching database");
-        await search(query, selectedTags, selectedTypes, selectedFields); // Call the search method with fields
+        try {
+          await search(query, selectedTags, selectedTypes, selectedFields, "asc", 1, 2);
+        } catch (error: any) {
+          toast.error(error.response.data.error);
+          console.log(error)
+        }
       } else {
         setFilteredResources(filteredData);
       }

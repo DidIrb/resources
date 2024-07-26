@@ -21,4 +21,6 @@ export interface Resources {
     tags: string[];
     link: string;
     secret: string;
+    createdAt: string;
+    updatedAt: string;
 }

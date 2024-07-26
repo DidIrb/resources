@@ -73,6 +73,7 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
                 title: resource.title,
                 description: resource.description,
                 link: resource.link,
+                secret: ""
             });
             if (resource.tags == null) {
                 setSelectedTags([]);

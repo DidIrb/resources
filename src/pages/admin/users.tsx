@@ -16,34 +16,31 @@ export const Users = () => {
 
   const childRef = useRef<ChildComponentRef>(null);
 
-    const handleFetchUsersData = () => {
-        if (childRef.current) {
-            childRef.current.fetchUsersData();
-        }
-    };
+  const handleFetchUsersData = () => {
+    if (childRef.current) {
+      childRef.current.fetchUsersData();
+    }
+  };
 
   return (
     <div className="px-4">
-      <div className="flex justify-between md:flex-row  flex-col-reverse gap-3">
-        <div className="md:w-[800px] w-full">
-          <UsersTable ref={childRef}/> 
-        </div>
-        <div className="flex justify-end self-start">
-          {session &&
-            <div className="flex gap-2 mb-2 items-center">
-              <Button variant="outline" className={`h-7 ${isLoading && 'w-7'} rounded-full`} size={`${isLoading ? 'icon' : 'default'}`} onClick={handleFetchUsersData} >
-                {isLoading ?
-                  <ReloadIcon className={`icon ${isLoading ? 'animate-spin infinite' : ''} cursor-pointer`} />
-                  :
-                  "Reload"
-                }
-              </Button>
-              <Button className="h-7 rounded-full" onClick={() => openEditUser(null)} >
-                Create
-              </Button>
-            </div>
-          }
-        </div>
+      <UsersTable ref={childRef} />
+      <div className="fixed bottom-3 left-[50%] -translate-x-[50%]  p-2 rounded-xl bg-white/20 ring-1 ring-black/5 shadow">
+        {session &&
+          <div className="flex gap-2 items-center">
+            <Button variant="outline" className={`h-7 ${isLoading && 'w-7'} rounded-full`} size={`${isLoading ? 'icon' : 'default'}`} onClick={handleFetchUsersData} >
+              {isLoading ?
+                <ReloadIcon className={`icon ${isLoading ? 'animate-spin infinite' : ''} cursor-pointer`} />
+                :
+                "Reload"
+              }
+            </Button>
+            <Button className="h-7 rounded-full" onClick={() => openEditUser(null)} >
+              Create
+            </Button>
+          </div>
+        }
+
       </div>
       <UsersForm open={openUserForm} toggleOpenState={openEditUser} />
     </div>

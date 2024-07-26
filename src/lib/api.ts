@@ -1,8 +1,8 @@
-import { url } from "@/context/app.context";
+import config from "@/config/config";
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: url,
+  baseURL: config.url,
 });
 
 api.interceptors.request.use(

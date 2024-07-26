@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import api from "@/lib/api";
-import { url } from "./app.context";
+import config from "@/config/config";
 
 interface DataContextType {
     tags: string[];
@@ -35,7 +35,7 @@ const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     const fetchData = async (): Promise<void> => {
         try {
             setIsLoading(true);
-            const response = await api.get<{ tags: string[], types: string[] }>(`${url}/enum`);
+            const response = await api.get<{ tags: string[], types: string[] }>(`${config.url}/enum`);
             const { tags, types } = response.data;
 
             if (tags && types) {

@@ -1,30 +1,31 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useApp } from "@/context/app.context";
 import { debounce, filterByValue } from "@/lib/func";
 import { GridIcon } from "@radix-ui/react-icons";
 import { List, Search } from "lucide-react";
 import { ChangeEvent, useCallback, useState } from "react";
 import { DropdownMenuCheckboxes } from "./filter";
+import { useSearch } from "@/context/search.context";
 
 export const SearchBar = () => {
-  const { resources, setFilteredResources } = useApp();
+  const { resources, setFilteredResources, search, selectedFields, selectedTypes, selectedTags } = useSearch(); 
   const [isGrid, setIsGrid] = useState(true);
 
   const handleToggle = () => {
     setIsGrid(!isGrid);
   };
 
-
   const handleSearch = useCallback(
-    debounce((query: string) => {
+    debounce(async (query: string) => {
       const filteredData = filterByValue(resources, query);
       if (filteredData.length === 0) {
         console.log("searching database");
+        await search(query, selectedTags, selectedTypes, selectedFields); // Call the search method with fields
+      } else {
+        setFilteredResources(filteredData);
       }
-      setFilteredResources(filteredData);
     }, 1000),
-    [resources, setFilteredResources]
+    [resources, setFilteredResources, search, selectedTypes]
   );
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {

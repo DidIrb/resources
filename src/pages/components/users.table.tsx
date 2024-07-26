@@ -3,14 +3,14 @@ import { Button } from '@/components/ui/button';
 import { Card } from "@/components/ui/card";
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { url, useApp } from "@/context/app.context";
+import config from "@/config/config";
+import { useApp } from "@/context/app.context";
 import api from "@/lib/api";
 import { User } from "@/types/forms.types";
 import { Pencil1Icon, TrashIcon } from "@radix-ui/react-icons";
 import { AxiosResponse } from "axios";
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { toast } from "sonner";
-
 
 export const UsersTable = forwardRef((_props, ref) => {
     const { openEditUser, setUsers, setIsLoading, users } = useApp();
@@ -43,7 +43,7 @@ export const UsersTable = forwardRef((_props, ref) => {
     const fetchUsersData = async (): Promise<void> => {
         try {
             setIsLoading(true);
-            const response: AxiosResponse<User[]> = await api.get<User[]>(`${url}/users`);
+            const response: AxiosResponse<User[]> = await api.get<User[]>(`${config.url}/users`);
             setUsers(response.data);
             if (response.status === 200) {
                 setOpen(false);
@@ -53,7 +53,7 @@ export const UsersTable = forwardRef((_props, ref) => {
         } finally {
             setTimeout(() => {
                 setIsLoading(false);
-            }, 3000);
+            }, 1000);
         }
     };
 

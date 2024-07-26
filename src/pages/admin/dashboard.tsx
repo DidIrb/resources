@@ -4,17 +4,23 @@ import { ResourcesForm } from "../forms/resource.form";
 import { useAuth } from "@/context/auth.context";
 import { Button } from "@/components/ui/button";
 import { ReloadIcon } from "@radix-ui/react-icons";
+import { useSearch } from "@/context/search.context";
 
 export const Dashboard = () => {
-  const { filteredResources, resources, open, openEditResource, isLoading, fetchData } = useApp();
+  const { open, openEditResource, isLoading } = useApp();
+  const {filteredResources, resources, search, selectedFields} = useSearch();
+  // Reload Resources
   const { session } = useAuth();
+  const reload = () => {
+      search('', [], [], selectedFields);
+  }
 
   return (
     <div className=" p-0 overflow-hidden">
       <div className="px-2 flex justify-end">
         {session &&
           <div className="flex gap-2 mb-2 items-center">
-            <Button variant="outline" className={`h-8 ${isLoading && 'w-8'} rounded-full`}  size={`${isLoading ? 'icon' : 'default'}`} onClick={fetchData} >
+            <Button variant="outline" className={`h-8 ${isLoading && 'w-8'} rounded-full`}  size={`${isLoading ? 'icon' : 'default'}`} onClick={reload} >
               {isLoading ?
                 <ReloadIcon className={`icon ${isLoading ? 'animate-spin infinite' : ''} cursor-pointer`} />
                 :

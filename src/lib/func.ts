@@ -9,3 +9,16 @@ export function debounce<T extends (...args: any[]) => void>(func: T, wait: numb
         timeout = setTimeout(() => func.apply(this, args), wait);
     } as T;
 }
+
+
+export const filterResourcesBySelectedTypes = (resources: any[], selectedTypes: string | any[]) => {
+    return resources.filter(resource => selectedTypes.includes(resource.type));
+};
+
+export const filterTypes = (resources: any[], selectedTypes: string[]) => {
+    return resources.filter(resource => selectedTypes.includes(resource.type));
+};
+
+export const filterTags = (resources: any[], selectedTags: string[]) => {
+    return resources.filter(resource => selectedTags.includes(resource.tags));
+};

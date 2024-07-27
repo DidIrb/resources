@@ -10,7 +10,8 @@ import { Users } from "./pages/admin/users";
 import { Home } from "./pages/home";
 import { LandingPage } from "./pages/landing.page";
 import { RouteType } from "./types/data.types";
-export const loginRoute = import.meta.env.VITE_ADMIN_LOGIN_URL
+import { Slug } from "./pages/common/[Slug]";
+
 
 const renderRoutes = (routes: RouteType[]) => {
   return routes.map(({ path, element, children = [] }) => (
@@ -21,11 +22,12 @@ const renderRoutes = (routes: RouteType[]) => {
 };
 
 const Router = () => {
-  const {  session } = useAuth();
+  const { session } = useAuth();
   const routes: RouteType[] = [
 
     { path: "/", element: <LandingPage /> },
     { path: "/home", element: <Home /> },
+    { path: "/home/:slug", element: <Slug /> },
 
     // AUTHENTICATION
     {
@@ -39,14 +41,15 @@ const Router = () => {
     // ADMIN LAYOUT
     {
       path: "/",
-      element: session ? ( <AdminLayout /> ) : ( <Navigate to="/home" /> ),
+      element: session ? (<AdminLayout />) : (<Navigate to="/home" />),
       children: [
         { path: "/dashboard", element: <Dashboard /> },
+        { path: "/dashboard/:slug", element: <Slug /> },
         { path: "/settings", element: <Settings /> },
         { path: "/users", element: <Users /> }
       ],
     },
-    
+
     { path: "*", element: <PageNotFound /> },
   ];
 

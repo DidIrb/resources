@@ -89,6 +89,7 @@ const SearchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
             saveToLocalStorage(uniqueUpdatedData);
 
             console.log(`Showing ${uniqueNewData.length} out of ${response.data.totalMatches} items`);
+            return response.data.paginatedResults;
         } catch (error) {
             throw error;
         } finally {

@@ -5,6 +5,7 @@ export interface RouteType {
 }
 
 export type ResourceValues = {
+    id: string;
     icon: string;
     title: string;
     description: string;

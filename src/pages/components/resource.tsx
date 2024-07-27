@@ -6,8 +6,8 @@ import { CalendarDays, Globe } from "lucide-react";
 import moment from "moment";
 import React from "react";
 import { Link } from "react-router-dom";
-import { ResourceDetails } from "./resource.details";
 import { Card } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 type ResourceProps = {
   item: ResourceValues;
@@ -19,7 +19,15 @@ const Resource: React.FC<ResourceProps> = ({ item }) => {
   return (
     <Card className="p-3">
       <div className="flex items-center justify-between mb-2">
-        <ResourceDetails data={item} />
+        <div className='flex items-center gap-2 cursor-pointer'>
+          <Avatar className="w-7 h-7 ">
+            <AvatarImage src={item.icon} />
+            <AvatarFallback>{item.title.charAt(0).toUpperCase()}</AvatarFallback>
+          </Avatar>
+          <Link to={item.title.toLowerCase()} className="font-semibold hover:underline hover:text-blue-600 px-0">
+            {item.title}
+          </Link>
+        </div>
         {session && (
           <Pencil1Icon
             className="icon-sm cursor-pointer"
@@ -28,25 +36,8 @@ const Resource: React.FC<ResourceProps> = ({ item }) => {
         )}
       </div>
       <div className="space-y-1">
-        <p
-          className="text-sm relative"
-          style={{
-            WebkitLineClamp: 2,
-            display: "-webkit-box",
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}
-        >
+        <p className="text-sm relative truncate">
           {item.description}
-          {/* {item.description.length > 65 && (
-                        <Link to={item.link} target="_blank" className=" absolute bg-background pl-1 bottom-0 right-0 bg font-medium">
-                            <Button variant="link" className="pl-1 flex items-center gap-1 px-0 h-0">
-                                <span>...
-                                </span>  <span className="text-blue-800">Read more</span>
-                            </Button>
-                        </Link>
-                    )} */}
         </p>
         <div className="flex items-center justify-between pt-2">
           <div className="flex">
@@ -57,9 +48,7 @@ const Resource: React.FC<ResourceProps> = ({ item }) => {
                 : moment.utc(item?.createdAt).local().fromNow()}
             </span>
           </div>
-          <Link
-            to={item.link}
-            target="_blank"
+          <Link to={item.link} target="_blank"
             className="text-muted-foreground hover:text-blue-700 text-xs items-center flex gap-1"
           >
             <Globe className="icon-link" />

@@ -1,9 +1,9 @@
-import { useApp } from "@/context/app.context";
+import { useSearch } from "@/context/search.context";
 import { Navbar } from "@/layouts/components/navbar";
 import Resource from "./components/resource";
 
 export const Home = () => {
-    const { filteredResources } = useApp();
+    const { filteredResources } = useSearch();
     return (
         <div>
             <Navbar />

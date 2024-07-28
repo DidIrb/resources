@@ -36,7 +36,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             setSession(response.data.data);
             return response.data;
         } catch (error) {
-            console.error(error);
             throw error;
         }
     };

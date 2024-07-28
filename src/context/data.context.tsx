@@ -6,6 +6,8 @@ interface DataContextType {
     tags: string[];
     types: string[];
     fetchData: () => Promise<void>;
+    setIsGrid: (isGrid: boolean) => void;
+    isGrid: boolean;
     isLoading: boolean;
 }
 
@@ -28,6 +30,15 @@ const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     const [types, setTypes] = useState<string[]>(() => {
         const savedTypes = localStorage.getItem("types");
         return savedTypes ? JSON.parse(savedTypes) : [];
+    });
+    const appConfig = JSON.parse(localStorage.getItem('config') || 'null');
+    const [isGrid, setIsGrid] = useState<boolean>(() => {
+        if (appConfig) return appConfig.isGrid
+        else {
+            console.log("still setting grid");
+            localStorage.setItem("config", JSON.stringify({...appConfig, isGrid: true}));
+            return true
+        }
     });
 
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -61,7 +72,7 @@ const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     }, []);
 
     return (
-        <DataContext.Provider value={{ tags, types, fetchData, isLoading }}>
+        <DataContext.Provider value={{ isGrid, setIsGrid, tags, types, fetchData, isLoading }}>
             {children}
         </DataContext.Provider>
     );

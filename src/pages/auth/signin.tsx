@@ -32,9 +32,9 @@ export function Signin() {
       console.log(response.data);
       toast.success("Successfully logged in");
       navigate("/dashboard")
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      toast.error("Wrong Username and password combination");
+      toast.error(error.response.data.error);
     } finally {
       setIsLoading(false);
     }

@@ -1,15 +1,18 @@
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
+import { useApp } from "@/context/app.context";
 import { useAuth } from "@/context/auth.context";
 import { useSearch } from "@/context/search.context";
 import { Resources } from "@/types/forms.types";
-import { CalendarDays, ChevronLeft } from "lucide-react";
+import { Pencil1Icon } from "@radix-ui/react-icons";
+import { ChevronLeft } from "lucide-react";
 import moment from "moment";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import ResourcesForm from "../forms/resource.form";
 
 export function Slug() {
-
+    const { openEditResource, open } = useApp();
     const { slug } = useParams();
     const { search } = useSearch();
     const { session } = useAuth();
@@ -47,8 +50,15 @@ export function Slug() {
                     <Card className="md:w-[700px] w-full p-2 pt-1">
                         <div className="flex justify-between items-center">
                             <h1 className=" font-semibold">{data.title}</h1>
-                            <div className="text-xs mt-1"> Last Modified : {moment(data?.updatedAt).format("MMMM Do YYYY")} </div>
+                            <div className="flex gap-2 items-center">
+                                {session && (
+                                    <Pencil1Icon
+                                        className="icon-sm cursor-pointer"
+                                        onClick={() => openEditResource(data)}
+                                    />
+                                )}
                             </div>
+                        </div>
                         <hr className="mb-2 mt-1" />
                         <div className="content flex w-full py-2 gap-3">
                             {data.icon &&
@@ -68,7 +78,11 @@ export function Slug() {
                         </div>
 
                         <hr className="my-2" />
-                        <div className="text-xs text-muted-foreground"> Published : {moment(data?.createdAt).format("MMMM Do YYYY")} </div>
+                        <div className="text-xs text-muted-foreground flex items-center">
+                            <div className="w-24"> Published :</div>  {moment(data?.createdAt).format("MMMM Do YYYY")} </div>
+                        <div className="text-xs text-muted-foreground flex items-center">
+                            <div className="w-24">Last Modified :</div> {moment(data?.updatedAt).format("MMMM Do YYYY")} </div>
+
                         <Link to={data.link} className="text-blue-500 text-sm text-end hover:underline">
                             {data.link}
                         </Link>
@@ -80,6 +94,8 @@ export function Slug() {
                 </div>
 
             }
+                  <ResourcesForm open={open} toggleOpenState={openEditResource} />
+
         </div>
     )
 }

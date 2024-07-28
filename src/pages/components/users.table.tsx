@@ -48,8 +48,9 @@ export const UsersTable = forwardRef((_props, ref) => {
             if (response.status === 200) {
                 setOpen(false);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
+            toast.error(error.response.data.error);
         } finally {
             setTimeout(() => {
                 setIsLoading(false);

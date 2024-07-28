@@ -3,17 +3,21 @@ import { Input } from "@/components/ui/input";
 import { debounce, filterByValue } from "@/lib/func";
 import { GridIcon } from "@radix-ui/react-icons";
 import { List, Search } from "lucide-react";
-import { ChangeEvent, useCallback, useState } from "react";
+import { ChangeEvent, useCallback } from "react";
 import { DropdownMenuCheckboxes } from "./filter";
 import { useSearch } from "@/context/search.context";
 import { toast } from "sonner";
+import { useData } from "@/context/data.context";
 
 export const SearchBar = () => {
-  const { resources, setFilteredResources, search, selectedFields, selectedTypes, selectedTags } = useSearch();
-  const [isGrid, setIsGrid] = useState(true);
+  const { resources, setFilteredResources, search, setQuery, selectedFields, selectedTypes, selectedTags } = useSearch();
+  const { isGrid, setIsGrid } = useData();
+  const appConfig = JSON.parse(localStorage.getItem('config') || 'null');
 
   const handleToggle = () => {
+    console.log("handling toggle")
     setIsGrid(!isGrid);
+    localStorage.setItem("config", JSON.stringify({...appConfig, isGrid: !isGrid}));
   };
 
   const handleSearch = useCallback(
@@ -36,6 +40,7 @@ export const SearchBar = () => {
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     handleSearch(event.target.value);
+    setQuery(event.target.value);
   };
 
   return (

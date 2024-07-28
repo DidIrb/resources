@@ -1,16 +1,16 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Card } from "@/components/ui/card";
 import { useApp } from "@/context/app.context";
 import { useAuth } from "@/context/auth.context";
-import { ResourceValues } from "@/types/data.types";
+import { Resources } from "@/types/forms.types";
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import { CalendarDays, Globe } from "lucide-react";
 import moment from "moment";
 import React from "react";
 import { Link } from "react-router-dom";
-import { Card } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 type ResourceProps = {
-  item: ResourceValues;
+  item: Resources;
 };
 
 const Resource: React.FC<ResourceProps> = ({ item }) => {

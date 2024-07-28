@@ -1,9 +1,8 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import config from '@/config/config';
+import { filterTags, filterTypes, saveToLocalStorage } from '@/lib/func';
 import { Resources } from '@/types/forms.types';
 import axios, { AxiosResponse } from 'axios';
-import config from '@/config/config';
-import _ from 'lodash';
-import { filterTags, filterTypes, hasDuplicates, saveToLocalStorage } from '@/lib/func';
+import { createContext, ReactNode, useContext, useState } from 'react';
 
 interface SearchContextType {
     resources: Resources[];
@@ -11,11 +10,14 @@ interface SearchContextType {
     selectedTypes: string[];
     selectedTags: string[];
     selectedFields: string[];
+    query: string;
+    setQuery : (query: string) => void;
     search: (query: string, tags: string[], types: string[], fields: string[], order: 'asc' | 'desc', page: number, pageSize: number) => void;
     handleTypes: (type: string) => void;
     handleTags: (tag: string) => void;
     handleFields: (field: string) => void;
     setFilteredResources: (resources: Resources[]) => void;
+    setResources: (resources: Resources[]) => void;
     isLoading: boolean;
 }
 
@@ -36,17 +38,7 @@ const SearchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [selectedFields, setSelectedFields] = useState<string[]>(["title", "description"]);
     const [isLoading, setIsLoading] = useState(false);
-
-    useEffect(() => {
-        const storedResources = localStorage.getItem('resources');
-        if (storedResources) {
-            const parsedResources = JSON.parse(storedResources);
-            setResources(parsedResources);
-            setFilteredResources(parsedResources);
-        } else {
-            search('', [], [], [], "asc", 1, 2);
-        }
-    }, []);
+    const [query, setQuery] = useState<string>("");
 
     const search = async (query: string, tags: string[], types: string[], fields: string[], order: 'asc' | 'desc', page: number, pageSize: number) => {
         try {
@@ -55,41 +47,19 @@ const SearchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
                 `${config.url}/search`,
                 {
                     params: {
-                        query,
-                        fields: fields.join(','),
-                        tags: tags.join(','),
-                        type: types.join(','),
-                        order,
-                        page,
-                        pageSize
+                        query, fields: fields.join(','), tags: tags.join(','),
+                        type: types.join(','), order, page, pageSize
                     }
                 }
             );
+            const savedData = saveToLocalStorage(response.data.paginatedResults)
+            
+            setFilteredResources(savedData);
+            setResources(savedData);
 
-            const existingData = JSON.parse(localStorage.getItem('resources') || '[]');
-            const uniqueNewData = _.uniqBy(response.data.paginatedResults, 'id');
-
-            const updatedData = [...existingData, ...uniqueNewData];
-            let uniqueUpdatedData = [];
-            const containsDuplicates = hasDuplicates(updatedData);
-            if (containsDuplicates) {
-                uniqueUpdatedData = existingData.map((existingObj: any) => {
-                    const matchingNewObj = uniqueNewData.find((newObj) => newObj.id === existingObj.id);
-                    return matchingNewObj || existingObj;
-                });
-                // I want to order by date descending here
-                uniqueUpdatedData.sort((a: Resources, b: Resources) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
-                setFilteredResources(uniqueUpdatedData);
-            } else {
-                uniqueUpdatedData = _.uniqBy(updatedData, 'id');
-                setFilteredResources(uniqueNewData);
-            }
-
-            setResources(uniqueUpdatedData);
-            saveToLocalStorage(uniqueUpdatedData);
-
-            console.log(`Showing ${uniqueNewData.length} out of ${response.data.totalMatches} items`);
-            return response.data.paginatedResults;
+            // console.log(`Showing ${uniqueData.length} out of ${response.data.paginatedResults} items`, uniqueData);
+            const res = {data: response.data.paginatedResults, matches: response.data.totalMatches }
+            return res;
         } catch (error) {
             throw error;
         } finally {
@@ -118,7 +88,8 @@ const SearchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
                 const filteredResources = filterTypes(resources, filter);
                 setFilteredResources(filteredResources);
             } else {
-                await search('', selectedTags, filter, [], "asc", 1, 2);
+                // Disabled Search for Issue of no results
+                // return await search('', selectedTags, filter, [], "asc", 1, 2);
             }
         } else {
             setFilteredResources(resources);
@@ -144,7 +115,7 @@ const SearchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
                 const filteredResources = filterTags(resources, filter);
                 setFilteredResources(filteredResources);
             } else {
-                await search('', selectedTags, filter, [], "asc", 1, 2);
+                //  await search('', selectedTags, filter, [], "asc", 1, 2);
             }
         } else {
             setFilteredResources(resources);
@@ -163,7 +134,7 @@ const SearchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     };
 
     return (
-        <SearchContext.Provider value={{ resources, filteredResources, isLoading, search, handleTypes, handleTags, handleFields, selectedTypes, selectedTags, selectedFields, setFilteredResources }}>
+        <SearchContext.Provider value={{ resources, setQuery, query, setResources, filteredResources, isLoading, search, handleTypes, handleTags, handleFields, selectedTypes, selectedTags, selectedFields, setFilteredResources }}>
             {children}
         </SearchContext.Provider>
     );

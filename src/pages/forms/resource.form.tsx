@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { useApp } from "@/context/app.context";
 import { Resources } from "@/types/forms.types";
 import { useData } from "@/context/data.context";
+import { useSearch } from "@/context/search.context";
 
 type Props = {
     open: boolean;
@@ -23,6 +24,7 @@ type Props = {
 export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
     const { resource } = useApp();
     const { tags, types } = useData();
+    const { search } = useSearch();
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
@@ -52,16 +54,18 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
         }),
     });
 
+    const defaultValue = {
+        icon: "",
+        type: "",
+        title: "",
+        description: "",
+        link: "",
+        secret: ""
+    };
+
     const form = useForm<Resources>({
         resolver: zodResolver(formSchema),
-        defaultValues: {
-            icon: "",
-            type: "",
-            title: "",
-            description: "",
-            link: "",
-            secret: ""
-        },
+        defaultValues: defaultValue,
     });
 
     useEffect(() => {
@@ -81,7 +85,7 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
                 setSelectedTags(resource?.tags);
             }
         } else {
-            form.reset();
+            form.reset(defaultValue);
         }
     }, [resource]);
 
@@ -101,6 +105,7 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
                 }
                 toast.success(response?.data?.message)
                 if (response.status == 200) {
+                    await search(`${data.title}`, [], [], ["title"], "asc", 1, 1);
                     toggleOpenState(false);
                     setSelectedTags([]);
                     setError("");

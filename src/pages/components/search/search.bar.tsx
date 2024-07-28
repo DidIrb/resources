@@ -4,7 +4,7 @@ import { debounce, filterByValue } from "@/lib/func";
 import { GridIcon } from "@radix-ui/react-icons";
 import { List, Search } from "lucide-react";
 import { ChangeEvent, useCallback } from "react";
-import { DropdownMenuCheckboxes } from "../filter";
+import { Filter } from "./filter";
 import { useSearch } from "@/context/search.context";
 import { toast } from "sonner";
 import { useData } from "@/context/data.context";
@@ -48,7 +48,7 @@ export const SearchBar = () => {
         <Button variant="outline" className="w-8 rounded-full" size="icon" onClick={handleToggle}>
           {isGrid ? <GridIcon className="icon" /> : <List className="icon" />}
         </Button>
-        <DropdownMenuCheckboxes />
+        <Filter />
       </div>
       <div className="relative w-full flex items-center">
         <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />

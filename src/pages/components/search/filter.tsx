@@ -4,7 +4,7 @@ import { useData } from "@/context/data.context";
 import { useSearch } from "@/context/search.context";
 import { SlidersHorizontal } from "lucide-react";
 
-export function DropdownMenuCheckboxes() {
+export function Filter() {
   const { types, tags } = useData();
   const fields = ['title', 'description'];
   const { handleTypes, handleTags, handleFields, selectedFields, selectedTypes, selectedTags } = useSearch();

@@ -1,7 +1,7 @@
 import { useApp } from "@/context/app.context";
 import { useSearch } from "@/context/search.context";
 import Resource from "../components/resource";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import InfiniteScroll from "@/components/custom/infinite.scroll";
 import { Loader2 } from "lucide-react";
 import api from "@/lib/api";
@@ -13,6 +13,7 @@ import { saveToLocalStorage } from "@/lib/func";
 import { useData } from "@/context/data.context";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
+import { useAuth } from "@/context/auth.context";
 
 export interface apiResponse {
     data: Resources[],
@@ -33,6 +34,7 @@ export const ResourceList = () => {
 
     const { isGrid } = useData();
     const { openEditResource } = useApp();
+    const { session } = useAuth();
     const { filteredResources, resources, setResources, setFilteredResources, query } = useSearch();
 
     const isLastPage = appConfig?.totalPages === appConfig?.currentPage
@@ -41,7 +43,12 @@ export const ResourceList = () => {
     const [hasMore, setHasMore] = useState<boolean>(isLastPage || true);
     const pageSize = 2;
 
+
+    const hasFetched = useRef(false);
     useEffect(() => {
+        if (hasFetched.current) return;
+        hasFetched.current = true;
+
         if (parsedResources.length > 0) {
             setResources(parsedResources);
             setFilteredResources(parsedResources);
@@ -63,22 +70,18 @@ export const ResourceList = () => {
                 setResources(savedData);
                 const scrollFilter = { ...appConfig, currentPage, totalItems, totalPages };
                 localStorage.setItem('config', JSON.stringify(scrollFilter));
-    
+
                 setPage((prev: number) => prev + 1);
                 if (page == totalPages) {
                     setHasMore(false);
-                } 
+                }
             } catch (error: any) {
                 setHasMore(false);
-                if(error.response.data) {
-                } else {
-                    toast.error("Internal Server Error")
-                }
                 const message = error.response.data.error || "Internal Server Error"
                 toast.error(message)
                 console.log(error);
             }
-            
+
             setLoading(false);
         }, 800);
     };
@@ -99,7 +102,7 @@ export const ResourceList = () => {
                     {filteredResources.length > 0 &&
                         filteredResources.map((item: Resources, index: number) => (
                             <div key={index} >
-                                <Link to={item.title.toLowerCase()} className="font-semibold hover:underline hover:text-blue-600 px-0">
+                                <Link to={`/q/${item.title.toLowerCase()}`} className="font-semibold hover:underline hover:text-blue-600 px-0">
                                     {item.title}
                                 </Link>
                                 <span> {" "}

@@ -4,7 +4,7 @@ import { useApp } from "@/context/app.context";
 import { useAuth } from "@/context/auth.context";
 import { Resources } from "@/types/forms.types";
 import { Pencil1Icon } from "@radix-ui/react-icons";
-import { CalendarDays, Globe } from "lucide-react";
+import { CalendarDays, ExternalLink } from "lucide-react";
 import moment from "moment";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -24,11 +24,11 @@ const Resource: React.FC<ResourceProps> = ({ item }) => {
             <AvatarImage src={item.icon} />
             <AvatarFallback>{item.title.charAt(0).toUpperCase()}</AvatarFallback>
           </Avatar>
-          <Link to={item.title.toLowerCase()} className="font-semibold hover:underline hover:text-blue-600 px-0">
+          <Link to={`/q/${item.title.toLowerCase()}`} className="font-semibold hover:underline hover:text-blue-600 px-0">
             {item.title}
           </Link>
-        </div>
-        {session && (
+        </div> 
+        {session.role === "admin" || session.role === "super_admin" && (
           <Pencil1Icon
             className="icon-sm cursor-pointer"
             onClick={() => openEditResource(item)}
@@ -51,8 +51,7 @@ const Resource: React.FC<ResourceProps> = ({ item }) => {
           <Link to={item.link} target="_blank"
             className="text-muted-foreground hover:text-blue-700 text-xs items-center flex gap-1"
           >
-            <Globe className="icon-link" />
-            Website
+            <ExternalLink className="icon-link" />
           </Link>
         </div>
       </div>

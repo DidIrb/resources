@@ -5,7 +5,7 @@ import { useSearch } from "@/context/search.context";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { toast } from "sonner";
 import { ResourcesForm } from "../forms/resource.form";
-import { ResourceList } from "../common/resource.list";
+import { ResourceList } from "../common/list";
 
 export const Dashboard = () => {
   const { open, openEditResource } = useApp();

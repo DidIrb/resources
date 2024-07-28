@@ -47,6 +47,8 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             return response;
         } catch (error) {
             console.error(error);
+            // Manually logging user out
+            setSession(null);
             throw error;
         }
     };

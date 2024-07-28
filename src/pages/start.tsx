@@ -1,5 +1,5 @@
 
-export const LandingPage = () => {
+export const Start = () => {
   return (
     <div>
       Landing page

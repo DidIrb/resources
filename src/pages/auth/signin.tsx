@@ -29,8 +29,7 @@ export function Signin() {
     setIsLoading(true);
     try {
       const response = await signin(val);
-      console.log(response.data);
-      toast.success("Successfully logged in");
+      toast.success(response.data.message);
       navigate("/dashboard")
     } catch (error: any) {
       console.error(error);

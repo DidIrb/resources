@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { useAuth } from "@/context/auth.context"
 import { BoxIcon, GitHubLogoIcon } from "@radix-ui/react-icons"
 import { Link } from "react-router-dom"
-import { SearchBar } from "../../pages/components/search.bar"
+import { SearchBar } from "../../pages/components/search/search.bar"
 import { UserDropDown } from "./dropdown"
 
 export const Navbar = () => {

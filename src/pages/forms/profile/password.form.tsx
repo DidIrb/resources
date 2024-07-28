@@ -50,8 +50,8 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ userId, onClose }) => {
         reset({ password: '' });
       }
     } catch (error: any) {
-      console.log(error);
-      toast.error(error.response.data.error);
+      const message = error.response.data.error || "Internal Server Error";
+      toast.error(message);
     }
   };
 

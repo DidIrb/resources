@@ -56,8 +56,6 @@ const SearchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
             
             setFilteredResources(savedData);
             setResources(savedData);
-
-            // console.log(`Showing ${uniqueData.length} out of ${response.data.paginatedResults} items`, uniqueData);
             const res = {data: response.data.paginatedResults, matches: response.data.totalMatches }
             return res;
         } catch (error) {

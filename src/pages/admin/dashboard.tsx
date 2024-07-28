@@ -15,6 +15,9 @@ export const Dashboard = () => {
     try {
       const res: any = search('', [], [], [], "desc", 1, 2);
       if (res.status == 200) toast.success('Reloaded successfully');
+      if (!res.status) {
+          toast.error("Internal Server Error");
+      }
     } catch (error: any) {
       toast.error(error.response.data.error)
     }

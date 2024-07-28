@@ -30,8 +30,7 @@ export const filterTags = (resources: any[], selectedTags: string[]) => {
     return resources.filter(resource => selectedTags.includes(resource.tags));
 };
 
-const refetchData = () => { 
-    console.log("refetching data")   
+const refetchData = () => {  
     const data = JSON.parse(localStorage.getItem('resources') || '[]');
     return data;
 }
@@ -39,7 +38,6 @@ const refetchData = () => {
 export const saveToLocalStorage = (resources: Resources[]) => {
     
     const data = refetchData();
-    console.log("incoming data", resources, "saved data", data);
     const update = [...data, ...resources];
 
     let uniqueUpdate: any[] = [];
@@ -50,15 +48,12 @@ export const saveToLocalStorage = (resources: Resources[]) => {
             const matchingData = resources.filter((newObj) => newObj.id === obj.id);
             return matchingData.length > 0 ? matchingData[0] : obj;
         });
-        // console.log("unique with duplicates after", uniqueUpdate);
-        // console.log("saving data", uniqueUpdate);
         uniqueUpdate.sort((a: Resources, b: Resources) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
         localStorage.setItem('resources', JSON.stringify(uniqueUpdate));
         return uniqueUpdate;
     } else {
         uniqueUpdate = _.uniqBy(update, 'id');
         localStorage.setItem('resources', JSON.stringify(uniqueUpdate));
-        // console.log(containsDuplicates, "unique no duplicates", uniqueUpdate);
         return uniqueUpdate;
     }
    

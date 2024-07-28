@@ -112,8 +112,8 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
                     form.reset();
                 }
             } catch (error: any) {
-                console.log(error);
-                toast.error(error.response.data.error)
+                const message = error.response.data.error || "Internal Server Error";
+                toast.error(message);
             } finally {
                 setIsLoading(false);
             }

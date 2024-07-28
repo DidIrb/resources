@@ -15,7 +15,6 @@ export default function PageNotFound() {
                 </p>
                 <Button variant={"ghost"} onClick={() => navigate("/")} className="mt-1 cursor-pointer">Back to home</Button>
             </div>
-            {/* Page Not Found | <button className="text-blue-500 ml-1" > go back </button> */}
         </div>
     )
 }

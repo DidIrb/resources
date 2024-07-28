@@ -83,14 +83,13 @@ export const UsersForm: React.FC<Props> = ({ open, toggleOpenState }) => {
                 response = await api.post("/users", data);
             }
             toast.success(response?.data?.message)
-            console.log(response)
             if (response.status == 200) {
                 toggleOpenState(false);
                 form.reset();
             }
         } catch (error: any) {
-            console.log(error);
-            toast.error(error.response.data.ERROR)
+            console.error(error);
+            toast.error(error.response.data.error)
         } finally {
             setIsLoading(false);
         }

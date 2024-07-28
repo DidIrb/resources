@@ -35,7 +35,6 @@ const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     const [isGrid, setIsGrid] = useState<boolean>(() => {
         if (appConfig) return appConfig.isGrid
         else {
-            console.log("still setting grid");
             localStorage.setItem("config", JSON.stringify({...appConfig, isGrid: true}));
             return true
         }
@@ -55,7 +54,6 @@ const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 localStorage.setItem("tags", JSON.stringify(tags));
                 localStorage.setItem("types", JSON.stringify(types));
             }
-            console.log(response);
         } catch (error) {
             console.error(error);
         } finally {

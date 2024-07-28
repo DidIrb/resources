@@ -46,13 +46,14 @@ const UsernameForm: React.FC<UsernameFormProps> = ({ userId, currentUsername, on
                 reset({ username: data.username });
             }
         } catch (error: any) {
-            console.log(error);
-            toast.error(error.response.data.error);
+            const message = error.response.data.error || "Internal Server Error";
+            toast.error(message);
         }
     };
 
     return (
         <form onSubmit={handleSubmit(handleUsernameSubmit)}>
+
             <label className="block text-sm text-gray-700">Username</label>
             <div className="flex items-center gap-2">
                 <div className="w-full relative">

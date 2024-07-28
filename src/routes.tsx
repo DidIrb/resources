@@ -1,7 +1,7 @@
 import { useAuth } from "@/context/auth.context";
 import { AuthLayout } from "@/layouts/auth.layout";
 import { Signin } from "@/pages/auth/signin";
-import PageNotFound from "@/pages/page.not.found";
+import PageNotFound from "@/pages/404";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AdminLayout } from "./layouts/admin.layout";
 import { Dashboard } from "./pages/admin/dashboard";

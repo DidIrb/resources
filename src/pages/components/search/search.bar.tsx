@@ -4,7 +4,7 @@ import { debounce, filterByValue } from "@/lib/func";
 import { GridIcon } from "@radix-ui/react-icons";
 import { List, Search } from "lucide-react";
 import { ChangeEvent, useCallback } from "react";
-import { DropdownMenuCheckboxes } from "./filter";
+import { DropdownMenuCheckboxes } from "../filter";
 import { useSearch } from "@/context/search.context";
 import { toast } from "sonner";
 import { useData } from "@/context/data.context";
@@ -15,7 +15,6 @@ export const SearchBar = () => {
   const appConfig = JSON.parse(localStorage.getItem('config') || 'null');
 
   const handleToggle = () => {
-    console.log("handling toggle")
     setIsGrid(!isGrid);
     localStorage.setItem("config", JSON.stringify({...appConfig, isGrid: !isGrid}));
   };
@@ -24,18 +23,18 @@ export const SearchBar = () => {
     debounce(async (query: string) => {
       const filteredData = filterByValue(resources, query);
       if (filteredData.length === 0) {
-        console.log("searching database");
         try {
           await search(query, selectedTags, selectedTypes, selectedFields, "asc", 1, 2);
         } catch (error: any) {
-          toast.error(error.response.data.error);
-          console.log(error)
+          const message = error.response.data.error || "Internal Server Error"
+          toast.error(message);
         }
+        console.log(query);
       } else {
         setFilteredResources(filteredData);
       }
     }, 1000),
-    [resources, setFilteredResources, search, selectedTypes]
+    [resources, selectedTags, selectedTypes, selectedFields]
   );
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {

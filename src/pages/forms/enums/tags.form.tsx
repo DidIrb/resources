@@ -31,15 +31,14 @@ const TagsForm: React.FC<InputFormProps> = ({ onClose, onSuccess }) => {
     try {
       const response = await api.post('/enum/tags', { data: data.value });
       toast.success(response?.data?.message);
-      console.log(response)
       if (response.status === 200) {
         onSuccess();
         reset({ value: '' });
         onClose();
       }
     } catch (error: any) {
-      console.log(error);
-      toast.error(error.response.data.error);
+      const message = error.response.data.error || "Internal Server Error";
+      toast.error(message);
     }
   };
 

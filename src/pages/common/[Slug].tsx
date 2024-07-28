@@ -26,7 +26,6 @@ export function Slug() {
 
     const fetchData = async () => {
         const response = await search(`${slug}`, [], [], ["title"], "asc", 1, 1);
-        console.log(response);
         return response;
     };
 

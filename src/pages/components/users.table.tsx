@@ -30,7 +30,8 @@ export const UsersTable = forwardRef((_props, ref) => {
                 const response = await api.post(`/users/${toDelete?.id}`, { secret: secretValue });
                 toast.success(response.data.message);
             } catch (error: any) {
-                toast.error(error.response.data.error);
+                const message = error.response.data.error || "Internal Server Error";
+                toast.error(message);
             } finally {
                 setIsLoading(false)
                 setOpen(false);
@@ -50,7 +51,8 @@ export const UsersTable = forwardRef((_props, ref) => {
             }
         } catch (error: any) {
             console.error(error);
-            toast.error(error.response.data.error);
+            const message = error.response.data.error || "Internal Server Error";
+            toast.error(message);
         } finally {
             setTimeout(() => {
                 setIsLoading(false);
@@ -70,7 +72,6 @@ export const UsersTable = forwardRef((_props, ref) => {
     useEffect(() => {
         if (users.length === 0) {
             fetchUsersData()
-            console.log("fetching data conditional");
         }
     }, []);
 
@@ -124,7 +125,7 @@ export const UsersTable = forwardRef((_props, ref) => {
                 <div className="fixed bottom-3 border left-[50%] md:w-96 w-80 -translate-x-[50%] rounded shadow-md p-2">
                     <form onSubmit={handleSubmit}>
                         <div className="mb-2 text-sm">Authorize Deletion</div>
-                        
+
                         <div className='flex gap-2 items-end'>
                             <Input
                                 type="text"

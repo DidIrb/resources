@@ -16,7 +16,6 @@ export const Settings: React.FC = () => {
   const { tags, types, fetchData } = useData();
 
   const handleFormSuccess = (formType: 'tags' | 'types') => {
-    console.log('Form submitted successfully');
     fetchData();
     if (formType === 'tags') {
       setShowTagsForm(false);

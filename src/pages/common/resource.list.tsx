@@ -12,6 +12,7 @@ import _ from "lodash"
 import { saveToLocalStorage } from "@/lib/func";
 import { useData } from "@/context/data.context";
 import { Link } from "react-router-dom";
+import { toast } from "sonner";
 
 export interface apiResponse {
     data: Resources[],
@@ -47,42 +48,43 @@ export const ResourceList = () => {
         }
     }, []);
 
-    // Please check it later to make sure it works as it is supposed to
-
     const next = async () => {
         setLoading(true);
         setTimeout(async () => {
-            const response: AxiosResponse<apiResponse> = await api.get<apiResponse>(`${config.url}/resources`,
-                { params: { page, pageSize } }
-            );
+            try {
+                const response: AxiosResponse<apiResponse> = await api.get<apiResponse>(`${config.url}/resources`,
+                    { params: { page, pageSize } }
+                );
 
-            const { data, currentPage, totalItems, totalPages } = response.data;
-
-            const savedData = saveToLocalStorage(data)
-
-            setFilteredResources(savedData);
-            setResources(savedData);
-            // const updated = [...data, ...parsedResources];
-            // let uniqueData = _.uniqBy(updated, 'id');
-            // setFilteredResources(uniqueData);
-            // setResources(uniqueData);
-
-            const scrollFilter = { ...appConfig, currentPage, totalItems, totalPages };
-
-            localStorage.setItem('config', JSON.stringify(scrollFilter));
-
-            // console.log("something", data)
-            setPage((prev: number) => prev + 1);
-            if (page == totalPages) {
+                console.log(response)
+                const { data, currentPage, totalItems, totalPages } = response.data;
+                const savedData = saveToLocalStorage(data)
+                setFilteredResources(savedData);
+                setResources(savedData);
+                const scrollFilter = { ...appConfig, currentPage, totalItems, totalPages };
+                localStorage.setItem('config', JSON.stringify(scrollFilter));
+    
+                setPage((prev: number) => prev + 1);
+                if (page == totalPages) {
+                    setHasMore(false);
+                } 
+            } catch (error: any) {
                 setHasMore(false);
+                if(error.response.data) {
+                } else {
+                    toast.error("Internal Server Error")
+                }
+                const message = error.response.data.error || "Internal Server Error"
+                toast.error(message)
+                console.log(error);
             }
+            
             setLoading(false);
         }, 800);
     };
 
     return (
         <div >
-            {query}
             {isGrid ?
                 <div className="flex gap-3 flex-wrap w-full">
                     {filteredResources.length > 0 &&

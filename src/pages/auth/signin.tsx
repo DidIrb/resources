@@ -2,13 +2,13 @@ import { LoadingButton } from '@/components/custom/loading.btn';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useAuth } from '@/context/auth.context';
 import { SigninFormData } from '@/types/forms.types';
 import { EyeNoneIcon, EyeOpenIcon } from '@radix-ui/react-icons';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/context/auth.context';
+import { toast } from 'sonner';
 
 export function Signin() {
   const navigate = useNavigate();
@@ -29,7 +29,8 @@ export function Signin() {
     setIsLoading(true);
     try {
       const response = await signin(val);
-      toast.success(response.data.message);
+      console.log("response", response);
+      toast.success(response.message);
       navigate("/dashboard")
     } catch (error: any) {
       console.error(error);
@@ -38,6 +39,7 @@ export function Signin() {
       setIsLoading(false);
     }
   };
+
 
   return (
     <Card className="mx-auto max-w-sm w-96">

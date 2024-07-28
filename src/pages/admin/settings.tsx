@@ -28,7 +28,7 @@ export const Settings: React.FC = () => {
     <div className="px-4 flex justify-between md:flex-row gap-3 flex-col-reverse">
       <Profile />
 
-      {session.role === "super_admin" &&
+      {session?.role === "super_admin" &&
         <Card className="flex-1">
           <div className="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
             <span className="font-medium">Danger alert!</span> Be extremely careful with tags and types, once created they cannot be deleted

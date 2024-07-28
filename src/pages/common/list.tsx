@@ -1,19 +1,17 @@
-import { useApp } from "@/context/app.context";
-import { useSearch } from "@/context/search.context";
-import Resource from "../components/resource";
-import { useEffect, useRef, useState } from "react";
 import InfiniteScroll from "@/components/custom/infinite.scroll";
-import { Loader2 } from "lucide-react";
-import api from "@/lib/api";
-import { AxiosResponse } from "axios";
-import { Resources } from "@/types/forms.types";
 import config from "@/config/config";
-import _ from "lodash"
-import { saveToLocalStorage } from "@/lib/func";
+import { useApp } from "@/context/app.context";
 import { useData } from "@/context/data.context";
+import { useSearch } from "@/context/search.context";
+import api from "@/lib/api";
+import { saveToLocalStorage } from "@/lib/func";
+import { Resources } from "@/types/forms.types";
+import { AxiosResponse } from "axios";
+import { Loader2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
-import { useAuth } from "@/context/auth.context";
+import Resource from "../components/resource";
 
 export interface apiResponse {
     data: Resources[],
@@ -34,7 +32,6 @@ export const ResourceList = () => {
 
     const { isGrid } = useData();
     const { openEditResource } = useApp();
-    const { session } = useAuth();
     const { filteredResources, resources, setResources, setFilteredResources, query } = useSearch();
 
     const isLastPage = appConfig?.totalPages === appConfig?.currentPage

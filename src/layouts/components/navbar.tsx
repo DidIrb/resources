@@ -23,9 +23,11 @@ export const Navbar = () => {
                             <SearchBar />
                         </div>
                     }
-                    <Button variant="ghost" className="w-8 rounded-full" size="icon">
-                        <GitHubLogoIcon className="icon" />
-                    </Button>
+                    <Link to="https://github.com/didirb/resources" target="_blank">
+                        <Button variant="ghost" className="w-8 rounded-full" size="icon">
+                            <GitHubLogoIcon className="icon" />
+                        </Button>
+                    </Link>
                     <ModeToggle />
                     {session && <UserDropDown />}
                 </div>

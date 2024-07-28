@@ -28,7 +28,7 @@ const Resource: React.FC<ResourceProps> = ({ item }) => {
             {item.title}
           </Link>
         </div> 
-        {session.role === "admin" || session.role === "super_admin" && (
+        {(session?.role === "admin" || session?.role === "super_admin") && (
           <Pencil1Icon
             className="icon-sm cursor-pointer"
             onClick={() => openEditResource(item)}

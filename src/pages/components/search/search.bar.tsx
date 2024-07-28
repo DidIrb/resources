@@ -1,13 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { debounce, filterByValue } from "@/lib/func";
-import { GridIcon } from "@radix-ui/react-icons";
-import { List, Search } from "lucide-react";
-import { ChangeEvent, useCallback } from "react";
-import { Filter } from "./filter";
-import { useSearch } from "@/context/search.context";
-import { toast } from "sonner";
 import { useData } from "@/context/data.context";
+import { useSearch } from "@/context/search.context";
+import { debounce, filterByValue } from "@/lib/func";
+import { LayoutGrid, List, Search } from "lucide-react";
+import { ChangeEvent, useCallback } from "react";
+import { toast } from "sonner";
+import { Filter } from "./filter";
 
 export const SearchBar = () => {
   const { resources, setFilteredResources, search, setQuery, selectedFields, selectedTypes, selectedTags } = useSearch();
@@ -46,7 +45,7 @@ export const SearchBar = () => {
     <div className="ml-auto flex gap-2 flex-1 sm:flex-initial">
       <div className="flex gap-1 justify-end">
         <Button variant="outline" className="w-8 rounded-full" size="icon" onClick={handleToggle}>
-          {isGrid ? <GridIcon className="icon" /> : <List className="icon" />}
+          {isGrid ? <LayoutGrid className="icon" /> : <List />}
         </Button>
         <Filter />
       </div>

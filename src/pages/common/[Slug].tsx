@@ -10,6 +10,7 @@ import moment from "moment";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import ResourcesForm from "../forms/resource.form";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function Slug() {
     const { openEditResource, open } = useApp();
@@ -48,9 +49,17 @@ export function Slug() {
                 <div className="p-3">
                     <Card className="md:w-[700px] w-full p-2 pt-1">
                         <div className="flex justify-between items-center">
-                            <h1 className=" font-semibold">{data.title}</h1>
+                            <div className='flex items-center py-1  gap-2 cursor-pointer'>
+                                <Avatar className="w-7 h-7 ">
+                                    <AvatarImage src={data.icon} />
+                                    <AvatarFallback>{data.title.charAt(0).toUpperCase()}</AvatarFallback>
+                                </Avatar>
+                                <p className="font-semibold hover:underline hover:text-blue-600 px-0">
+                                    {data.title}
+                                </p>
+                            </div>
                             <div className="flex gap-2 items-center">
-                                {session && (
+                                {session?.role !== "admin" || session?.role !== "super_admin" && (
                                     <Pencil1Icon
                                         className="icon-sm cursor-pointer"
                                         onClick={() => openEditResource(data)}
@@ -59,12 +68,7 @@ export function Slug() {
                             </div>
                         </div>
                         <hr className="mb-2 mt-1" />
-                        <div className="content flex w-full py-2 gap-3">
-                            {data.icon &&
-                                <img src={data.icon} className="h-36 w-36 float" alt={`${data.title} icon`} />
-                            }
-                            <p className="img-text text-gray-600 text-sm ">{data.description}</p>
-                        </div>
+                        <p className="img-text p-2 text-gray-600 text-sm ">{data.description}</p>
                         {/* Render tags */}
                         <hr className="my-2" />
                         <div className="flex flex-wrap gap-1 items-center mt-0">
@@ -77,10 +81,10 @@ export function Slug() {
                         </div>
 
                         <hr className="my-2" />
-                        <div className="text-xs text-muted-foreground flex items-center">
-                            <div className="w-24"> Published :</div>  {moment(data?.createdAt).format("MMMM Do YYYY")} </div>
-                        <div className="text-xs text-muted-foreground flex items-center">
-                            <div className="w-24">Last Modified :</div> {moment(data?.updatedAt).format("MMMM Do YYYY")} </div>
+                        <div className="text-xs text-muted-foreground">
+                            <div> <span className="inline-block w-24">Published : </span> {moment(data?.createdAt).format("MMMM Do YYYY")} </div>
+                            <div> <span className="inline-block w-24">Last Modified :</span> {moment(data?.updatedAt).format("MMMM Do YYYY")} </div>
+                        </div>
 
                         <Link to={data.link} className="text-blue-500 text-sm text-end hover:underline">
                             {data.link}
@@ -93,7 +97,7 @@ export function Slug() {
                 </div>
 
             }
-                  <ResourcesForm open={open} toggleOpenState={openEditResource} />
+            <ResourcesForm open={open} toggleOpenState={openEditResource} />
 
         </div>
     )

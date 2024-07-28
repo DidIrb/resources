@@ -13,6 +13,7 @@ import PageNotFound from '@/pages/404';
 import { RouteType } from '../types/data.types';
 import { Signin } from '@/pages/auth/signin';
 import { Start } from '@/pages/start';
+import config from '@/config/config';
 
 const renderRoutes = (routes: RouteType[]) => {
   return routes.map(({ path, element, children = [] }) => (
@@ -42,7 +43,7 @@ const Router = () => {
     {
       path: '/',
       element: !session ? <AuthLayout /> : <Navigate to="/home" />,
-      children: [{ path: 'signin', element: <Signin /> }],
+      children: [{ path:  `${config.loginRoute}`, element: <Signin /> }],
     },
 
     // ADMIN & SUPER ADMIN LAYOUT
@@ -50,7 +51,7 @@ const Router = () => {
       path: '/',
       element: session ? <Layout /> : <Navigate to="/home" />,
       children: [
-        { path: '/dashboard', element: <Dashboard /> },
+        { path: '/dashboard', element:  isSuperAdmin || isAdmin ?  <Dashboard /> : <Navigate to="/home" /> },
         // { path: '/dashboard/:slug', element: <Slug /> },
         { path: '/users', element: isSuperAdmin ? <Users /> : <Navigate to="/home" /> },
         { path: '/settings', element:  <Settings /> }

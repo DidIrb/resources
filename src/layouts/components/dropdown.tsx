@@ -43,12 +43,17 @@ export const UserDropDown = () => {
                         Manage Resources
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    {session.role === "super_admin" || session.role === "admin" &&
+                    {(session?.role === "super_admin" || session?.role === "admin") &&
                         <Link to="/dashboard">
                             <DropdownMenuItem className="cursor-pointer" >Dashboard</DropdownMenuItem>
                         </Link>
                     }
-                    {session.role === "super_admin" &&
+                    {session?.role === "user"  &&
+                        <Link to="/home">
+                            <DropdownMenuItem className="cursor-pointer" >Home</DropdownMenuItem>
+                        </Link>
+                    }
+                    {session?.role === "super_admin" &&
                         <Link to="/users">
                             <DropdownMenuItem className="cursor-pointer">Users</DropdownMenuItem>
                         </Link>

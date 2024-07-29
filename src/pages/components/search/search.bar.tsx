@@ -28,7 +28,6 @@ export const SearchBar = () => {
           const message = error.response.data.error || "Internal Server Error"
           toast.error(message);
         }
-        console.log(query);
       } else {
         setFilteredResources(filteredData);
       }

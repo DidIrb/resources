@@ -59,8 +59,6 @@ export const ResourceList = () => {
                 const response: AxiosResponse<apiResponse> = await api.get<apiResponse>(`${config.url}/resources`,
                     { params: { page, pageSize } }
                 );
-
-                console.log(response)
                 const { data, currentPage, totalItems, totalPages } = response.data;
                 const savedData = saveToLocalStorage(data)
                 setFilteredResources(savedData);
@@ -80,7 +78,6 @@ export const ResourceList = () => {
                 setHasMore(false);
                 const message = error.response.data.error || "Internal Server Error"
                 toast.error(message)
-                console.log(error);
             }
 
             setLoading(false);
@@ -103,7 +100,7 @@ export const ResourceList = () => {
                     {filteredResources.length > 0 &&
                         filteredResources.map((item: Resources, index: number) => (
                             <div key={index} >
-                                <Link to={`/q/${item.title.toLowerCase()}`} className="font-semibold hover:underline hover:text-blue-600 px-0">
+                                <Link to={`/resource/${item.title.toLowerCase()}`} className="font-semibold hover:underline hover:text-blue-600 px-0">
                                     {item.title}
                                 </Link>
                                 <span> {" "}

@@ -29,13 +29,14 @@ const Router = () => {
   const isSuperAdmin = session?.role === 'super_admin';
 
   const routes: RouteType[] = [
-     {
+    { path: "/", element: <Start /> },
+    {
       path: "/",
       element: <Layout />,
       children: [
-        { path: "/", element: <Start /> },
         { path: "/home", element: <Home /> },
-        { path: "/q/:slug", element: <Slug /> },
+        { path: "/resource/:slug", element: <Slug /> },
+        
       ],
     },
 
@@ -43,7 +44,7 @@ const Router = () => {
     {
       path: '/',
       element: !session ? <AuthLayout /> : <Navigate to="/home" />,
-      children: [{ path:  `${config.loginRoute}`, element: <Signin /> }],
+      children: [{ path: `${config.loginRoute}`, element: <Signin /> }],
     },
 
     // ADMIN & SUPER ADMIN LAYOUT
@@ -51,10 +52,10 @@ const Router = () => {
       path: '/',
       element: session ? <Layout /> : <Navigate to="/home" />,
       children: [
-        { path: '/dashboard', element:  isSuperAdmin || isAdmin ?  <Dashboard /> : <Navigate to="/home" /> },
+        { path: '/dashboard', element: isSuperAdmin || isAdmin ? <Dashboard /> : <Navigate to="/home" /> },
         // { path: '/dashboard/:slug', element: <Slug /> },
         { path: '/users', element: isSuperAdmin ? <Users /> : <Navigate to="/home" /> },
-        { path: '/settings', element:  <Settings /> }
+        { path: '/settings', element: <Settings /> }
       ],
     },
 
@@ -66,4 +67,3 @@ const Router = () => {
 
 export default Router;
 
-   

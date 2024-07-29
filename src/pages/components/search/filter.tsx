@@ -2,12 +2,28 @@ import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useData } from "@/context/data.context";
 import { useSearch } from "@/context/search.context";
+import { ReloadIcon } from "@radix-ui/react-icons";
 import { SlidersHorizontal } from "lucide-react";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export function Filter() {
-  const { types, tags } = useData();
+  const { types, tags, fetchData } = useData();
   const fields = ['title', 'description'];
+  const [isLoading, setIsLoading] = useState(false);
   const { handleTypes, handleTags, handleFields, selectedFields, selectedTypes, selectedTags } = useSearch();
+
+  const Reload = () => {
+    setIsLoading(true);
+    try {
+      fetchData();
+      toast.success("Data fetched successfully");
+    } catch (error) {
+      toast.error("An error occurred while fetching data");
+    } finally {
+      setTimeout(() => { setIsLoading(false) }, 1000);
+    }
+  }
 
   return (
     <DropdownMenu >
@@ -17,7 +33,11 @@ export function Filter() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="pb-2" align="start" >
-        <DropdownMenuLabel className="font-medium">Search parameters</DropdownMenuLabel>
+        <DropdownMenuLabel className="font-medium  flex items-center">Search parameters
+
+          <ReloadIcon className={`icon ${isLoading && 'animate-spin'} h-3 cursor-pointer`} onClick={Reload} />
+
+        </DropdownMenuLabel>
         <div className="flex gap-2 px-1 flex-wrap">
           {
             fields.map((fields, index: number) => (
@@ -31,7 +51,8 @@ export function Filter() {
             ))
           }
         </div>
-        <DropdownMenuLabel className="font-medium">filter types</DropdownMenuLabel>
+        <DropdownMenuLabel className="font-medium"> filter types
+        </DropdownMenuLabel>
         <div className="flex gap-2 px-1 flex-wrap">
           {
             types.map((type, index: number) => (

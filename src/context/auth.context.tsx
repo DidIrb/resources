@@ -27,7 +27,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         try {
             const response = await api.post(`/auth/signin`, data);
             setSession(response.data.data);
-            console.log(session);
             return response.data;
         } catch (error) {
             throw error;

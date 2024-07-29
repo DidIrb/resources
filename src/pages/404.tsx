@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/auth.context";
+import { ArrowLeft } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
 
@@ -16,12 +17,16 @@ export default function PageNotFound() {
                 <p className="text-sm text-muted-foreground">
                     Sorry, the page you're looking for doesn't exist.
                 </p>
-
-                <Button variant={"ghost"} onClick={() => navigate(-1)} className="mt-1 cursor-pointer">
-                    <Link to={`${session ? "/dashboard" : "/home"}`}>Home</Link>
-                </Button>
-                <Button variant={"ghost"} onClick={() => navigate(-1)} className="mt-1 cursor-pointer">Previous Page</Button>
+                <div className="flex">
+                    <Link to={`${session ? "/dashboard" : "/home"}`}>
+                        <Button variant={"ghost"} className="mt-1 cursor-pointer gap-1 px-2">
+                           <ArrowLeft className="icon"/>  Back to Home
+                        </Button>
+                    </Link>
+                    <Button variant={"link"} onClick={() => navigate(-1)} className="mt-1 cursor-pointer">Previous Page</Button>
+                </div>
             </div>
+
         </div>
     )
 }

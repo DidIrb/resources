@@ -19,15 +19,13 @@ const Resource: React.FC<ResourceProps> = ({ item }) => {
   return (
     <Card className="p-3">
       <div className="flex items-center justify-between mb-2">
-        <div className='flex items-center gap-2 cursor-pointer'>
+        <Link to={`/resource/${item.title.toLowerCase()}`} className="flex items-center gap-2 cursor-pointer font-semibold hover:underline hover:text-blue-600 px-0">
           <Avatar className="w-7 h-7 ">
             <AvatarImage src={item.icon} />
             <AvatarFallback>{item.title.charAt(0).toUpperCase()}</AvatarFallback>
           </Avatar>
-          <Link to={`/q/${item.title.toLowerCase()}`} className="font-semibold hover:underline hover:text-blue-600 px-0">
-            {item.title}
-          </Link>
-        </div> 
+          {item.title}
+        </Link>
         {(session?.role === "admin" || session?.role === "super_admin") && (
           <Pencil1Icon
             className="icon-sm cursor-pointer"

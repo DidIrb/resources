@@ -120,7 +120,6 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
         }
     };
 
-    const type = form.watch("type");
 
     return (
         <Sheet open={open} onOpenChange={toggleOpenState}>
@@ -182,20 +181,19 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
                                     </FormItem>
                                 )}
                             />
-                            {type === "app" || type === "website" ? (
-                                <FormField
-                                    control={form.control}
-                                    name="icon"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormControl>
-                                                <Input placeholder="Image https://example.com/image" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            ) : null}
+                            <FormField
+                                control={form.control}
+                                name="icon"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormControl>
+                                            <Input placeholder="Brand or Logo | https://example.com/image" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
 
                             <FormField
                                 control={form.control}

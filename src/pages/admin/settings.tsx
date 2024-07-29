@@ -34,7 +34,7 @@ export const Settings: React.FC = () => {
             <span className="font-medium">Danger alert!</span> Be extremely careful with tags and types, once created they cannot be deleted
           </div>
           <div className="p-3 pt-0">
-            <div className="title mb-1 font-medium">Filter-(tags)</div>
+            <div className="title mb-1 font-medium">Filter-(tags) </div>
             <Card className="p-2 pt-1">
               {tags.map((tag, index) => (
                 <Badge key={index} className='mr-1 font-medium' variant="outline">

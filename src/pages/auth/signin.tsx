@@ -29,7 +29,6 @@ export function Signin() {
     setIsLoading(true);
     try {
       const response = await signin(val);
-      console.log("response", response);
       toast.success(response.message);
       navigate("/dashboard")
     } catch (error: any) {

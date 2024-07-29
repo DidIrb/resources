@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom"
+import { Link, Outlet } from "react-router-dom"
 import { Navbar } from "./components/navbar"
 
 export const Layout = () => {
@@ -8,7 +8,7 @@ export const Layout = () => {
       <div className="px-2 flex-1">
         <Outlet />
       </div>
-      <footer className="text-right text-sm p-4">Copyright © {new Date().getFullYear()} | Dida Irbaye</footer>
+      <footer className="text-right text-sm p-4">Proudly Built by  <Link to="https://irbaye.com" className="text-blue-500">Dida Irbaye</Link> </footer>
     </div>
   )
 }

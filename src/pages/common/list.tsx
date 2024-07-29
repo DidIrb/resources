@@ -69,8 +69,12 @@ export const ResourceList = () => {
                 localStorage.setItem('config', JSON.stringify(scrollFilter));
 
                 setPage((prev: number) => prev + 1);
-                if (page == totalPages) {
+                if (page == totalPages || totalPages == 0) {
                     setHasMore(false);
+                }
+                if (totalPages == 0) {
+                    const scrollFilter = { ...appConfig, currentPage: 1, totalItems: 0, total: 0 };
+                    localStorage.setItem('config', JSON.stringify(scrollFilter));
                 }
             } catch (error: any) {
                 setHasMore(false);

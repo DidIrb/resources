@@ -8,7 +8,7 @@ export const Start = () => {
       <p className="text-3xl">Welcome to Resources</p>
       <p className="text-lg">A repository of helpful resources to get you started</p>
       <div className="flex gap-3 ">
-        <Button className="rounded-full" onClick={() => navigate("/home")}>Browse</Button>
+        <Button className="rounded-full" onClick={() => navigate("/home")}>Browse Resources</Button>
       </div>
     </div>
   )

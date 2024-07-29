@@ -5,15 +5,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-.github
 lerna-debug.log*
-backend
 
 node_modules
 dist
 dist-ssr
 *.local
-
+db
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

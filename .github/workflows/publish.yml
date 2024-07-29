@@ -27,6 +27,12 @@ jobs:
           VITE_ADMIN_LOGIN_URL: ${{ env.VITE_ADMIN_LOGIN_URL }}
           VITE_BACKEND_URL: ${{ env.VITE_BACKEND_URL }}
 
+      - name: Check if branch exists
+        run: |
+              if ! git show-ref --quiet refs/heads/build; then
+                git checkout -b build
+              fi
+
       - name: Push
         uses: s0/git-publish-subdir-action@develop
         env:

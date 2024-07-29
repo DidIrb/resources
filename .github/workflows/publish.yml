@@ -29,9 +29,11 @@ jobs:
 
       - name: Check if branch exists
         run: |
-              if ! git show-ref --quiet refs/heads/build; then
-                git checkout -b build
-              fi
+            if ! git show-ref --quiet refs/heads/build; then
+              git checkout -b build
+              git push origin build
+            fi
+  
 
       - name: Push
         uses: s0/git-publish-subdir-action@develop

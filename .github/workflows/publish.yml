@@ -24,8 +24,8 @@ jobs:
       - name: Build
         run: npm run build # The build command of your project
         env:
-          VITE_ADMIN_LOGIN_URL: ${{ env.VITE_ADMIN_LOGIN_URL }}
-          VITE_BACKEND_URL: ${{ env.VITE_BACKEND_URL }}
+          VITE_ADMIN_LOGIN_URL: ${{ secrets.VITE_ADMIN_LOGIN_URL }}
+          VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
 
       - name: Check if branch exists
         run: |

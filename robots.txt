@@ -1,0 +1,6 @@
+User-agent: Googlebot
+Disallow: /nogooglebot/
+
+User-agent: *
+Allow: /
+Sitemap: https://www.resources.ditestenv.com/sitemap.xml

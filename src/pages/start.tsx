@@ -17,7 +17,11 @@ export const Start = () => {
       </Link>
       <div className="flex-1 p-4 flex gap-2 flex-col justify-center items-center w-full">
         <p className="text-3xl font-bold">Welcome to Resources</p>
-        <p className="text-lg max-w-[600px] text-center">The naming is generic but the information is useful, I built this to share helpful resources I find, basically like one massive repository of information, <br /> enjoy ♥</p>
+        <p className="max-w-[600px] text-center">
+          The naming is generic but the information is useful, I built this to share helpful resources I find, from blogs,
+          educational materials, sites and products.
+          Basically like one massive repository of information, <br /> enjoy ♥
+        </p>
 
         <div className="flex gap-2">
           {techStack.map((item, index) => (

@@ -115,7 +115,7 @@ export const ResourceList = () => {
                     {hasMore && <Loader2 className="my-4 h-8 w-8 animate-spin" />}
                 </InfiniteScroll>
             }
-            {!resources && (
+            {resources.length == 0 && (
                 <div className="text-sm">
                     <span>No resources found</span>
                     <button className="h-8 text-blue-700" onClick={() => openEditResource(null)} >

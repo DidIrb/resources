@@ -3,7 +3,7 @@ name: Build and deploy
 on:
   push:
     branches:
-      - main # The branch name your are commit the new changes
+      - main
 
 jobs:
   build:
@@ -16,22 +16,28 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20' # Use Node.js 20
+          node-version: '20' 
 
       - name: Install dependencies
         run: npm install
         
       - name: Build
-        run: npm run build # The build command of your project
+        run: npm run build 
         env:
           VITE_ADMIN_LOGIN_URL: ${{ secrets.VITE_ADMIN_LOGIN_URL }}
           VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
+      
+      # - name: Transfer files
+      #   run: |
+      #       cp .htaccess dist/
+      #       cp sitemap.xml dist/
+      #       cp robots.txt dist/
 
       - name: Push
         uses: s0/git-publish-subdir-action@develop
         env:
           REPO: self
-          BRANCH: build # Deploy to the "main" branch
+          BRANCH: build
           FOLDER: dist 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MESSAGE: "Built test file: ({sha}) {msg}"

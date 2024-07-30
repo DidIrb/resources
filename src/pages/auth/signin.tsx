@@ -24,7 +24,6 @@ export function Signin() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-
   const onSubmit = async (val: SigninFormData) => {
     setIsLoading(true);
     try {
@@ -42,11 +41,11 @@ export function Signin() {
 
   return (
     <Card className="mx-auto max-w-sm w-96">
-      <CardHeader>
+      <CardHeader className='pb-4' >
         <CardTitle className="text-2xl">Signin</CardTitle>
         <CardDescription>
           Enter your username below to login to your account
-        </CardDescription>
+        </CardDescription>      
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -60,6 +59,7 @@ export function Signin() {
                 render={({ field }) => (
                   <Input
                     {...field}
+                    autoComplete="username"
                     id="username"
                     type="text"
                     placeholder="m@example.com"
@@ -69,6 +69,7 @@ export function Signin() {
               {errors.username && <p className="text-red-500 text-sm md:text-xs">{errors.username.message}</p>}
             </div>
             <div className="grid gap-2">
+              <Label htmlFor="username">Password</Label>
               <div className='relative'>
                 <Controller
                   name="password"
@@ -88,6 +89,7 @@ export function Signin() {
                     <Input
                       {...field}
                       id="password"
+                      autoComplete='new-password'
                       placeholder="complex password"
                       type={showPassword ? 'text' : 'password'}
                     />

@@ -5,13 +5,15 @@ import { useAuth } from "@/context/auth.context";
 import { useSearch } from "@/context/search.context";
 import { Resources } from "@/types/forms.types";
 import { Pencil1Icon } from "@radix-ui/react-icons";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Share, Share2, ShareIcon } from "lucide-react";
 import moment from "moment";
 import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import ResourcesForm from "../forms/resource.form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Helmet } from "react-helmet-async";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export function Slug() {
     const { openEditResource, open } = useApp();
@@ -30,11 +32,15 @@ export function Slug() {
         const response = await search(`${slug}`, [], [], ["title"], "asc", 1, 1);
         return response;
     };
+    const copyLink = () => {
+        navigator.clipboard.writeText(window.location.href);
+        toast.success("Link copied to clipboard");
+    }
 
     return (
         <div className="px-4">
-            <Helmet> 
-                <title> Resource | 
+            <Helmet>
+                <title> Resource |
                     {isLoading ? "searching" : ""} {!data && !isLoading ? "resource not found" : `${slug}`}
                 </title></Helmet>
 
@@ -54,7 +60,7 @@ export function Slug() {
                 <div className="p-3">
                     <Card className="md:w-[700px] w-full p-2 pt-1">
                         <div className="flex justify-between items-center">
-                            <div className='flex items-center py-1  gap-2 cursor-pointer'>
+                            <div className='flex items-center py-1  gap-2 w-full cursor-pointer relative'>
                                 <Avatar className="w-7 h-7 ">
                                     <AvatarImage src={data.icon} />
                                     <AvatarFallback>{data.title.charAt(0).toUpperCase()}</AvatarFallback>
@@ -62,6 +68,7 @@ export function Slug() {
                                 <p className="font-semibold hover:underline hover:text-blue-600 px-0">
                                     {data.title}
                                 </p>
+                                <Share2 onClick={copyLink} className="absolute top-2 right-2"/>
                             </div>
                             <div className="flex gap-2 items-center">
                                 {session?.role !== "admin" || session?.role !== "super_admin" && (
@@ -90,11 +97,10 @@ export function Slug() {
                             <div> <span className="inline-block w-24">Published : </span> {moment(data?.createdAt).format("MMMM Do YYYY")} </div>
                             <div> <span className="inline-block w-24">Last Modified :</span> {moment(data?.updatedAt).format("MMMM Do YYYY")} </div>
                         </div>
-
                         <Link to={data.link} className="text-blue-500 text-sm text-end hover:underline">
                             {data.link}
                         </Link>
-
+                        
                     </Card>
 
                     <div className="mb-4">

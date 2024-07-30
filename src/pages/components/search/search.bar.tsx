@@ -43,7 +43,7 @@ export const SearchBar = () => {
   return (
     <div className="ml-auto flex gap-2 flex-1 sm:flex-initial">
       <div className="flex gap-1 justify-end">
-        <Button variant="outline" className="w-8 rounded-full" size="icon" onClick={handleToggle}>
+        <Button variant="outline" className="w-8 rounded-full" size="icon" onClick={handleToggle} aria-label="Toggle View">
           {isGrid ? <LayoutGrid className="icon" /> : <List />}
         </Button>
         <Filter />

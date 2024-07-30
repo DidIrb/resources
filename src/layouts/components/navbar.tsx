@@ -24,7 +24,7 @@ export const Navbar = () => {
                         </div>
                     }
                     <Link to="https://github.com/didirb/resources" target="_blank">
-                        <Button variant="ghost" className="w-8 rounded-full" size="icon">
+                        <Button variant="ghost" className="w-8 rounded-full" size="icon" aria-label="GitHub">
                             <GitHubLogoIcon className="icon" />
                         </Button>
                     </Link>

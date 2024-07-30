@@ -27,11 +27,11 @@ jobs:
           VITE_ADMIN_LOGIN_URL: ${{ secrets.VITE_ADMIN_LOGIN_URL }}
           VITE_BACKEND_URL: ${{ secrets.VITE_BACKEND_URL }}
       
-      # - name: Transfer files
-      #   run: |
-      #       cp .htaccess dist/
-      #       cp sitemap.xml dist/
-      #       cp robots.txt dist/
+      - name: Transfer files
+        run: |
+            cp .htaccess dist/
+            cp sitemap.xml dist/
+            cp robots.txt dist/
 
       - name: Push
         uses: s0/git-publish-subdir-action@develop

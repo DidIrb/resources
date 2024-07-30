@@ -1,3 +1,4 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { useApp } from "@/context/app.context";
@@ -5,15 +6,13 @@ import { useAuth } from "@/context/auth.context";
 import { useSearch } from "@/context/search.context";
 import { Resources } from "@/types/forms.types";
 import { Pencil1Icon } from "@radix-ui/react-icons";
-import { ChevronLeft, Share, Share2, ShareIcon } from "lucide-react";
+import { ChevronLeft, Share2 } from "lucide-react";
 import moment from "moment";
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
-import ResourcesForm from "../forms/resource.form";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Helmet } from "react-helmet-async";
-import { Button } from "@/components/ui/button";
+import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import ResourcesForm from "../forms/resource.form";
 
 export function Slug() {
     const { openEditResource, open } = useApp();

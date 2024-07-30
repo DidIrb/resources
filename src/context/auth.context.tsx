@@ -27,6 +27,9 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         try {
             const response = await api.post(`/auth/signin`, data);
             setSession(response.data.data);
+            setTimeout(() => {
+                setSession(null);
+            }, 1000 * 60* 30);
             return response.data;
         } catch (error) {
             throw error;
@@ -40,7 +43,6 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             return response;
         } catch (error) {
             console.error(error);
-            // Manually logging user out
             setSession(null);
             throw error;
         }

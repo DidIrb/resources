@@ -6,6 +6,7 @@ import { useAuth } from '@/context/auth.context';
 import { SigninFormData } from '@/types/forms.types';
 import { EyeNoneIcon, EyeOpenIcon } from '@radix-ui/react-icons';
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Controller, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -41,6 +42,10 @@ export function Signin() {
 
   return (
     <Card className="mx-auto max-w-sm w-96">
+      <Helmet> 
+        <title> Private | Signin </title>
+        <meta name="description" content="A private and protected signin page" />
+      </Helmet>
       <CardHeader className='pb-4' >
         <CardTitle className="text-2xl">Signin</CardTitle>
         <CardDescription>
@@ -69,7 +74,7 @@ export function Signin() {
               {errors.username && <p className="text-red-500 text-sm md:text-xs">{errors.username.message}</p>}
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="username">Password</Label>
+              <Label htmlFor="password">Password</Label>
               <div className='relative'>
                 <Controller
                   name="password"
@@ -95,7 +100,7 @@ export function Signin() {
                     />
                   )}
                 />
-                <button
+                <button aria-label='show password'
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
                   className="absolute right-2 top-1/2 transform -translate-y-1/2"

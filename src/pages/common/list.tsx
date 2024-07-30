@@ -67,12 +67,13 @@ export const ResourceList = () => {
                 localStorage.setItem('config', JSON.stringify(scrollFilter));
 
                 setPage((prev: number) => prev + 1);
-                if (page == totalPages || totalPages == 0) {
+                if (page == totalPages || totalPages < page) {
                     setHasMore(false);
                 }
-                if (totalPages == 0) {
-                    const scrollFilter = { ...appConfig, currentPage: 1, totalItems: 0, total: 0 };
+                if (totalPages < page) {
+                    const scrollFilter = { ...appConfig, currentPage: 1, totalItems: totalItems, total: totalPages };
                     localStorage.setItem('config', JSON.stringify(scrollFilter));
+                    setHasMore(false);
                 }
             } catch (error: any) {
                 setHasMore(false);
@@ -96,7 +97,7 @@ export const ResourceList = () => {
                         ))}
                 </div>
                 :
-                <div >
+                <div className="md:px-10 px-0">
                     {filteredResources.length > 0 &&
                         filteredResources.map((item: Resources, index: number) => (
                             <div key={index} >
@@ -115,15 +116,14 @@ export const ResourceList = () => {
                     {hasMore && <Loader2 className="my-4 h-8 w-8 animate-spin" />}
                 </InfiniteScroll>
             }
-            {resources.length == 0 && (
+            {!resources && (
                 <div className="text-sm">
-                    <span>No resources found</span>
+                    <span>No resources found</span> {" "}
                     <button className="h-8 text-blue-700" onClick={() => openEditResource(null)} >
                         Add Resource
                     </button>
                 </div>
             )}
-
         </div>
     );
 };

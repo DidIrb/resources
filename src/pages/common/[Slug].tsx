@@ -11,18 +11,19 @@ import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import ResourcesForm from "../forms/resource.form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Helmet } from "react-helmet-async";
 
 export function Slug() {
     const { openEditResource, open } = useApp();
     const { slug } = useParams();
-    const { search } = useSearch();
+    const { search, isLoading } = useSearch();
     const { session } = useAuth();
     const stored = localStorage.getItem('resources') as string;
     const parsed = JSON.parse(stored) || [];
     let data: Resources = parsed.find((item: Resources) => item.title.toLowerCase() === slug);
 
     useEffect(() => {
-        if (!data) { fetchData(); }
+        if (!data) { fetchData() }
     }, [])
 
     const fetchData = async () => {
@@ -32,13 +33,17 @@ export function Slug() {
 
     return (
         <div className="px-4">
+            <Helmet> 
+                <title> Resource | 
+                    {isLoading ? "searching" : ""} {!data && !isLoading ? "resource not found" : `${slug}`}
+                </title></Helmet>
 
             <Link to={`${session ? "/dashboard" : "/home"}`} className="flex items-center gap-2 cursor-pointer">
                 <ChevronLeft /> Back
             </Link>
             {!data ?
                 <div className="text-center pt-5">
-                    <h3 className="text-6xl font-bold tracking-tight">
+                    <h3 className="sm:text-6xl text-4xl font-bold tracking-tight">
                         404
                     </h3>
                     <p className="text-sm text-muted-foreground">

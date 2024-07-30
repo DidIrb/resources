@@ -1,8 +1,9 @@
 import config from '@/config/config';
-import { filterTags, filterTypes, saveToLocalStorage } from '@/lib/func';
+import { saveToLocalStorage } from '@/lib/func';
 import { Resources } from '@/types/forms.types';
 import axios, { AxiosResponse } from 'axios';
 import { createContext, ReactNode, useContext, useState } from 'react';
+import { toast } from 'sonner';
 
 interface SearchContextType {
     resources: Resources[];
@@ -11,7 +12,7 @@ interface SearchContextType {
     selectedTags: string[];
     selectedFields: string[];
     query: string;
-    setQuery : (query: string) => void;
+    setQuery: (query: string) => void;
     search: (query: string, tags: string[], types: string[], fields: string[], order: 'asc' | 'desc', page: number, pageSize: number) => void;
     handleTypes: (type: string) => void;
     handleTags: (tag: string) => void;
@@ -53,10 +54,10 @@ const SearchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
                 }
             );
             const savedData = saveToLocalStorage(response.data.paginatedResults)
-            
+
             setFilteredResources(savedData);
             setResources(savedData);
-            const res = {data: response.data.paginatedResults, matches: response.data.totalMatches }
+            const res = { data: response.data.paginatedResults, matches: response.data.totalMatches }
             return res;
         } catch (error) {
             throw error;
@@ -65,6 +66,16 @@ const SearchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
                 setIsLoading(false);
             }, 1000);
         }
+    };
+
+    const filterTypes = (resources: any[], selectedTypes: string[]) => {
+        return resources.filter(resource => selectedTypes.includes(resource.type));
+    };
+
+    const filterTags = (resources: any[], selectedTags: string[]) => {
+        return resources.filter((resource: Resources) =>
+            resource.tags.some(tag => selectedTags.includes(tag))
+        );
     };
 
 
@@ -86,8 +97,11 @@ const SearchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
                 const filteredResources = filterTypes(resources, filter);
                 setFilteredResources(filteredResources);
             } else {
-                // Disabled Search for Issue of no results
-                // return await search('', selectedTags, filter, [], "asc", 1, 2);
+                try {
+                    return await search('', selectedTags, filter, [], "asc", 1, 20);
+                } catch (error: any) {
+                    toast.error(error.response.data.error)
+                }
             }
         } else {
             setFilteredResources(resources);
@@ -113,7 +127,12 @@ const SearchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
                 const filteredResources = filterTags(resources, filter);
                 setFilteredResources(filteredResources);
             } else {
-                //  await search('', selectedTags, filter, [], "asc", 1, 2);
+                try {
+                    await search('', selectedTags, filter, [], "asc", 1, 20);
+                } catch (error: any) {
+                    toast.error(error.response.data.error);
+                }
+
             }
         } else {
             setFilteredResources(resources);

@@ -1,4 +1,3 @@
-// Settings.tsx
 import React, { useState } from 'react';
 import { useAuth } from "@/context/auth.context";
 import { Profile } from "../common/profile";
@@ -8,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import TagsForm from '../forms/enums/tags.form';
 import TypesForm from '../forms/enums/type.form';
 import { useData } from '@/context/data.context';
+import api from '@/lib/api';
+import { toast } from 'sonner';
 
 export const Settings: React.FC = () => {
   const { session } = useAuth();
@@ -23,6 +24,14 @@ export const Settings: React.FC = () => {
       setShowTypesForm(false);
     }
   };
+  const generate = async () => {
+    try {
+      await api.post(`/sitemap`);
+    } catch (error: any) {
+      const message = error.response.data.message || "Internal Server Error"
+      toast.error(message)
+    }
+  }
 
   return (
     <div className="px-4 flex justify-between md:flex-row gap-3 flex-col-reverse">
@@ -63,6 +72,9 @@ export const Settings: React.FC = () => {
                 : <TypesForm onClose={() => setShowTypesForm(false)} onSuccess={() => handleFormSuccess('types')} />
               }
             </div>
+          </div>
+          <div className="w-full p-3">
+            <Button onClick={generate}>Generate Sitempat</Button>
           </div>
         </Card>
       }

@@ -1,4 +1,3 @@
-// PasswordForm.tsx
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useAuth } from '@/context/auth.context';
@@ -64,7 +63,7 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ userId, onClose }) => {
             type={showPassword ? 'text' : 'password'}
             {...register('password')}
           />
-          <button
+          <button aria-label='show password'
             type="button"
             onClick={() => setShowPassword((prev) => !prev)}
             className="absolute right-2 top-1/2 transform -translate-y-1/2"

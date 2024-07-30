@@ -22,14 +22,6 @@ export const filterResourcesBySelectedTypes = (resources: any[], selectedTypes: 
     return resources.filter(resource => selectedTypes.includes(resource.type));
 };
 
-export const filterTypes = (resources: any[], selectedTypes: string[]) => {
-    return resources.filter(resource => selectedTypes.includes(resource.type));
-};
-
-export const filterTags = (resources: any[], selectedTags: string[]) => {
-    return resources.filter(resource => selectedTags.includes(resource.tags));
-};
-
 const refetchData = () => {  
     const data = JSON.parse(localStorage.getItem('resources') || '[]');
     return data;

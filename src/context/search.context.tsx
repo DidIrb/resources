@@ -11,11 +11,13 @@ interface SearchContextType {
     selectedTypes: string[];
     selectedTags: string[];
     selectedFields: string[];
+    selectedTopics: string[];
     query: string;
     setQuery: (query: string) => void;
     search: (query: string, tags: string[], types: string[], fields: string[], order: 'asc' | 'desc', page: number, pageSize: number) => void;
     handleTypes: (type: string) => void;
     handleTags: (tag: string) => void;
+    handleTopics: (topic: string) => void;
     handleFields: (field: string) => void;
     setFilteredResources: (resources: Resources[]) => void;
     setResources: (resources: Resources[]) => void;
@@ -37,6 +39,7 @@ const SearchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [filteredResources, setFilteredResources] = useState<Resources[]>([]);
     const [selectedTypes, setSelectedTypes] = useState<string[]>([]);
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
     const [selectedFields, setSelectedFields] = useState<string[]>(["title", "description"]);
     const [isLoading, setIsLoading] = useState(false);
     const [query, setQuery] = useState<string>("");
@@ -132,7 +135,34 @@ const SearchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
                 } catch (error: any) {
                     toast.error(error.response.data.error);
                 }
+            }
+        } else {
+            setFilteredResources(resources);
+        }
+    };
+    const handleTopics = async (value: string) => {
+        let filter: string[] = [];
+        setSelectedTags(prev => {
+            if (prev.includes(value)) {
+                filter = prev.filter(t => t !== value);
+                return prev.filter(t => t !== value);
+            } else {
+                filter = [...prev, value];
+                return [...prev, value];
+            }
+        });
 
+        if (filter.length > 0) {
+            const existingResource = resources.find(resource => resource.topics.includes(value));
+            if (existingResource) {
+                const filteredResources = filterTags(resources, filter);
+                setSelectedTopics(filteredResources);
+            } else {
+                // try { 
+                //     await search('', selectedTags, filter, [], "asc", 1, 20);
+                // } catch (error: any) {
+                //     toast.error(error.response.data.error);
+                // }
             }
         } else {
             setFilteredResources(resources);
@@ -151,7 +181,7 @@ const SearchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     };
 
     return (
-        <SearchContext.Provider value={{ resources, setQuery, query, setResources, filteredResources, isLoading, search, handleTypes, handleTags, handleFields, selectedTypes, selectedTags, selectedFields, setFilteredResources }}>
+        <SearchContext.Provider value={{ resources, setQuery, query, handleTopics, setResources, selectedTopics, filteredResources, isLoading, search, handleTypes, handleTags, handleFields, selectedTypes, selectedTags, selectedFields, setFilteredResources }}>
             {children}
         </SearchContext.Provider>
     );

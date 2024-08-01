@@ -19,7 +19,7 @@ interface InputFormProps {
   onSuccess: () => void;
 }
 
-const TypesForm: React.FC<InputFormProps> = ({ onClose, onSuccess }) => {
+const TopicsForm: React.FC<InputFormProps> = ({ onClose, onSuccess }) => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -29,7 +29,7 @@ const TypesForm: React.FC<InputFormProps> = ({ onClose, onSuccess }) => {
 
   const handleFormSubmit = async (data: FormSchema) => {
     try {
-      const response = await api.post('/enum/types', data);
+      const response = await api.post('/enum/topics', data);
       toast.success(response?.data?.message);
       if (response.status === 201) {
         onSuccess();
@@ -45,7 +45,7 @@ const TypesForm: React.FC<InputFormProps> = ({ onClose, onSuccess }) => {
   return (
     <Card className='border mt-2 p-2 md:w-[50%] w-full'>
       <form onSubmit={handleSubmit(handleFormSubmit)}>
-        <div className="text-sm text-gray-700 mb-1">Types</div>
+        <div className="text-sm text-gray-700 mb-1">Topics</div>
         <div className="flex sm:flex-row flex-col items-center gap-2">
           <div className="w-full relative">
             <Input
@@ -66,4 +66,4 @@ const TypesForm: React.FC<InputFormProps> = ({ onClose, onSuccess }) => {
   );
 };
 
-export default TypesForm;
+export default TopicsForm;

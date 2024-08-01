@@ -11,6 +11,7 @@ import { Pencil1Icon, TrashIcon } from "@radix-ui/react-icons";
 import { AxiosResponse } from "axios";
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { toast } from "sonner";
+import _ from "lodash";
 
 export const UsersTable = forwardRef((_props, ref) => {
     const { openEditUser, setUsers, setIsLoading, users } = useApp();
@@ -27,8 +28,12 @@ export const UsersTable = forwardRef((_props, ref) => {
         } else {
             setError('');
             try {
-                const response = await api.post(`/users/${toDelete?.id}`, { secret: secretValue });
+                const response = await api.post(`/users/${toDelete?._id}`, { secret: secretValue });
                 toast.success(response.data.message);
+                if(response.status == 200) {
+                    const updated = _.remove(users, { _id: toDelete._id });
+                    setUsers(updated);
+                }
             } catch (error: any) {
                 const message = error.response.data.error || "Internal Server Error";
                 toast.error(message);
@@ -49,6 +54,7 @@ export const UsersTable = forwardRef((_props, ref) => {
             if (response.status === 200) {
                 setOpen(false);
             }
+            console.log(response.data);
         } catch (error: any) {
             console.error(error);
             const message = error.response.data.error || "Internal Server Error";
@@ -81,7 +87,7 @@ export const UsersTable = forwardRef((_props, ref) => {
                 <TableCaption>List of users</TableCaption>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="w-[100px]">id</TableHead>
+                        <TableHead className="w-[100px]">ID</TableHead>
                         <TableHead>Username</TableHead>
                         <TableHead>Email</TableHead>
                         <TableHead>Role</TableHead>
@@ -93,7 +99,7 @@ export const UsersTable = forwardRef((_props, ref) => {
                     <TableBody>
                         {users.map((item: User, index: number) => (
                             <TableRow key={index}>
-                                <TableCell className="font-medium">{item.id}</TableCell>
+                                <TableCell className="font-medium">{index+1}</TableCell>
                                 <TableCell>{item.username}</TableCell>
                                 <TableCell>{item.email}</TableCell>
                                 <TableCell >{item.role}</TableCell>
@@ -122,7 +128,7 @@ export const UsersTable = forwardRef((_props, ref) => {
                 isOpen={isDialogOpen}
             />
             {open &&
-                <div className="fixed bottom-3 border left-[50%] md:w-96 w-80 -translate-x-[50%] rounded shadow-md p-2">
+                <div className="fixed bottom-3 z-10 bg-background border left-[50%] md:w-96 w-80 -translate-x-[50%] rounded shadow-md p-2">
                     <form onSubmit={handleSubmit}>
                         <div className="mb-2 text-sm">Authorize Deletion</div>
 

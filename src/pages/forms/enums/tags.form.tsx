@@ -29,9 +29,9 @@ const TagsForm: React.FC<InputFormProps> = ({ onClose, onSuccess }) => {
 
   const handleFormSubmit = async (data: FormSchema) => {
     try {
-      const response = await api.post('/enum/tags', { data: data.value });
+      const response = await api.post('/enum/tags', data);
       toast.success(response?.data?.message);
-      if (response.status === 200) {
+      if (response.status === 201) {
         onSuccess();
         reset({ value: '' });
         onClose();
@@ -46,15 +46,17 @@ const TagsForm: React.FC<InputFormProps> = ({ onClose, onSuccess }) => {
     <Card className='border mt-2 p-2 md:w-[50%] w-full'>
       <form onSubmit={handleSubmit(handleFormSubmit)} >
         <div className="text-sm text-gray-700 mb-1">Tags</div>
-        <div className="flex items-center gap-2">
+        <div className="flex sm:flex-row flex-col items-center gap-2">
           <div className="w-full relative">
             <Input
               type="text"
               {...register('value')}
             />
           </div>
-          <Button type="submit"> Submit </Button>
-          <Button variant="secondary" type="button" onClick={onClose}> Close </Button>
+          <div className='flex gap-2 w-full'>
+            <Button type="submit"> Submit </Button>
+            <Button variant="secondary" type="button" onClick={onClose}> Close </Button>
+          </div>
 
         </div>
         {errors.value && (

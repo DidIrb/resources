@@ -11,6 +11,7 @@ import api from '@/lib/api';
 import { toast } from 'sonner';
 import { DownloadIcon, ReloadIcon } from '@radix-ui/react-icons';
 import { LoadingButton } from '@/components/custom/loading.btn';
+import TopicsForm from '../forms/enums/topic.form';
 
 export const Settings: React.FC = () => {
   const { session } = useAuth();
@@ -18,9 +19,10 @@ export const Settings: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [sitemap, setSitemap] = useState("");
   const [showTypesForm, setShowTypesForm] = useState(false);
-  const { tags, types, fetchData } = useData();
+  const [showTopicsForm, setShowTopicsForm] = useState(false);
+  const { tags, types,topics, fetchData } = useData();
 
-  const handleFormSuccess = (formType: 'tags' | 'types') => {
+  const handleFormSuccess = (formType: 'tags' | 'types' | 'topics') => {
     fetchData();
     if (formType === 'tags') {
       setShowTagsForm(false);
@@ -64,17 +66,25 @@ export const Settings: React.FC = () => {
           <div className="p-3 pt-0">
             <div className="title mb-1 font-medium">Filter tags </div>
             <Card className="p-2 pt-1">
-              {tags.map((tag, index) => (
+              {tags.map((item: string, index: number) => (
                 <Badge key={index} className='mr-1 font-medium' variant="outline">
-                  {tag}
+                  {item}
                 </Badge>
               ))}
             </Card>
             <div className="title my-2 font-medium">Filter type</div>
             <Card className="p-2 pt-1">
-              {types.map((type, index) => (
+              {types.map((item: string, index: number) => (
                 <Badge key={index} className='mr-1 font-medium' variant="outline">
-                  {type}
+                  {item}
+                </Badge>
+              ))}
+            </Card>
+            <div className="title my-2 font-medium">Filter topics</div>
+            <Card className="p-2 pt-1">
+              {topics.map((item:string, index: number) => (
+                <Badge key={index} className='mr-1 font-medium' variant="outline">
+                  {item}
                 </Badge>
               ))}
             </Card>
@@ -89,6 +99,10 @@ export const Settings: React.FC = () => {
               {!showTypesForm
                 ? <Button variant="outline" className='rounded-full column--shrunk' onClick={() => setShowTypesForm(true)}> add type </Button>
                 : <TypesForm onClose={() => setShowTypesForm(false)} onSuccess={() => handleFormSuccess('types')} />
+              }
+              {!showTopicsForm
+                ? <Button variant="outline" className='rounded-full column--shrunk' onClick={() => setShowTopicsForm(true)}> add topic </Button>
+                : <TopicsForm onClose={() => setShowTopicsForm(false)} onSuccess={() => handleFormSuccess('types')} />
               }
             </div>
           </div>

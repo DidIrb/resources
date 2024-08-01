@@ -28,7 +28,7 @@ export const Profile: React.FC = () => {
   });
 
   return (
-      <Card className=" self-start overflow-hidden  md:w-[500px] align-top w-full justify-center px-3 items-center">
+      <Card className=" self-start overflow-hidden text-sm md:text-base md:w-[500px] align-top w-full justify-center px-3 items-center">
         <div className="py-2">
           <h3 className="text-lg leading-6 font-medium">Profile</h3>
           <p className="mt-1 max-w-2xl text-sm text-gray-500">This is your Information</p>
@@ -40,10 +40,10 @@ export const Profile: React.FC = () => {
           <div className="py-2 border-t border-gray-200">
             {!showPasswordForm && !showUsernameForm && (
               <>
-                <Button variant="outline" className='rounded-full' onClick={() => setShowPasswordForm(true)}>
+                <Button variant="outline" className='mr-2 md:mb-0 mb-2' onClick={() => setShowPasswordForm(true)}>
                   update password
                 </Button>
-                <Button variant="outline" className='rounded-full ml-2' onClick={() => setShowUsernameForm(true)}>
+                <Button variant="outline" className='' onClick={() => setShowUsernameForm(true)}>
                   update username
                 </Button>
               </>

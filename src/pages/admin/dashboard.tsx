@@ -27,7 +27,7 @@ export const Dashboard = () => {
     <div className="p-0 px-4 overflow-hidden ">
       <ResourceList />
       {/* Listing Resources form */}
-      <div className="fixed bottom-3 left-[50%] -translate-x-[50%]  p-2 rounded-xl bg-white/20 ring-1 ring-black/5 shadow">
+      <div className="fixed bottom-3 left-[50%] -translate-x-[50%]  p-2 rounded-xl bg-white/80 ring-1 ring-black/5 shadow">
         {session &&
           <div className="flex gap-2 items-center">
             <Button variant="outline" className={`h-8 ${isLoading && 'w-8'} rounded-full`} size={`${isLoading ? 'icon' : 'default'}`} onClick={reload} >

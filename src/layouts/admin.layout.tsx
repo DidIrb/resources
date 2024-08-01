@@ -9,7 +9,7 @@ export const Layout = () => {
       <div className="px-2 flex-1">
         <Outlet />
       </div>
-      <footer className="text-right text-sm p-4">Proudly Built by |
+      <footer className="text-right text-sm p-4 py-2">Proudly Built by |
         <Link to="https://irbaye.com" >
           <Button className="px-1" variant={"link"}>
             Dida Irbaye

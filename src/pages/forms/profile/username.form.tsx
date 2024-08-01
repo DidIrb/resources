@@ -53,16 +53,18 @@ const UsernameForm: React.FC<UsernameFormProps> = ({ userId, currentUsername, on
     return (
         <form onSubmit={handleSubmit(handleUsernameSubmit)}>
 
-            <label className="block text-sm text-gray-700">Username</label>
-            <div className="flex items-center gap-2">
+            <label className="block text-sm text-gray-700 mb-1">Username</label>
+            <div className="flex sm:flex-row flex-col items-center gap-2">
                 <div className="w-full relative">
                     <Input
                         type="text"
                         {...register('username')}
                     />
                 </div>
-                <Button type="submit"> Update </Button>
-                <Button variant="secondary" type="button" onClick={onClose}> Close </Button>
+                <div className='flex gap-2 w-full'>
+                    <Button type="submit"> Submit </Button>
+                    <Button variant="secondary" type="button" onClick={onClose}> Close </Button>
+                </div>
             </div>
             {errors.username && (
                 <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>

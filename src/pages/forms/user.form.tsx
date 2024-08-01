@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import _ from "lodash";
 
 type Props = {
     open: boolean;
@@ -20,7 +21,7 @@ type Props = {
 
 
 export const UsersForm: React.FC<Props> = ({ open, toggleOpenState }) => {
-    const { user } = useApp();
+    const { user, users, setUsers } = useApp();
     const [isLoading, setIsLoading] = useState(false);
 
     const passwordSchema = z.string().min(8, {
@@ -78,12 +79,17 @@ export const UsersForm: React.FC<Props> = ({ open, toggleOpenState }) => {
         try {
             let response
             if (user) {
-                response = await api.put(`/users/${user.id}`, data);
+                response = await api.put(`/users/${user._id}`, data);
             } else {
                 response = await api.post("/users", data);
             }
             toast.success(response?.data?.message)
-            if (response.status == 200) {
+            if (response.status == 201 || response.status == 200) {
+                const user = response?.data?.user;
+                // const newUsers = [...users, updated];
+                const newUsers = _.unionBy([user], users, '_id');
+                console.log(newUsers, user);
+                setUsers(newUsers);
                 toggleOpenState(false);
                 form.reset();
             }

@@ -4,7 +4,7 @@ export interface SigninFormData {
 }
 
 export interface User {
-    id: string;
+    _id: string;
     username: string;
     email: string;
     password: string;
@@ -19,6 +19,7 @@ export interface Resources {
     title: string;
     description: string;
     tags: string[];
+    topics: string;
     link: string;
     secret: string;
     createdAt: string;

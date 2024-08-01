@@ -8,10 +8,10 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 export function Filter() {
-  const { types, tags, fetchData } = useData();
+  const { types, tags, topics, fetchData } = useData();
   const fields = ['title', 'description'];
   const [isLoading, setIsLoading] = useState(false);
-  const { handleTypes, handleTags, handleFields, selectedFields, selectedTypes, selectedTags } = useSearch();
+  const { handleTypes, handleTags, handleFields, selectedTopics, selectedFields, selectedTypes, selectedTags } = useSearch();
 
   const Reload = () => {
     setIsLoading(true);
@@ -76,6 +76,20 @@ export function Filter() {
                 onClick={() => handleTags(tag)}
               >
                 {tag}
+              </Button>
+            ))
+          }
+        </div>
+        <DropdownMenuLabel className="font-medium">filter topics</DropdownMenuLabel>
+        <div className="flex gap-2 px-1 flex-wrap">
+          {
+            topics.map((item, index: number) => (
+              <Button key={index}
+                variant={selectedTopics.includes(item) ? "default" : "secondary"}
+                className={`h-6 px-2 rounded-full `}
+                onClick={() => handleTags(item)}
+              >
+                {item}
               </Button>
             ))
           }

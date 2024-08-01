@@ -57,7 +57,7 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ userId, onClose }) => {
   return (
     <form onSubmit={handleSubmit(handlePasswordSubmit)}>
       <label className="block text-sm text-gray-700">Password</label>
-      <div className="flex items-center gap-2">
+      <div className="flex md:flex-row flex-col items-center gap-2">
         <div className="w-full relative">
           <Input
             type={showPassword ? 'text' : 'password'}
@@ -71,8 +71,10 @@ const PasswordForm: React.FC<PasswordFormProps> = ({ userId, onClose }) => {
             {showPassword ? <EyeOpenIcon /> : <EyeNoneIcon />}
           </button>
         </div>
-        <Button type="submit"> Update </Button>
-        <Button variant="secondary" type="button" onClick={onClose}> Close </Button>
+        <div className='flex gap-2 w-full'>
+          <Button type="submit"> Submit </Button>
+          <Button variant="secondary" type="button" onClick={onClose}> Close </Button>
+        </div>
       </div>
       {errors.password && (
         <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>

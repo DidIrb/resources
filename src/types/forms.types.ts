@@ -13,13 +13,13 @@ export interface User {
 }
 
 export interface Resources {
-    id: string;
+    _id: string;
     icon: string;
     type: string;
     title: string;
     description: string;
     tags: string[];
-    topics: string;
+    topic: string;
     link: string;
     secret: string;
     createdAt: string;

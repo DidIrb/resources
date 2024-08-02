@@ -29,6 +29,7 @@ export  interface enumValues {
 }
 
 const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
     const [tags, setTags] = useState<string[]>(() => {
         const savedTags = localStorage.getItem("tags");
         return savedTags ? JSON.parse(savedTags) : [];
@@ -47,7 +48,7 @@ const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
     const [isGrid, setIsGrid] = useState<boolean>(() => {
         if (appConfig) return appConfig.isGrid
         else {
-            localStorage.setItem("config", JSON.stringify({...appConfig, isGrid: true}));
+            localStorage.setItem("config", JSON.stringify({...appConfig, isGrid: !isMobile}));
             return true
         }
     });
@@ -63,7 +64,7 @@ const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             if (tags && types && topics) {
                 setTags(tags);
                 setTypes(types);
-                setTopics(types);
+                setTopics(topics);
                 localStorage.setItem("tags", JSON.stringify(tags));
                 localStorage.setItem("types", JSON.stringify(types));
                 localStorage.setItem("topics", JSON.stringify(topics));
@@ -77,10 +78,18 @@ const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
         }
     };
 
+    const handleWindowSizeChange = () => {
+        setIsMobile(window.innerWidth <= 768);
+    };
+
     useEffect(() => {
         if (!tags.length || !types.length || !topics.length) {
             fetchData();
         }
+        window.addEventListener('resize', handleWindowSizeChange);
+        return () => {
+            window.removeEventListener('resize', handleWindowSizeChange);
+        };
     }, []);
 
     return (

@@ -37,7 +37,7 @@ export const saveToLocalStorage = (resources: Resources[]) => {
     const containsDuplicates = hasDuplicates(update, "id");
     if (containsDuplicates) {
         uniqueUpdate = data.map((obj: any) => {
-            const matchingData = resources.filter((newObj) => newObj.id === obj.id);
+            const matchingData = resources.filter((newObj) => newObj._id === obj._id);
             return matchingData.length > 0 ? matchingData[0] : obj;
         });
         uniqueUpdate.sort((a: Resources, b: Resources) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());

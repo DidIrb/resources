@@ -1,19 +1,20 @@
 import { LoadingButton } from "@/components/custom/loading.btn";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
+import { useApp } from "@/context/app.context";
+import { useData } from "@/context/data.context";
+import api from "@/lib/api";
+import { saveToLocalStorage } from "@/lib/func";
+import { Resources } from "@/types/forms.types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import TagsFilter from "../components/search/tags.filter";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import api from "@/lib/api";
-import { toast } from "sonner";
-import { useApp } from "@/context/app.context";
-import { Resources } from "@/types/forms.types";
-import { useData } from "@/context/data.context";
 import { useSearch } from "@/context/search.context";
 
 type Props = {
@@ -23,11 +24,11 @@ type Props = {
 
 export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
     const { resource } = useApp();
-    const { tags, types } = useData();
-    const { search } = useSearch();
+    const { tags, types, topics} = useData();
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
+    const {setFilteredResources} = useSearch();
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
     const handleTagSelect = (tags: any) => {
@@ -35,7 +36,6 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
     };
 
     const formSchema = z.object({
-
         title: z.string().min(2, {
             message: "This field is required!",
         }),
@@ -43,6 +43,9 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
             message: "This field is required!",
         }),
         type: z.string().min(2, {
+            message: "This field is required!",
+        }),
+        topic: z.string().min(2, {
             message: "This field is required!",
         }),
         icon: z.string(),
@@ -59,6 +62,7 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
         type: "",
         title: "",
         description: "",
+        topic: "",
         link: "",
         secret: ""
     };
@@ -75,6 +79,7 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
                 icon: resource.icon,
                 type: resource.type,
                 title: resource.title,
+                topic: resource.topic,
                 description: resource.description,
                 link: resource.link,
                 secret: ""
@@ -99,20 +104,23 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
                 let response
                 data.tags = selectedTags;
                 if (resource) {
-                    response = await api.put(`/resources/${resource.id}`, data);
+                    response = await api.put(`/resources/${resource._id}`, data);
                 } else {
                     response = await api.post("/resources", data);
                 }
+                console.log(response.data.data);
                 toast.success(response?.data?.message)
                 if (response.status == 200) {
-                    await search(`${data.title}`, [], [], ["title"], "asc", 1, 1);
+                    const savedData = saveToLocalStorage([response.data.data]);
+                    setFilteredResources(savedData);
                     toggleOpenState(false);
                     setSelectedTags([]);
                     setError("");
                     form.reset();
                 }
             } catch (error: any) {
-                const message = error.response.data.error || "Internal Server Error";
+                console.log(error);
+                const message = error.response?.data?.error || "Internal Server Error";
                 toast.error(message);
             } finally {
                 setIsLoading(false);
@@ -183,6 +191,32 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
                             />
                             <FormField
                                 control={form.control}
+                                name="topic"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Topic</FormLabel>
+                                        <FormControl>
+                                            <Select onValueChange={field.onChange} value={field.value}>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="what is the focus / topic" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectGroup>
+                                                        {topics.map((item) => (
+                                                            <SelectItem key={item} value={item}>
+                                                                {item}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectGroup>
+                                                </SelectContent>
+                                            </Select>
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
                                 name="icon"
                                 render={({ field }) => (
                                     <FormItem>
@@ -193,7 +227,6 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
                                     </FormItem>
                                 )}
                             />
-
 
                             <FormField
                                 control={form.control}

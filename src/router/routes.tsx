@@ -36,7 +36,6 @@ const Router = () => {
       children: [
         { path: "/home", element: <Home /> },
         { path: "/resource/:slug", element: <Slug /> },
-        
       ],
     },
 
@@ -52,9 +51,14 @@ const Router = () => {
       path: '/',
       element: session ? <Layout /> : <Navigate to="/home" />,
       children: [
-        { path: '/dashboard', element: isSuperAdmin || isAdmin ? <Dashboard /> : <Navigate to="/home" /> },
-        // { path: '/dashboard/:slug', element: <Slug /> },
-        { path: '/users', element: isSuperAdmin ? <Users /> : <Navigate to="/home" /> },
+        { 
+          path: '/dashboard', 
+          element: isSuperAdmin || isAdmin ? <Dashboard /> : <Navigate to="/home" /> 
+        },
+        { 
+          path: '/users', 
+          element: isSuperAdmin ? <Users /> : <Navigate to="/home" /> 
+        },
         { path: '/settings', element: <Settings /> }
       ],
     },

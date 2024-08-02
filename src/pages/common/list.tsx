@@ -38,7 +38,7 @@ export const ResourceList = () => {
     let [page, setPage] = useState(appConfig?.currentPage || 1);
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState<boolean>(isLastPage || true);
-    const pageSize = 2;
+    const limit = 2;
 
 
     const hasFetched = useRef(false);
@@ -57,7 +57,7 @@ export const ResourceList = () => {
         setTimeout(async () => {
             try {
                 const response: AxiosResponse<apiResponse> = await api.get<apiResponse>(`${config.url}/resources`,
-                    { params: { page, pageSize } }
+                    { params: { page, limit }}
                 );
                 const { data, currentPage, totalItems, totalPages } = response.data;
                 const savedData = saveToLocalStorage(data)
@@ -90,8 +90,8 @@ export const ResourceList = () => {
             {isGrid ?
                 <div className="flex gap-3 flex-wrap w-full">
                     {filteredResources.length > 0 &&
-                        filteredResources.map((resource: Resources) => (
-                            <div key={resource.id} className="sm:w-72 w-full">
+                        filteredResources.map((resource: Resources, index: number) => (
+                            <div key={index} className="sm:w-72 w-full">
                                 <Resource item={resource} />
                             </div>
                         ))}

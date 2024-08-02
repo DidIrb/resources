@@ -33,10 +33,15 @@ export function Filter() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="pb-2" align="start" >
-        <DropdownMenuLabel className="font-medium  flex items-center">Search parameters
-
-          <ReloadIcon className={`icon ${isLoading && 'animate-spin'} h-3 cursor-pointer`} onClick={Reload} />
-
+        <DropdownMenuLabel className="font-medium text-lg flex gap-2 items-center">Search parameters
+          <Button variant="outline" className="h-6 px-3" onClick={Reload} >
+            {isLoading ?
+              <ReloadIcon className={`icon ${isLoading && 'animate-spin'} h-3 cursor-pointer`} />
+              : "Reload Params"}
+          </Button>
+          <Button variant="outline" className="h-6 bg-blue-600 px-3 text-white" onClick={() => console.log("hello")} >
+            filter
+          </Button>
         </DropdownMenuLabel>
         <div className="flex gap-2 px-1 flex-wrap">
           {
@@ -94,7 +99,6 @@ export function Filter() {
             ))
           }
         </div>
-
       </DropdownMenuContent>
     </DropdownMenu>
   );

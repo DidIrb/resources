@@ -153,7 +153,7 @@ const SearchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         });
 
         if (filter.length > 0) {
-            const existingResource = resources.find(resource => resource.topics.includes(value));
+            const existingResource = resources.find(resource => resource.topic.includes(value));
             if (existingResource) {
                 const filteredResources = filterTags(resources, filter);
                 setSelectedTopics(filteredResources);

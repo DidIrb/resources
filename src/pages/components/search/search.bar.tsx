@@ -1,22 +1,22 @@
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useData } from "@/context/data.context";
 import { useSearch } from "@/context/search.context";
 import { debounce, filterByValue, saveToLocalStorage } from "@/lib/func";
 import { LayoutGrid, List, Search } from "lucide-react";
 import { ChangeEvent, useCallback, useState } from "react";
-import { toast } from "sonner";
 import { Filter } from "./filter";
-import { Card } from "@/components/ui/card";
+import { toast } from "sonner";
 
 export const SearchBar = () => {
   const {
-    resources, setFilteredResources, search_db, query, setQuery, setResources,
+    resources, setFilteredResources, search_db, query,filteredData, setFilteredData, setQuery,
     selectedTopics, selectedTypes, selectedTags
   } = useSearch();
 
   const { isGrid, setIsGrid } = useData();
-  const [filteredData, setFilteredData] = useState<any>(undefined);
+
 
   const appConfig = JSON.parse(localStorage.getItem('config') || 'null');
 
@@ -41,17 +41,14 @@ export const SearchBar = () => {
       setFilteredData(result)
       if (result.length === 0) {
         setFilteredResources(result);
-        // try {
-        //   const res: any = await search_db(data, selectedTags, selectedTypes, selectedTopics, 1, 10);
-        //   const savedData = saveToLocalStorage(res.resources)
-        //   setFilteredResources(savedData);
-        //   setResources(savedData);
-        //   console.log(res);
-        // } catch (error: any) {
-        //   console.log(error)
-        //   const message = error.response.data.error || "Internal Server Error"
-        //   toast.error(message);
-        // }
+        try {
+          const res: any = await search_db(data, selectedTags, selectedTypes, selectedTopics, 1, 10);
+          const savedData = saveToLocalStorage(res.resources)
+          setFilteredResources(savedData);
+        } catch (error: any) {
+          const message = error.response.data.error || "Internal Server Error"
+          toast.error(message);
+        }
       } else {
         setFilteredResources(result);
       }

@@ -69,8 +69,8 @@ const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
                 localStorage.setItem("types", JSON.stringify(types));
                 localStorage.setItem("topics", JSON.stringify(topics));
             }
-        } catch (error) {
-            console.error(error);
+        } catch (error: any) {
+            throw new Error(error)
         } finally {
             setTimeout(() => {
                 setIsLoading(false);

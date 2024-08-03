@@ -86,15 +86,12 @@ export const UsersForm: React.FC<Props> = ({ open, toggleOpenState }) => {
             toast.success(response?.data?.message)
             if (response.status == 201 || response.status == 200) {
                 const user = response?.data?.user;
-                // const newUsers = [...users, updated];
                 const newUsers = _.unionBy([user], users, '_id');
-                console.log(newUsers, user);
                 setUsers(newUsers);
                 toggleOpenState(false);
                 form.reset();
             }
         } catch (error: any) {
-            console.error(error);
             toast.error(error.response.data.error)
         } finally {
             setIsLoading(false);

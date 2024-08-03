@@ -40,7 +40,6 @@ export const ResourceList = () => {
     const [hasMore, setHasMore] = useState<boolean>(isLastPage || true);
     const limit = 2;
 
-
     const hasFetched = useRef(false);
     useEffect(() => {
         if (hasFetched.current) return;
@@ -61,7 +60,7 @@ export const ResourceList = () => {
                 const { data, currentPage, totalItems, totalPages } = response.data;
                 const savedData = saveToLocalStorage(data)
                 setFilteredResources(savedData);
-                setResources(savedData);
+
                 const scrollFilter = { ...appConfig, currentPage, totalItems, totalPages };
                 localStorage.setItem('config', JSON.stringify(scrollFilter));
 
@@ -69,6 +68,7 @@ export const ResourceList = () => {
                 if (page == totalPages || totalPages < page) {
                     setHasMore(false);
                 }
+                
                 if (totalPages < page) {
                     const scrollFilter = { ...appConfig, currentPage: 1, totalItems: totalItems, total: totalPages };
                     localStorage.setItem('config', JSON.stringify(scrollFilter));

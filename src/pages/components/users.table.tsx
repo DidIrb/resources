@@ -54,9 +54,7 @@ export const UsersTable = forwardRef((_props, ref) => {
             if (response.status === 200) {
                 setOpen(false);
             }
-            console.log(response.data);
         } catch (error: any) {
-            console.error(error);
             const message = error.response.data.error || "Internal Server Error";
             toast.error(message);
         } finally {

@@ -1,7 +1,7 @@
 import InfiniteScroll from "@/components/custom/infinite.scroll";
+import { Button } from "@/components/ui/button";
 import { useData } from "@/context/data.context";
 import { useSearch } from "@/context/search.context";
-import { saveToLocalStorage } from "@/lib/func";
 import { Resources } from "@/types/forms.types";
 import _ from "lodash";
 import { ArrowLeft, Loader2 } from "lucide-react";
@@ -9,7 +9,6 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 import Resource from "../components/resource";
-import { Button } from "@/components/ui/button";
 
 
 export interface apiResponse {
@@ -26,7 +25,7 @@ export const SearchResults = () => {
     const [apiResponse, setApiResponse] = useState<apiResponse | null>(null);
 
     const { query, tags, types, topics } = Object.fromEntries(searchParams.entries());
-    const { filteredResources, setFilteredResources, setResources, search_db } = useSearch();
+    const { filteredResources, setFilteredResources, search_db } = useSearch();
 
     let [page, setPage] = useState(1);
 
@@ -42,13 +41,10 @@ export const SearchResults = () => {
         setTimeout(async () => {
             try {
                 const res: any = await search_db(query, tagsArray, typesArray, topicsArray, 1, 10);
-                const savedData = saveToLocalStorage(res.resources);
                 const resources = res.resources.length ? [...filteredResources, ...res.resources] : filteredResources;
                 const uniqueUpdate = _.uniqBy(resources, '_id');
-                // Save data
-                console.log(res)
-                setResources(savedData);
-                setApiResponse(res);
+
+                setApiResponse(res as apiResponse);
                 setFilteredResources(uniqueUpdate);
                 setPage((prev: number) => prev + 1);
 
@@ -56,7 +52,6 @@ export const SearchResults = () => {
                     setHasMore(false);
                 }
             } catch (error: any) {
-                console.log(error)
                 setHasMore(false);
                 const message = error.response.data.error || "Internal Server Error"
                 toast.error(message)
@@ -68,19 +63,19 @@ export const SearchResults = () => {
 
     return (
         <div className="px-4">
-            {apiResponse &&
-                <div className="flex justify-between pb-3 items-center">
-                    <Link to={"/home"}>
-                        <Button variant={"ghost"} className="mt-1 cursor-pointer gap-1 px-2">
-                            <ArrowLeft className="icon" /> Back
-                        </Button>
-                    </Link>
+            <div className="flex justify-between pb-3 items-center">
+                <Link to={"/home"}>
+                    <Button variant={"ghost"} className="mt-1 cursor-pointer gap-1 px-2">
+                        <ArrowLeft className="icon" /> Back
+                    </Button>
+                </Link>
+                {apiResponse &&
                     <div className="text-sm flex flex-row gap-1 text-gray-500">
                         <p>{apiResponse.totalResults} matches found | </p>
                         <p>Showing {apiResponse.currentPage} of {apiResponse.totalPages} pages</p>
                     </div>
-                </div>
-            }
+                }
+            </div>
             {isGrid ?
                 <div className="flex gap-3 flex-wrap w-full">
                     {filteredResources.length > 0 &&

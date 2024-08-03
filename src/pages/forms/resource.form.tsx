@@ -93,8 +93,6 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
         }
     }, [resource]);
 
-    // console.log(resource); 
-
     const onSubmit = async (data: Resources) => {
         if (selectedTags.length == 0) {
             setError("Tags are Empty");
@@ -104,10 +102,8 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
                 let response
                 data.tags = selectedTags;
                 if (resource) {
-                    console.log("updating")
                     response = await api.put(`/resources/${resource._id}`, data);
                 } else {
-                    console.log("crating")
                     response = await api.post("/resources", data);
                 }
                 toast.success(response?.data?.message)
@@ -120,7 +116,6 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
                     form.reset();
                 }
             } catch (error: any) {
-                console.log(error);
                 const message = error.response?.data?.error || "Internal Server Error";
                 toast.error(message);
             } finally {

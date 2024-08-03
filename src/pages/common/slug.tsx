@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
-import ResourcesForm from "../forms/resource.form";
+import { ResourcesForm } from "../forms/resource.form";
 
 export function Slug() {
     const { openEditResource, open } = useApp();

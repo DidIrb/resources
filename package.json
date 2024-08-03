@@ -32,6 +32,7 @@
     "react-helmet-async": "^2.0.5",
     "react-hook-form": "^7.52.1",
     "react-router-dom": "^6.24.1",
+    "react-vite-ui": "file:",
     "sonner": "^1.5.0",
     "tailwindcss-animate": "^1.0.6",
     "zod": "^3.23.8"

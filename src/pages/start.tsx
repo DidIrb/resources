@@ -1,6 +1,6 @@
 import { ModeToggle } from "@/components/mode-toggle";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import { BoxIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import { ExternalLink } from "lucide-react";
 import { Helmet } from "react-helmet-async";

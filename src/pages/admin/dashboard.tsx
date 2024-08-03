@@ -9,11 +9,11 @@ import { ResourceList } from "../common/list";
 
 export const Dashboard = () => {
   const { open, openEditResource } = useApp();
-  const { search, isLoading } = useSearch();
+  const { search_db, isLoading } = useSearch();
   const { session } = useAuth();
   const reload = () => {
     try {
-      const res: any = search('', [], [], [], "desc", 1, 2);
+      const res: any = search_db('', [], [], [], 1, 10);
       if (res.status == 200) toast.success('Reloaded successfully');
       if (!res.status) {
           toast.error("Internal Server Error");

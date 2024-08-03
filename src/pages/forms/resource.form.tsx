@@ -6,6 +6,7 @@ import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetT
 import { Textarea } from "@/components/ui/textarea";
 import { useApp } from "@/context/app.context";
 import { useData } from "@/context/data.context";
+import { useSearch } from "@/context/search.context";
 import api from "@/lib/api";
 import { saveToLocalStorage } from "@/lib/func";
 import { Resources } from "@/types/forms.types";
@@ -15,7 +16,6 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import TagsFilter from "../components/search/tags.filter";
-import { useSearch } from "@/context/search.context";
 
 type Props = {
     open: boolean;
@@ -270,5 +270,3 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
         </Sheet>
     );
 };
-
-export default ResourcesForm;

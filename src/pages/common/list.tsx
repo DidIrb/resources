@@ -45,7 +45,6 @@ export const ResourceList = () => {
     useEffect(() => {
         if (hasFetched.current) return;
         hasFetched.current = true;
-
         if (parsedResources.length > 0) {
             setResources(parsedResources);
             setFilteredResources(parsedResources);

@@ -31,8 +31,7 @@ export const Users = () => {
             <Button variant="outline" className={`h-7 ${isLoading && 'w-7'} rounded-full`} size={`${isLoading ? 'icon' : 'default'}`} onClick={handleFetchUsersData} >
               {isLoading ?
                 <ReloadIcon className={`icon ${isLoading ? 'animate-spin infinite' : ''} cursor-pointer`} />
-                :
-                "Reload"
+                : "Reload"
               }
             </Button>
             <Button className="h-7 rounded-full" onClick={() => openEditUser(null)} >
@@ -40,7 +39,6 @@ export const Users = () => {
             </Button>
           </div>
         }
-
       </div>
       <UsersForm open={openUserForm} toggleOpenState={openEditUser} />
     </div>

@@ -20,29 +20,26 @@ export const Settings: React.FC = () => {
   const [sitemap, setSitemap] = useState("");
   const [showTypesForm, setShowTypesForm] = useState(false);
   const [showTopicsForm, setShowTopicsForm] = useState(false);
-  const { tags, types,topics, fetchData } = useData();
+  const { tags, types, topics, fetchData } = useData();
 
   const handleFormSuccess = (formType: 'tags' | 'types' | 'topics') => {
     fetchData();
-    if (formType === 'tags') {
-      setShowTagsForm(false);
-    } else if (formType === 'types') {
-      setShowTypesForm(false);
-    }
+    if (formType === 'tags') setShowTagsForm(false);
+    else if (formType === 'types') setShowTypesForm(false);
+    else if (formType === 'topics') setShowTopicsForm(false);
   };
+  
   const generate = async () => {
     setIsLoading(true)
     try {
       const res = await api.get(`/sitemap`);
       setSitemap(res.data);
-      console.log(res);
     } catch (error: any) {
       const message = error.response.data.message || "Internal Server Error"
       toast.error(message)
-    } finally {
-      setIsLoading(false)
-    }
+    } finally { setIsLoading(false) }
   }
+
   const download = () => {
     const blob = new Blob([sitemap], { type: 'application/xml' });
     const url = URL.createObjectURL(blob);
@@ -53,7 +50,7 @@ export const Settings: React.FC = () => {
     link.click();
     document.body.removeChild(link);
   };
-
+  
   return (
     <div className="px-4 flex justify-between md:flex-row gap-3 flex-col-reverse">
       <Profile />
@@ -82,7 +79,7 @@ export const Settings: React.FC = () => {
             </Card>
             <div className="title my-2 font-medium">Filter topics</div>
             <Card className="p-2 pt-1">
-              {topics.map((item:string, index: number) => (
+              {topics.map((item: string, index: number) => (
                 <Badge key={index} className='mr-1 font-medium' variant="outline">
                   {item}
                 </Badge>
@@ -102,7 +99,7 @@ export const Settings: React.FC = () => {
               }
               {!showTopicsForm
                 ? <Button variant="outline" className='rounded-full column--shrunk' onClick={() => setShowTopicsForm(true)}> add topic </Button>
-                : <TopicsForm onClose={() => setShowTopicsForm(false)} onSuccess={() => handleFormSuccess('types')} />
+                : <TopicsForm onClose={() => setShowTopicsForm(false)} onSuccess={() => handleFormSuccess('topics')} />
               }
             </div>
           </div>

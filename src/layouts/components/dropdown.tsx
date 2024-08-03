@@ -16,7 +16,6 @@ export const UserDropDown = () => {
             const res = await signout();
             toast.success(res.data.message);
         } catch (error) {
-            // Handle the error
             toast.error("Error signing out");
         }
     }

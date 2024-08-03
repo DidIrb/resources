@@ -1,20 +1,18 @@
-// src/Router.tsx (or your routing file)
-
-import { Routes, Route, Navigate } from 'react-router-dom';
+import config from '@/config/config';
 import { useAuth } from '@/context/auth.context';
 import { AuthLayout } from '@/layouts/auth.layout';
-import { Layout } from '@/layouts/admin.layout';
+import { Layout } from '@/layouts/layout';
+import PageNotFound from '@/pages/404';
 import { Dashboard } from '@/pages/admin/dashboard';
 import { Settings } from '@/pages/admin/settings';
 import { Users } from '@/pages/admin/users';
-import { Home } from '@/pages/home';
-import { Slug } from '@/pages/common/[Slug]';
-import PageNotFound from '@/pages/404';
-import { RouteType } from '../types/data.types';
 import { Signin } from '@/pages/auth/signin';
+import { SearchResults } from '@/pages/common/search';
+import { Slug } from '@/pages/common/slug';
+import { Home } from '@/pages/home';
 import { Start } from '@/pages/start';
-import config from '@/config/config';
-import { FilteredList } from '@/pages/common/filtered.list';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { RouteType } from '../types/data.types';
 
 const renderRoutes = (routes: RouteType[]) => {
   return routes.map(({ path, element, children = [] }) => (
@@ -37,7 +35,7 @@ const Router = () => {
       children: [
         { path: "/home", element: <Home /> },
         { path: "/resource/:slug", element: <Slug /> },
-        { path: "/search", element: <FilteredList /> },
+        { path: "/search", element: <SearchResults /> },
       ],
     },
 

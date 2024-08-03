@@ -32,7 +32,6 @@ export function Signin() {
       toast.success(response.message);
       navigate("/dashboard")
     } catch (error: any) {
-      console.error(error);
       toast.error(error.response.data.error);
     } finally {
       setIsLoading(false);

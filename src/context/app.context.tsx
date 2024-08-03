@@ -1,19 +1,7 @@
 import { Resources, User } from '@/types/forms.types';
 import { createContext, useContext, useState } from "react";
 import SearchProvider from './search.context';
-
-interface AppContextType {
-    user: User | null;
-    open: boolean;
-    isLoading: boolean;
-    openUserForm: boolean;
-    users: User[];
-    resource: Resources | null;
-    setUsers: (user: any) => void;
-    setIsLoading: (isLoading: boolean) => void;
-    openEditResource: (data: any) => void;
-    openEditUser: (data: any) => void;
-}
+import { AppContextType } from '@/types/context.types';
 
 const AppContext = createContext<AppContextType | null>(null);
 

@@ -10,21 +10,25 @@ import { Link, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 import Resource from "../components/resource";
 
+
 export interface apiResponse {
     resources: Resources[],
     currentPage: number,
-    totalItems: number,
+    totalResults: number,
     totalPages: number
 }
 
-export const FilteredList = () => {
+export const SearchResults = () => {
     const { isGrid } = useData();
     const { search } = useLocation();
     const searchParams = new URLSearchParams(search);
-    const { query, tags, types, topics } = Object.fromEntries(searchParams.entries());
+    const [apiResponse, setApiResponse] = useState<apiResponse | null>(null);
 
+    const { query, tags, types, topics } = Object.fromEntries(searchParams.entries());
     const { filteredResources, setFilteredResources, setResources, search_db } = useSearch();
+    
     let [page, setPage] = useState(1);
+
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState<boolean>(true);
 
@@ -37,26 +41,24 @@ export const FilteredList = () => {
         setTimeout(async () => {
             try {
                 const res: any = await search_db(query, tagsArray, typesArray, topicsArray, 1, 10);
-                console.log(res)
-                const { totalPages } = res;
                 const savedData = saveToLocalStorage(res.resources);
-
                 setResources(savedData);
                 const resources = res.resources.length ? [...filteredResources, ...res.resources] : filteredResources;
                 const uniqueUpdate = _.uniqBy(resources, '_id');
-
+                setApiResponse(res);
+                console.log(res)
                 setFilteredResources(uniqueUpdate);
-
                 setPage((prev: number) => prev + 1);
 
-                if (page == totalPages || totalPages < page) {
+                if (page == res.totalPages || res.totalPages < page) {
                     setHasMore(false);
                 }
+
             } catch (error: any) {
                 console.log(error)
                 setHasMore(false);
-                // const message = error.response.data.error || "Internal Server Error"
-                // toast.error(message)
+                const message = error.response.data.error || "Internal Server Error"
+                toast.error(message)
             } finally {
                 setLoading(false);
             }
@@ -64,8 +66,13 @@ export const FilteredList = () => {
     };
 
     return (
-        <div >
-
+        <div className="px-4">
+            {apiResponse && apiResponse.totalResults > 0 && 
+            <div className="flex justify-end gap-1 pb-3 items-center">
+            <p className="text-sm text-gray-500">{apiResponse.totalResults} matches found | </p>
+                <p className="text-sm text-gray-500 ">Showing {apiResponse.currentPage} of {apiResponse.totalPages} pages</p>
+            </div>
+            }
             {isGrid ?
                 <div className="flex gap-3 flex-wrap w-full">
                     {filteredResources.length > 0 &&
@@ -73,7 +80,8 @@ export const FilteredList = () => {
                             <div key={index} className="sm:w-72 w-full">
                                 <Resource item={resource} />
                             </div>
-                        ))}
+                        ))
+                    }
                 </div>
                 :
                 <div className="md:px-10 px-0 md:text-base text-sm">

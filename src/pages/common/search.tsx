@@ -4,11 +4,12 @@ import { useSearch } from "@/context/search.context";
 import { saveToLocalStorage } from "@/lib/func";
 import { Resources } from "@/types/forms.types";
 import _ from "lodash";
-import { Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 import Resource from "../components/resource";
+import { Button } from "@/components/ui/button";
 
 
 export interface apiResponse {
@@ -26,7 +27,7 @@ export const SearchResults = () => {
 
     const { query, tags, types, topics } = Object.fromEntries(searchParams.entries());
     const { filteredResources, setFilteredResources, setResources, search_db } = useSearch();
-    
+
     let [page, setPage] = useState(1);
 
     const [loading, setLoading] = useState(false);
@@ -42,18 +43,18 @@ export const SearchResults = () => {
             try {
                 const res: any = await search_db(query, tagsArray, typesArray, topicsArray, 1, 10);
                 const savedData = saveToLocalStorage(res.resources);
-                setResources(savedData);
                 const resources = res.resources.length ? [...filteredResources, ...res.resources] : filteredResources;
                 const uniqueUpdate = _.uniqBy(resources, '_id');
-                setApiResponse(res);
+                // Save data
                 console.log(res)
+                setResources(savedData);
+                setApiResponse(res);
                 setFilteredResources(uniqueUpdate);
                 setPage((prev: number) => prev + 1);
 
                 if (page == res.totalPages || res.totalPages < page) {
                     setHasMore(false);
                 }
-
             } catch (error: any) {
                 console.log(error)
                 setHasMore(false);
@@ -67,11 +68,18 @@ export const SearchResults = () => {
 
     return (
         <div className="px-4">
-            {apiResponse && apiResponse.totalResults > 0 && 
-            <div className="flex justify-end gap-1 pb-3 items-center">
-            <p className="text-sm text-gray-500">{apiResponse.totalResults} matches found | </p>
-                <p className="text-sm text-gray-500 ">Showing {apiResponse.currentPage} of {apiResponse.totalPages} pages</p>
-            </div>
+            {apiResponse &&
+                <div className="flex justify-between pb-3 items-center">
+                    <Link to={"/home"}>
+                        <Button variant={"ghost"} className="mt-1 cursor-pointer gap-1 px-2">
+                            <ArrowLeft className="icon" /> Back
+                        </Button>
+                    </Link>
+                    <div className="text-sm flex flex-row gap-1 text-gray-500">
+                        <p>{apiResponse.totalResults} matches found | </p>
+                        <p>Showing {apiResponse.currentPage} of {apiResponse.totalPages} pages</p>
+                    </div>
+                </div>
             }
             {isGrid ?
                 <div className="flex gap-3 flex-wrap w-full">

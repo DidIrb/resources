@@ -4,8 +4,8 @@ import { useAuth } from "@/context/auth.context";
 import { useSearch } from "@/context/search.context";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { toast } from "sonner";
-import { ResourcesForm } from "../forms/resource.form";
 import { ResourceList } from "../common/list";
+import { ResourcesForm } from "../forms/resource.form";
 
 export const Dashboard = () => {
   const { open, openEditResource } = useApp();
@@ -26,7 +26,7 @@ export const Dashboard = () => {
   return (
     <div className="p-0 px-4 overflow-hidden ">
       <ResourceList />
-      {/* Listing Resources form */}
+      
       <div className="fixed bottom-3 left-[50%] -translate-x-[50%]  p-2 rounded-xl bg-white/80 ring-1 ring-black/5 shadow">
         {session &&
           <div className="flex gap-2 items-center">
@@ -37,7 +37,7 @@ export const Dashboard = () => {
                 "Reload"
               }
             </Button>
-            <Button className=" rounded-full" onClick={() => openEditResource(null)} >
+            <Button className="rounded-full" onClick={() => openEditResource(null)} >
               Create
             </Button>
           </div>

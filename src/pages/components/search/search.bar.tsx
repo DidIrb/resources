@@ -10,19 +10,29 @@ import { Filter } from "./filter";
 import { Card } from "@/components/ui/card";
 
 export const SearchBar = () => {
-  const { 
-    resources, setFilteredResources, search_db, query, setQuery, setResources, 
-    selectedTopics, selectedTypes, selectedTags 
+  const {
+    resources, setFilteredResources, search_db, query, setQuery, setResources,
+    selectedTopics, selectedTypes, selectedTags
   } = useSearch();
 
   const { isGrid, setIsGrid } = useData();
   const [filteredData, setFilteredData] = useState<any>(undefined);
 
   const appConfig = JSON.parse(localStorage.getItem('config') || 'null');
-  
+
   const handleToggle = () => {
     setIsGrid(!isGrid);
     localStorage.setItem("config", JSON.stringify({ ...appConfig, isGrid: !isGrid }));
+  };
+
+  const [isFocused, setIsFocused] = useState(false);
+
+  const handleFocus = () => {
+    setIsFocused(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocused(false);
   };
 
   const handleSearch = useCallback(
@@ -31,17 +41,17 @@ export const SearchBar = () => {
       setFilteredData(result)
       if (result.length === 0) {
         setFilteredResources(result);
-        try {
-          const res: any = await search_db(data, selectedTags, selectedTypes, selectedTopics, 1, 10);
-          const savedData = saveToLocalStorage(res.resources)
-          setFilteredResources(savedData);
-          setResources(savedData);
-          console.log(res);
-        } catch (error: any) {
-          console.log(error)
-          const message = error.response.data.error || "Internal Server Error"
-          toast.error(message);
-        }
+        // try {
+        //   const res: any = await search_db(data, selectedTags, selectedTypes, selectedTopics, 1, 10);
+        //   const savedData = saveToLocalStorage(res.resources)
+        //   setFilteredResources(savedData);
+        //   setResources(savedData);
+        //   console.log(res);
+        // } catch (error: any) {
+        //   console.log(error)
+        //   const message = error.response.data.error || "Internal Server Error"
+        //   toast.error(message);
+        // }
       } else {
         setFilteredResources(result);
       }
@@ -66,21 +76,24 @@ export const SearchBar = () => {
         <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
           type="search"
-          placeholder="Search Resources..."
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          placeholder="Search Resources | Filter only for now"
           className="pl-8  h-8 rounded-full sm:w-full md:w-[300px] lg:w-[400px]"
           onChange={onChange}
         />
       </div>
 
-      {filteredData?.length === 0 &&
+      {(filteredData?.length === 0 && isFocused) &&
         <div className="flex absolute left-0 top-9  justify-end w-full">
           <Card className="sm:w-full lg:w-[400px] rounded-t-none p-3 overflow-auto">
-            {JSON.stringify(filteredData)}
             <div className="text-sm">No results found searching for "{query}"</div>
-            {/* More Data Available Open to view them */}
+            {/* Show filtered Data */}
           </Card>
         </div>
       }
+
+      {/* Allow search bar to first show the results */}
     </div>
   );
 };

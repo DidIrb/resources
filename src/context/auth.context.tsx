@@ -41,10 +41,10 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => 
             const response = await api.post(`/auth/signout`);
             setSession(null);
             return response;
-        } catch (error) {
+        } catch (error:any) {
             console.error(error);
             setSession(null);
-            throw error;
+            throw new Error(error)
         }
     };
 

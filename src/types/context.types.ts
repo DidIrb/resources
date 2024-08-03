@@ -7,7 +7,7 @@ export interface AppContextType {
     openUserForm: boolean;
     users: User[];
     resource: Resources | null;
-    setUsers: (user: any) => void;
+    setUsers: (user: User[]) => void;
     setIsLoading: (isLoading: boolean) => void;
     openEditResource: (data: any) => void;
     openEditUser: (data: any) => void;

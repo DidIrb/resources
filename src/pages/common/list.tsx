@@ -57,7 +57,7 @@ export const ResourceList = () => {
         setTimeout(async () => {
             try {
                 const response: AxiosResponse<apiResponse> = await api.get<apiResponse>(`${config.url}/resources`,
-                    { params: { page, limit }}
+                    { params: { page, limit } }
                 );
                 const { data, currentPage, totalItems, totalPages } = response.data;
                 const savedData = saveToLocalStorage(data)
@@ -86,7 +86,7 @@ export const ResourceList = () => {
     };
 
     return (
-        <div >
+        <div>
             {isGrid ?
                 <div className="flex gap-3 flex-wrap w-full">
                     {filteredResources.length > 0 &&
@@ -97,11 +97,11 @@ export const ResourceList = () => {
                         ))}
                 </div>
                 :
-                <div className="md:px-10 px-0">
+                <div className="md:px-10 px-0 md:text-base text-sm">
                     {filteredResources.length > 0 &&
                         filteredResources.map((item: Resources, index: number) => (
                             <div key={index} >
-                                <Link to={`/resource/${item.title.toLowerCase()}`} className="font-semibold hover:underline hover:text-blue-600 px-0">
+                                <Link to={`/resource/${item.title.toLowerCase()}`} className="font-semibold hover:underline hover:text-blue-600 px-0 capitalize">
                                     {item.title}
                                 </Link>
                                 <span> {" "}
@@ -127,3 +127,29 @@ export const ResourceList = () => {
         </div>
     );
 };
+
+            // {/* OLD Data */}
+            // {/* {filteredData && <hr className="my-4"/> } */}
+
+            // {/* Show filtered Data */}
+            // {filteredData &&
+            //     <Card>
+            //         {/* Showing filteredData */}
+                    
+            //         <div className="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400">
+            //           {filteredData.totalItems} Results found for Query | title or description = {query}, | tags={selectedTags},types={selectedTypes},topics={selectedTopics},
+            //         </div>
+            //         <div className="flex gap-3 flex-wrap w-full">
+            //             {filteredData.resources.length > 0 ?
+            //                 filteredResources.map((resource: Resources, index: number) => (
+            //                     <div key={index} className="sm:w-72 w-full">
+            //                         <Resource item={resource} />
+            //                         {/* Pagination based on number of pages */}
+            //                     </div>
+            //                 ))
+            //             : "No resources found"
+            //             }
+            //         </div>
+            //         {/* Pagination here */}
+            //     </Card>
+            // }

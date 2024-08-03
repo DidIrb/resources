@@ -9,20 +9,24 @@ import { toast } from "sonner";
 
 export function Filter() {
   const { types, tags, topics, fetchData } = useData();
-  const fields = ['title', 'description'];
   const [isLoading, setIsLoading] = useState(false);
-  const { handleTypes, handleTags, handleFields, selectedTopics, selectedFields, selectedTypes, selectedTags } = useSearch();
+  const { handleTypes, handleTags, handleTopics, selectedTopics, selectedTypes, selectedTags, search } = useSearch();
 
-  const Reload = () => {
+  const Reload = async () => {
     setIsLoading(true);
     try {
-      fetchData();
+      await fetchData();
       toast.success("Data fetched successfully");
     } catch (error) {
       toast.error("An error occurred while fetching data");
     } finally {
       setTimeout(() => { setIsLoading(false) }, 1000);
     }
+  }
+
+  const filterDataMethod = async () => {
+    const res: any = await search("", selectedTags, selectedTypes, selectedTopics, 1, 10);
+    console.log(res);
   }
 
   return (
@@ -32,31 +36,10 @@ export function Filter() {
           <SlidersHorizontal className="icon" />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="pb-2" align="start" >
-        <DropdownMenuLabel className="font-medium text-lg flex gap-2 items-center">Search parameters
-          <Button variant="outline" className="h-6 px-3" onClick={Reload} >
-            {isLoading ?
-              <ReloadIcon className={`icon ${isLoading && 'animate-spin'} h-3 cursor-pointer`} />
-              : "Reload Params"}
-          </Button>
-          <Button variant="outline" className="h-6 bg-blue-600 px-3 text-white" onClick={() => console.log("hello")} >
-            filter
-          </Button>
-        </DropdownMenuLabel>
-        <div className="flex gap-2 px-1 flex-wrap">
-          {
-            fields.map((fields, index: number) => (
-              <Button key={index}
-                variant={selectedFields.includes(fields) ? "default" : "secondary"}
-                className={`h-6 px-2 rounded-full `}
-                onClick={() => handleFields(fields)}
-              >
-                {fields}
-              </Button>
-            ))
-          }
-        </div>
-        <DropdownMenuLabel className="font-medium"> filter types
+      <DropdownMenuContent className="pb-2 sm:w-full w-64 mr-4 overflow-auto" align="start" >
+      <DropdownMenuLabel className="font-semibold text-lg pb-0"> Parameters
+      </DropdownMenuLabel>
+        <DropdownMenuLabel className="font-medium"> Filter types
         </DropdownMenuLabel>
         <div className="flex gap-2 px-1 flex-wrap">
           {
@@ -71,7 +54,7 @@ export function Filter() {
             ))
           }
         </div>
-        <DropdownMenuLabel className="font-medium">filter tags</DropdownMenuLabel>
+        <DropdownMenuLabel className="font-medium">Filter tags</DropdownMenuLabel>
         <div className="flex gap-2 px-1 flex-wrap">
           {
             tags.map((tag, index: number) => (
@@ -85,20 +68,31 @@ export function Filter() {
             ))
           }
         </div>
-        <DropdownMenuLabel className="font-medium">filter topics</DropdownMenuLabel>
+        <DropdownMenuLabel className="font-medium">Filter topics</DropdownMenuLabel>
         <div className="flex gap-2 px-1 flex-wrap">
           {
             topics.map((item, index: number) => (
               <Button key={index}
                 variant={selectedTopics.includes(item) ? "default" : "secondary"}
                 className={`h-6 px-2 rounded-full `}
-                onClick={() => handleTags(item)}
+                onClick={() => handleTopics(item)}
               >
                 {item}
               </Button>
             ))
           }
         </div>
+        <hr className="mt-3"/>
+        <DropdownMenuLabel className="font-medium text-lg flex gap-2 justify-end items-center mt-1">
+          <Button variant="outline" className="h-6 px-3" onClick={Reload} >
+            {isLoading ?
+              <ReloadIcon className={`icon ${isLoading && 'animate-spin'} h-3 cursor-pointer`} />
+              : "Reload Params"}
+          </Button>
+          <Button variant="outline" className="h-6 bg-blue-600 px-3 text-white" onClick={filterDataMethod} >
+            filter
+          </Button>
+        </DropdownMenuLabel>
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -34,7 +34,7 @@ export const saveToLocalStorage = (resources: Resources[]) => {
 
     let uniqueUpdate: any[] = [];
 
-    const containsDuplicates = hasDuplicates(update, "id");
+    const containsDuplicates = hasDuplicates(update, "_id");
     if (containsDuplicates) {
         uniqueUpdate = data.map((obj: any) => {
             const matchingData = resources.filter((newObj) => newObj._id === obj._id);
@@ -44,9 +44,9 @@ export const saveToLocalStorage = (resources: Resources[]) => {
         localStorage.setItem('resources', JSON.stringify(uniqueUpdate));
         return uniqueUpdate;
     } else {
-        uniqueUpdate = _.uniqBy(update, 'id');
+        uniqueUpdate = _.uniqBy(update, '_id');
         localStorage.setItem('resources', JSON.stringify(uniqueUpdate));
         return uniqueUpdate;
     }
-   
+
 }

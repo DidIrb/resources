@@ -17,20 +17,19 @@ import ResourcesForm from "../forms/resource.form";
 export function Slug() {
     const { openEditResource, open } = useApp();
     const { slug } = useParams();
-    const { search, isLoading } = useSearch();
+    const { search_db, isLoading } = useSearch();
     const { session } = useAuth();
     const stored = localStorage.getItem('resources') as string;
     const parsed = JSON.parse(stored) || [];
     let data: Resources = parsed.find((item: Resources) => item.title.toLowerCase() === slug);
 
-    useEffect(() => {
-        if (!data) { fetchData() }
-    }, [])
+    useEffect(() => { if (!data) { fetchData() } }, [])
 
     const fetchData = async () => {
-        const response = await search(`${slug}`, [], [], ["title"], "asc", 1, 1);
+        const response = await search_db(`${slug}`, [], [], [], 1, 1);
         return response;
     };
+    
     const copyLink = () => {
         navigator.clipboard.writeText(window.location.href);
         toast.success("Link copied to clipboard");
@@ -41,8 +40,8 @@ export function Slug() {
             <Helmet>
                 <title> Resource |
                     {isLoading ? "searching" : ""} {!data && !isLoading ? "resource not found" : `${slug}`}
-                </title></Helmet>
-
+                </title>
+            </Helmet>
             <Link to={`${session ? "/dashboard" : "/home"}`} className="flex items-center gap-2 cursor-pointer">
                 <ChevronLeft /> Back
             </Link>
@@ -67,7 +66,7 @@ export function Slug() {
                                 <p className="font-semibold hover:underline hover:text-blue-600 px-0">
                                     {data.title}
                                 </p>
-                                <Share2 onClick={copyLink} className="absolute top-2 right-2"/>
+                                <Share2 onClick={copyLink} className="absolute top-2 right-2" />
                             </div>
                             <div className="flex gap-2 items-center">
                                 {session?.role !== "admin" || session?.role !== "super_admin" && (
@@ -99,16 +98,15 @@ export function Slug() {
                         <Link to={data.link} className="text-blue-500 text-sm text-end hover:underline">
                             {data.link}
                         </Link>
-                        
+
                     </Card>
 
                     <div className="mb-4">
                     </div>
                 </div>
-
             }
-            <ResourcesForm open={open} toggleOpenState={openEditResource} />
 
+            <ResourcesForm open={open} toggleOpenState={openEditResource} />
         </div>
     )
 }

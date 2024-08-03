@@ -25,7 +25,6 @@ type Props = {
 export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
     const { resource } = useApp();
     const { tags, types, topics} = useData();
-
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const {setFilteredResources} = useSearch();
@@ -94,6 +93,7 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
         }
     }, [resource]);
 
+    // console.log(resource); 
 
     const onSubmit = async (data: Resources) => {
         if (selectedTags.length == 0) {
@@ -104,15 +104,16 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
                 let response
                 data.tags = selectedTags;
                 if (resource) {
+                    console.log("updating")
                     response = await api.put(`/resources/${resource._id}`, data);
                 } else {
+                    console.log("crating")
                     response = await api.post("/resources", data);
                 }
-                console.log(response.data.data);
                 toast.success(response?.data?.message)
                 if (response.status == 200) {
                     const savedData = saveToLocalStorage([response.data.data]);
-                    setFilteredResources(savedData);
+                    setFilteredResources(savedData); 
                     toggleOpenState(false);
                     setSelectedTags([]);
                     setError("");

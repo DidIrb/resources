@@ -14,6 +14,7 @@ import { RouteType } from '../types/data.types';
 import { Signin } from '@/pages/auth/signin';
 import { Start } from '@/pages/start';
 import config from '@/config/config';
+import { FilteredList } from '@/pages/common/filtered.list';
 
 const renderRoutes = (routes: RouteType[]) => {
   return routes.map(({ path, element, children = [] }) => (
@@ -36,6 +37,7 @@ const Router = () => {
       children: [
         { path: "/home", element: <Home /> },
         { path: "/resource/:slug", element: <Slug /> },
+        { path: "/search", element: <FilteredList /> },
       ],
     },
 

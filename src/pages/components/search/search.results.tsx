@@ -1,0 +1,1 @@
+// Showing search results and pages for resources

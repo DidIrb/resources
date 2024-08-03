@@ -9,7 +9,7 @@ import { UserDropDown } from "./dropdown"
 export const Navbar = () => {
     const location = useLocation();
     const currentPath = location.pathname
-    const isListPage = currentPath === "/dashboard" || currentPath === "/home";
+    const isListPage = currentPath === "/dashboard" || currentPath === "/home" || currentPath === "/search";
     const { session } = useAuth();
     return (
         <div className="flex flex-col items-center">

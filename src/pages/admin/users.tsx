@@ -5,6 +5,7 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import UsersForm from "../forms/user.form";
 import { UsersTable } from "../components/users.table";
 import { useRef } from "react";
+import { Helmet } from "react-helmet-async";
 
 interface ChildComponentRef {
   fetchUsersData: () => void;
@@ -24,8 +25,12 @@ export const Users = () => {
 
   return (
     <div className="px-4">
+      <Helmet>
+        <title> User Management | Private </title>
+        <meta name="description" content="User management page | private" />
+      </Helmet>
       <UsersTable ref={childRef} />
-      <div className="fixed bottom-3 left-[50%] -translate-x-[50%]  p-2 rounded-xl bg-white/80 ring-1 ring-black/5 shadow">
+      <div className="fixed bottom-8 left-[50%] -translate-x-[50%]  p-2 rounded-xl bg-white/20 ring-1 ring-black/5 shadow">
         {session &&
           <div className="flex gap-2 items-center">
             <Button variant="outline" className={`h-7 ${isLoading && 'w-7'} rounded-full`} size={`${isLoading ? 'icon' : 'default'}`} onClick={handleFetchUsersData} >

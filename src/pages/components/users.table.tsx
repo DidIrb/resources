@@ -5,13 +5,14 @@ import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import config from "@/config/config";
 import { useApp } from "@/context/app.context";
+import { useAuth } from "@/context/auth.context";
 import api from "@/lib/api";
 import { User } from "@/types/forms.types";
 import { Pencil1Icon, TrashIcon } from "@radix-ui/react-icons";
 import { AxiosResponse } from "axios";
+import _ from "lodash";
 import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { toast } from "sonner";
-import _ from "lodash";
 
 export const UsersTable = forwardRef((_props, ref) => {
     const { openEditUser, setUsers, setIsLoading, users } = useApp();
@@ -20,6 +21,7 @@ export const UsersTable = forwardRef((_props, ref) => {
     const [secretValue, setSecretValue] = useState<string>('');
     const [error, setError,] = useState<string>('');
     const [toDelete, setToDelete,] = useState<any>(null);
+    const { session } = useAuth();
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -30,7 +32,7 @@ export const UsersTable = forwardRef((_props, ref) => {
             try {
                 const response = await api.post(`/users/${toDelete?._id}`, { secret: secretValue });
                 toast.success(response.data.message);
-                if(response.status == 200) {
+                if (response.status == 200) {
                     const updated = _.remove(users, { _id: toDelete._id });
                     setUsers(updated);
                 }
@@ -95,16 +97,19 @@ export const UsersTable = forwardRef((_props, ref) => {
                 {users.length > 0
                     ?
                     <TableBody>
+                        
                         {users.map((item: User, index: number) => (
                             <TableRow key={index}>
-                                <TableCell className="font-medium">{index+1}</TableCell>
+                                <TableCell className="font-medium">{index + 1}</TableCell>
                                 <TableCell>{item.username}</TableCell>
                                 <TableCell>{item.email}</TableCell>
                                 <TableCell >{item.role}</TableCell>
-                                <TableCell className="flex gap-2 justify-end">
-                                    <Pencil1Icon className="icon cursor-pointer" onClick={() => openEditUser(item)} />
-                                    <TrashIcon className="icon cursor-pointer hover:text-red-600" onClick={() => deleteData(item)} />
-                                </TableCell>
+                                {(session.role !== "super_admin" || session.role !== item.role) &&
+                                    <TableCell className="flex gap-2 justify-end">
+                                        <Pencil1Icon className="icon cursor-pointer" onClick={() => openEditUser(item)} />
+                                        <TrashIcon className="icon cursor-pointer hover:text-red-600" onClick={() => deleteData(item)} />
+                                    </TableCell>
+                                }
                             </TableRow>
                         ))}
                     </TableBody>

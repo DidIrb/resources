@@ -5,7 +5,7 @@ import { useSearch } from "@/context/search.context";
 import { Resources } from "@/types/forms.types";
 import _ from "lodash";
 import { ArrowLeft, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 import Resource from "../components/resource";
@@ -27,7 +27,7 @@ export const SearchResults = () => {
     const { query, tags, types, topics } = Object.fromEntries(searchParams.entries());
     const { filteredResources, setFilteredResources, search_db } = useSearch();
 
-    let [page, setPage] = useState(1);
+    const [page, setPage] = useState(1);
 
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState<boolean>(true);
@@ -41,7 +41,7 @@ export const SearchResults = () => {
         setTimeout(async () => {
             try {
                 const res: any = await search_db(query, tagsArray, typesArray, topicsArray, 1, 10);
-                const resources = res.resources.length ? [...filteredResources, ...res.resources] : filteredResources;
+                const resources = res.resources.length ? [...filteredResources || [], ...res.resources] : filteredResources || [];
                 const uniqueUpdate = _.uniqBy(resources, '_id');
 
                 setApiResponse(res as apiResponse);
@@ -61,6 +61,10 @@ export const SearchResults = () => {
         }, 800);
     };
 
+    useEffect(() => {
+        setPage(1);
+        next();
+    }, [query, tags, types, topics]);
     return (
         <div className="px-4">
             <div className="flex justify-between pb-3 items-center">
@@ -78,7 +82,7 @@ export const SearchResults = () => {
             </div>
             {isGrid ?
                 <div className="flex gap-3 flex-wrap w-full">
-                    {filteredResources.length > 0 &&
+                    {(filteredResources && filteredResources.length > 0) &&
                         filteredResources.map((resource: Resources, index: number) => (
                             <div key={index} className="sm:w-72 w-full">
                                 <Resource item={resource} />
@@ -88,7 +92,7 @@ export const SearchResults = () => {
                 </div>
                 :
                 <div className="md:px-10 px-0 md:text-base text-sm">
-                    {filteredResources.length > 0 &&
+                    {(filteredResources && filteredResources.length > 0) &&
                         filteredResources.map((item: Resources, index: number) => (
                             <div key={index} >
                                 <Link to={`/resource/${item.title.toLowerCase()}`} className="font-semibold hover:underline hover:text-blue-600 px-0">
@@ -98,12 +102,17 @@ export const SearchResults = () => {
                                     {item.description}
                                 </span>
                             </div>
-                        ))}
+                        ))
+                    }
                 </div>
             }
 
+            {filteredResources && filteredResources.length === 0 &&
+                <div> No resources found </div>
+            }
+
             <InfiniteScroll hasMore={hasMore} isLoading={loading} next={next} threshold={1}>
-                {hasMore && <Loader2 className="my-4 h-8 w-8 animate-spin" />}
+                {hasMore && <Loader2 className="my-4 mx-2 h-8 w-8 animate-spin" />}
             </InfiniteScroll>
         </div>
     );

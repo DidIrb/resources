@@ -20,10 +20,11 @@ export const Start = () => {
       </Link>
       <div className="flex-1 p-4 flex gap-1 flex-col justify-center items-center w-full">
         <p className="md:text-3xl text-lg font-bold">Welcome to Resources</p>
-        <p className="max-w-[600px] text-center text-sm p-3">
+        <p className="max-w-[600px] text-center md:text-base text-sm p-3">
           The naming is generic but the information is useful, I built this to share helpful resources I find, from blogs,
           educational materials, sites and products.
-          Basically like one massive repository of information, <br /> enjoy ♥
+          Basically like one massive repository of information, <br /> enjoy <span className="text-red-500">❤</span> 
+          {/* ♥ */}
         </p>
         <div className="flex gap-2 p-3 pt-0 flex-wrap justify-center">
           {techStack.map((item, index) => (
@@ -34,7 +35,7 @@ export const Start = () => {
         </div>
         <div className="flex gap-3">
           <ModeToggle />
-          <Button className="rounded-full" onClick={() => navigate("/home")} >Get Started</Button>
+          <Button className="rounded-full" onClick={() => navigate("/home")} > Browse </Button>
           <Link to="https://github.com/didirb/resources" target="_blank">
             <Button variant="ghost" className="w-8 rounded-full" size="icon" aria-label="GitHub">
               <GitHubLogoIcon className="icon" />

@@ -12,7 +12,7 @@ export const Navbar = () => {
     const isListPage = currentPath === "/dashboard" || currentPath === "/home" || currentPath === "/search";
     const { session } = useAuth();
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center sticky bg-background shadow mb-5 top-0">
             <div className="h-16 w-full flex justify-between items-center px-4 gap-3">
                 <Link to={`${session ? "/dashboard" : currentPath === "/home" ? "/" : "/home"}`} className="flex items-center gap-2 font-bold ml-2 cursor-pointer">
                     <BoxIcon className="h-6 w-6 rotate-45" />

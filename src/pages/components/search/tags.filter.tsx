@@ -11,7 +11,7 @@ interface TagsFilterProps {
 
 const TagsFilter: React.FC<TagsFilterProps> = ({ allTags, error, onTagSelect }) => {
     const { resource } = useApp();
-    let defTags = resource?.tags || [];
+    const defTags = resource?.tags || [];
     
     const [searchTerm, setSearchTerm] = useState<string>('');
     const [selectedTags, setSelectedTags] = useState<string[]>(defTags);

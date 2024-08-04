@@ -12,6 +12,7 @@ import { toast } from 'sonner';
 import { DownloadIcon, ReloadIcon } from '@radix-ui/react-icons';
 import { LoadingButton } from '@/components/custom/loading.btn';
 import TopicsForm from '../forms/enums/topic.form';
+import { Helmet } from 'react-helmet-async';
 
 export const Settings: React.FC = () => {
   const { session } = useAuth();
@@ -53,6 +54,10 @@ export const Settings: React.FC = () => {
   
   return (
     <div className="px-4 flex justify-between md:flex-row gap-3 flex-col-reverse">
+      <Helmet>
+                <title> Settings | Private </title>
+                <meta name="description" content="Managing profile and app configurations" />
+            </Helmet>
       <Profile />
 
       {session?.role === "super_admin" &&

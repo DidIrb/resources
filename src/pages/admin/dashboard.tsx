@@ -11,9 +11,11 @@ export const Dashboard = () => {
   const { open, openEditResource } = useApp();
   const { search_db, isLoading } = useSearch();
   const { session } = useAuth();
-  const reload = () => {
+
+  // Reload Functionality is unnecessary now
+  const reload = async () => {
     try {
-      const res: any = search_db('', [], [], [], 1, 10);
+      const res: any = await search_db('', [], [], [], 1, 10);
       if (res.status == 200) toast.success('Reloaded successfully');
       if (!res.status) {
           toast.error("Internal Server Error");
@@ -27,7 +29,7 @@ export const Dashboard = () => {
     <div className="p-0 px-4 overflow-hidden ">
       <ResourceList />
       
-      <div className="fixed bottom-3 left-[50%] -translate-x-[50%]  p-2 rounded-xl bg-white/80 ring-1 ring-black/5 shadow">
+      <div className="fixed bottom-8 left-[50%] -translate-x-[50%]  p-2 rounded-xl bg-white/20 ring-1 ring-black/5 shadow">
         {session &&
           <div className="flex gap-2 items-center">
             <Button variant="outline" className={`h-8 ${isLoading && 'w-8'} rounded-full`} size={`${isLoading ? 'icon' : 'default'}`} onClick={reload} >

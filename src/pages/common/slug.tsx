@@ -21,7 +21,7 @@ export function Slug() {
     const { session } = useAuth();
     const stored = localStorage.getItem('resources') as string;
     const parsed = JSON.parse(stored) || [];
-    let data: Resources = parsed.find((item: Resources) => item.title.toLowerCase() === slug);
+    const data: Resources = parsed.find((item: Resources) => item.title.toLowerCase() === slug);
 
     useEffect(() => { if (!data) { fetchData() } }, [])
 

@@ -8,15 +8,18 @@ import { LayoutGrid, List, Search } from "lucide-react";
 import { ChangeEvent, useCallback, useState } from "react";
 import { Filter } from "./filter";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
+import { Resources } from "@/types/forms.types";
 
 export const SearchBar = () => {
   const {
-    resources, setFilteredResources, search_db, query,filteredData, setFilteredData, setQuery,
+    resources, setFilteredResources, search_db, query, isLoading, filteredData, setResources, setFilteredData, setQuery,
     selectedTopics, selectedTypes, selectedTags
   } = useSearch();
 
-  const { isGrid, setIsGrid } = useData();
+  const [searchResults, setSearchResults] = useState<Resources[] | null>(null)
 
+  const { isGrid, setIsGrid } = useData();
 
   const appConfig = JSON.parse(localStorage.getItem('config') || 'null');
 
@@ -27,9 +30,7 @@ export const SearchBar = () => {
 
   const [isFocused, setIsFocused] = useState(false);
 
-  const handleFocus = () => {
-    setIsFocused(true);
-  };
+  const handleFocus = () => { setIsFocused(true); };
 
   const handleBlur = () => {
     setIsFocused(false);
@@ -37,14 +38,16 @@ export const SearchBar = () => {
 
   const handleSearch = useCallback(
     debounce(async (data: string) => {
-      let result = filterByValue(resources, data);
+      const result = filterByValue(resources, data);
       setFilteredData(result)
       if (result.length === 0) {
         setFilteredResources(result);
         try {
+          console.log("searching")
           const res: any = await search_db(data, selectedTags, selectedTypes, selectedTopics, 1, 10);
           const savedData = saveToLocalStorage(res.resources)
-          setFilteredResources(savedData);
+          setResources(savedData);
+          setSearchResults(res.resources);
         } catch (error: any) {
           const message = error.response.data.error || "Internal Server Error"
           toast.error(message);
@@ -84,8 +87,25 @@ export const SearchBar = () => {
       {(filteredData?.length === 0 && isFocused) &&
         <div className="flex absolute left-0 top-9  justify-end w-full">
           <Card className="sm:w-full lg:w-[400px] rounded-t-none p-3 overflow-auto">
-            <div className="text-sm">No results found searching for "{query}"</div>
+            {isLoading &&
+              <div className="p-1 px-2 text-sm text-gray-800 rounded bg-gray-50 dark:bg-gray-800 dark:text-gray-300">no results found locally searching for "{query}"</div>
+            }
             {/* Show filtered Data */}
+            {searchResults && searchResults.length > 0 &&
+              searchResults.map((item: Resources, index: number) => (
+                <div key={index} className="truncate md:text-base text-sm">
+                  <Link to={`/resource/${item.title.toLowerCase()}`} className="font-semibold hover:underline hover:text-blue-600 px-0 capitalize">
+                    {item.title}
+                  </Link>
+                  <span> {" "}
+                    {item.description}
+                  </span>
+                </div>
+              ))
+            }
+            {searchResults && searchResults.length === 0 &&
+              <div className="text-sm font-medium alert py-1 mb-0 rounded">No Results found</div>
+            }
           </Card>
         </div>
       }

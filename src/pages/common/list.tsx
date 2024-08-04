@@ -35,7 +35,7 @@ export const ResourceList = () => {
     const { filteredResources, resources, setResources, setFilteredResources, query } = useSearch();
 
     const isLastPage = appConfig?.totalPages === appConfig?.currentPage
-    let [page, setPage] = useState(appConfig?.currentPage || 1);
+    const [page, setPage] = useState(appConfig?.currentPage || 1);
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState<boolean>(isLastPage || true);
     const limit = 2;
@@ -54,11 +54,14 @@ export const ResourceList = () => {
         setLoading(true);
         setTimeout(async () => {
             try {
+                console.log("searching value for", page)
                 const response: AxiosResponse<apiResponse> = await api.get<apiResponse>(`${config.url}/resources`,
                     { params: { page, limit } }
                 );
                 const { data, currentPage, totalItems, totalPages } = response.data;
-                const savedData = saveToLocalStorage(data)
+                console.log(response.data);
+
+                const savedData = saveToLocalStorage(data);
                 setFilteredResources(savedData);
 
                 const scrollFilter = { ...appConfig, currentPage, totalItems, totalPages };
@@ -68,7 +71,7 @@ export const ResourceList = () => {
                 if (page == totalPages || totalPages < page) {
                     setHasMore(false);
                 }
-                
+
                 if (totalPages < page) {
                     const scrollFilter = { ...appConfig, currentPage: 1, totalItems: totalItems, total: totalPages };
                     localStorage.setItem('config', JSON.stringify(scrollFilter));
@@ -88,7 +91,7 @@ export const ResourceList = () => {
         <div>
             {isGrid ?
                 <div className="flex gap-3 flex-wrap w-full">
-                    {filteredResources.length > 0 &&
+                    {filteredResources &&
                         filteredResources.map((resource: Resources, index: number) => (
                             <div key={index} className="sm:w-72 w-full">
                                 <Resource item={resource} />
@@ -97,7 +100,8 @@ export const ResourceList = () => {
                 </div>
                 :
                 <div className="md:px-10 px-0 md:text-base text-sm">
-                    {filteredResources.length > 0 &&
+                    {filteredResources && filteredResources.length > 0 &&
+                        // Show list of filtered resources
                         filteredResources.map((item: Resources, index: number) => (
                             <div key={index} >
                                 <Link to={`/resource/${item.title.toLowerCase()}`} className="font-semibold hover:underline hover:text-blue-600 px-0 capitalize">
@@ -107,8 +111,12 @@ export const ResourceList = () => {
                                     {item.description}
                                 </span>
                             </div>
-                        ))}
+                        ))
+                    }
                 </div>
+            }
+            {filteredResources && filteredResources.length === 0 &&
+                <div> No resources found </div>
             }
             {!query &&
                 <InfiniteScroll hasMore={hasMore} isLoading={loading} next={next} threshold={1}>
@@ -126,29 +134,3 @@ export const ResourceList = () => {
         </div>
     );
 };
-
-            // {/* OLD Data */}
-            // {/* {filteredData && <hr className="my-4"/> } */}
-
-            // {/* Show filtered Data */}
-            // {filteredData &&
-            //     <Card>
-            //         {/* Showing filteredData */}
-                    
-            //         <div className="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400">
-            //           {filteredData.totalItems} Results found for Query | title or description = {query}, | tags={selectedTags},types={selectedTypes},topics={selectedTopics},
-            //         </div>
-            //         <div className="flex gap-3 flex-wrap w-full">
-            //             {filteredData.resources.length > 0 ?
-            //                 filteredResources.map((resource: Resources, index: number) => (
-            //                     <div key={index} className="sm:w-72 w-full">
-            //                         <Resource item={resource} />
-            //                         {/* Pagination based on number of pages */}
-            //                     </div>
-            //                 ))
-            //             : "No resources found"
-            //             }
-            //         </div>
-            //         {/* Pagination here */}
-            //     </Card>
-            // }

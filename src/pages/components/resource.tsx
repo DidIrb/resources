@@ -19,7 +19,7 @@ const Resource: React.FC<ResourceProps> = ({ item }) => {
   return (
     <Card className="p-3">
       <div className="flex items-center justify-between mb-2">
-        <Link to={`/resource/${item.title.toLowerCase()}`} className="flex items-center gap-2 cursor-pointer font-semibold hover:underline hover:text-blue-600 px-0">
+        <Link to={`/resource/${item.title.toLowerCase()}`} className="flex items-center gap-2 cursor-pointer dark:text-gray-300 font-semibold hover:underline hover:text-blue-600 px-0">
           <Avatar className="w-7 h-7 ">
             <AvatarImage src={item.icon} />
             <AvatarFallback>{item.title.charAt(0).toUpperCase()}</AvatarFallback>

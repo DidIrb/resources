@@ -40,7 +40,7 @@ export function Signin() {
 
 
   return (
-    <Card className="mx-auto max-w-sm w-96">
+    <Card className="mx-auto max-w-sm w-96 rounded-2xl">
       <Helmet> 
         <title> Private | Signin </title>
         <meta name="description" content="A private and protected signin page" />
@@ -65,6 +65,7 @@ export function Signin() {
                     {...field}
                     autoComplete="username"
                     id="username"
+                    className='rounded-2xl'
                     type="text"
                     placeholder="m@example.com"
                   />
@@ -96,6 +97,7 @@ export function Signin() {
                       autoComplete='new-password'
                       placeholder="complex password"
                       type={showPassword ? 'text' : 'password'}
+                      className='rounded-2xl'
                     />
                   )}
                 />
@@ -109,7 +111,7 @@ export function Signin() {
               </div>
               {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
             </div>
-            <LoadingButton loading={isLoading} type="submit" className="w-full">
+            <LoadingButton loading={isLoading} type="submit" className="w-full rounded-2xl">
               Login
             </LoadingButton>
           </div>

@@ -8,7 +8,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 export const Start = () => {
   const navigate = useNavigate();
-  const techStack = ["Educational", "Scholarships", "Services", "Open Source", "Tools", "etc"]
+  // "Educational", "Scholarships", "Services",
+  const techStack = [ "Open Source", "Tools", "websites", "Applications", "Blogs", "Repositories" ];
   return (
     <div className="h-screen flex flex-col">
       <Helmet>

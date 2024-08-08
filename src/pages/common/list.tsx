@@ -103,7 +103,7 @@ export const ResourceList = () => {
                     {filteredResources && filteredResources.length > 0 &&
                         // Show list of filtered resources
                         filteredResources.map((item: Resources, index: number) => (
-                            <div key={index} >
+                            <div className="truncate" key={index} >
                                 <Link to={`/resource/${item.title.toLowerCase()}`} className="font-semibold hover:underline hover:text-blue-600 px-0 capitalize">
                                     {item.title}
                                 </Link>

@@ -5,7 +5,7 @@ import { useSearch } from "@/context/search.context";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
 export function Filter() {
@@ -26,8 +26,10 @@ export function Filter() {
       setIsLoading(false)
     }
   }
+  const { search } = useParams();
 
   const filterDataMethod = async () => {
+    // Update to allow filtering on click a second time
     navigate("/search?query=" + "" + "&tags=" + selectedTags + "&types=" + selectedTypes + "&topics=" + selectedTopics, { replace: true });
   }
 
@@ -45,7 +47,7 @@ export function Filter() {
             <Button variant="outline" size="icon" className="h-7 w-7" onClick={Reload} >
               <ReloadIcon className={`icon ${isLoading && 'animate-spin'} h-3 cursor-pointer`} />
             </Button>
-            <Button className="h-7" onClick={filterDataMethod} >
+            <Button className="h-7" disabled={search !== undefined} onClick={filterDataMethod} >
               Filter
             </Button>
           </div>

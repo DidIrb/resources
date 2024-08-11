@@ -56,47 +56,16 @@ export const saveToLocalStorage = (resources: Resources[]) => {
 };
 
 
-// export const saveToLocalStorage = (resources: Resources[]) => {
-//   const data = refetchData();
-//   const update = [...data, ...resources];
-//   console.log("resources", resources, "and to update", data,"joined array", update)
-
-//   let uniqueUpdate: any[] = [];
-
-//   const containsDuplicates = hasDuplicates(update, "_id");
-//   if (containsDuplicates) {
-
-//     uniqueUpdate = data.map((obj: any) => {
-//       const matchingData = resources.filter((newObj) => newObj._id === obj._id);
-//       return matchingData.length > 0 ? matchingData[0] : obj;
-//     });
-
-//     console.log("returned array", uniqueUpdate);
-//     uniqueUpdate.sort(
-//       (a: Resources, b: Resources) =>
-//         new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-//     );
-//     localStorage.setItem("resources", JSON.stringify(uniqueUpdate));
-//     return uniqueUpdate;
-//   } else {
-//     uniqueUpdate = _.uniqBy(update, "_id");
-//     localStorage.setItem("resources", JSON.stringify(uniqueUpdate));
-//     return uniqueUpdate;
-//   }
-// };
-
 export function filterResources(
   resources: Resources[],
   tags: string[],
   topics: string | string[],
   types: string | string[]
 ) {
-  console.log(resources, "tags", tags, "topics", topics, "types", types)
   return resources.filter((resource) => {
     const hasMatchingTags = tags.length === 0 || tags.some((tag) => resource.tags.includes(tag));
     const hasMatchingTopic = topics.length === 0 || topics.includes(resource.topic);
     const hasMatchingType = types.length === 0 || types.includes(resource.type);
-
     return hasMatchingTags && hasMatchingTopic && hasMatchingType;
   });
 }

@@ -100,7 +100,7 @@ export const UsersForm: React.FC<Props> = ({ open, toggleOpenState }) => {
 
     return (
         <Sheet open={open} onOpenChange={toggleOpenState}>
-            <SheetContent className="overflow-auto ">
+            <SheetContent className="overflow-auto sm:max-w-base w-full">
                 <SheetHeader>
                     <SheetTitle>{user ? "Edit" : "Create"} User</SheetTitle>
                     <SheetDescription>Managing Users</SheetDescription>

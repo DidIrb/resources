@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 import Resource from "../components/resource";
-
+import { stripHTML } from "@/lib/stript.html";
 
 export interface apiResponse {
     resources: Resources[],
@@ -99,7 +99,7 @@ export const SearchResults = () => {
                                     {item.title}
                                 </Link>
                                 <span> {" "}
-                                    {item.description}
+                                {stripHTML(item.description)}
                                 </span>
                             </div>
                         ))

@@ -2,6 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card } from "@/components/ui/card";
 import { useApp } from "@/context/app.context";
 import { useAuth } from "@/context/auth.context";
+import { stripHTML } from "@/lib/stript.html";
 import { Resources } from "@/types/forms.types";
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import { CalendarDays, ExternalLink } from "lucide-react";
@@ -35,7 +36,7 @@ const Resource: React.FC<ResourceProps> = ({ item }) => {
       </div>
       <div className="space-y-1">
         <p className="text-sm relative truncate">
-          {item.description}
+          {stripHTML(item.description)}
         </p>
         <div className="flex items-center justify-between pt-2">
           <div className="flex">

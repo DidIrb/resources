@@ -6,13 +6,14 @@ import { useAuth } from "@/context/auth.context";
 import { useSearch } from "@/context/search.context";
 import { Resources } from "@/types/forms.types";
 import { Pencil1Icon } from "@radix-ui/react-icons";
-import { ChevronLeft, Share2 } from "lucide-react";
+import { ChevronLeft, Globe2Icon, Share2 } from "lucide-react";
 import moment from "moment";
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { ResourcesForm } from "../forms/resource.form";
+import RichTextViewer from "@/components/custom/richtext.viewer";
 
 export function Slug() {
     const { openEditResource, open } = useApp();
@@ -29,7 +30,7 @@ export function Slug() {
         const response = await search_db(`${slug}`, [], [], [], 1, 1);
         return response;
     };
-    
+
     const copyLink = () => {
         navigator.clipboard.writeText(window.location.href);
         toast.success("Link copied to clipboard");
@@ -66,7 +67,7 @@ export function Slug() {
                                 <p className="font-semibold hover:underline hover:text-blue-600 px-0">
                                     {data.title}
                                 </p>
-                                <Share2 onClick={copyLink} className="absolute top-2 right-2" />
+                                <Share2 onClick={copyLink} className="absolute icon top-2 right-2" />
                             </div>
                             <div className="flex gap-2 items-center">
                                 {session?.role !== "admin" || session?.role !== "super_admin" && (
@@ -78,7 +79,9 @@ export function Slug() {
                             </div>
                         </div>
                         <hr className="mb-2 mt-1" />
-                        <p className="img-text p-2 text-gray-600 text-sm ">{data.description}</p>
+                        <div className="img-text p-2 text-sm ">
+                            <RichTextViewer content={data.description} />
+                        </div>
                         {/* Render tags */}
                         <hr className="my-2" />
                         <div className="flex flex-wrap gap-1 items-center mt-0">
@@ -91,13 +94,16 @@ export function Slug() {
                         </div>
 
                         <hr className="my-2" />
+                        <div className="relative">
+                            <Link to={data.link} className="text-blue-500 text-sm absolute right-2 top-1 text-end hover:underline" target="_blank">
+                                <Globe2Icon />
+                            </Link>
+                        </div>
                         <div className="text-xs text-muted-foreground">
                             <div> <span className="inline-block w-24">Published : </span> {moment(data?.createdAt).format("MMMM Do YYYY")} </div>
                             <div> <span className="inline-block w-24">Last Modified :</span> {moment(data?.updatedAt).format("MMMM Do YYYY")} </div>
                         </div>
-                        <Link to={data.link} className="text-blue-500 text-sm text-end hover:underline">
-                            {data.link}
-                        </Link>
+
 
                     </Card>
 

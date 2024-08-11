@@ -10,6 +10,7 @@ import { Filter } from "./filter";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
 import { Resources } from "@/types/forms.types";
+import { stripHTML } from "@/lib/stript.html";
 
 export const SearchBar = () => {
   const {
@@ -43,7 +44,6 @@ export const SearchBar = () => {
       if (result.length === 0) {
         setFilteredResources(result);
         try {
-          console.log("searching")
           const res: any = await search_db(data, selectedTags, selectedTypes, selectedTopics, 1, 10);
           const savedData = saveToLocalStorage(res.resources)
           setResources(savedData);
@@ -98,7 +98,7 @@ export const SearchBar = () => {
                     {item.title}
                   </Link>
                   <span> {" "}
-                    {item.description}
+                    {stripHTML(item.description)}
                   </span>
                 </div>
               ))

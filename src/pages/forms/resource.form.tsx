@@ -1,9 +1,9 @@
 import { LoadingButton } from "@/components/custom/loading.btn";
+import RichTextEditor from "@/components/custom/richtext.editor";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Sheet, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { Textarea } from "@/components/ui/textarea";
 import { useApp } from "@/context/app.context";
 import { useData } from "@/context/data.context";
 import { useSearch } from "@/context/search.context";
@@ -127,7 +127,7 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
 
     return (
         <Sheet open={open} onOpenChange={toggleOpenState}>
-            <SheetContent className="sm:max-w-xl overflow-auto " side={"left"}>
+            <SheetContent className="sm:max-w-xl w-full overflow-auto " side={"left"}>
                 <SheetHeader>
                     <SheetTitle>{resource ? "Edit" : "Create"} Resources</SheetTitle>
                     <SheetDescription>There are millions of resources out there, Document Your Favorite Here. </SheetDescription>
@@ -153,7 +153,9 @@ export const ResourcesForm: React.FC<Props> = ({ open, toggleOpenState }) => {
                                     <FormItem>
                                         <FormLabel>Description</FormLabel>
                                         <FormControl>
-                                            <Textarea placeholder="This is a description" {...field} />
+                                            {/* <Textarea placeholder="This is a description" {...field} /> */}
+                                            {/* <Tiptap description={field.name} onChange={field.onChange}/> */}
+                                            <RichTextEditor placeholder="This is a description" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

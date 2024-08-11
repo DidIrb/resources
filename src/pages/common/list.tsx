@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import Resource from "../components/resource";
+import { stripHTML } from "@/lib/stript.html";
 
 export interface apiResponse {
     data: Resources[],
@@ -54,12 +55,10 @@ export const ResourceList = () => {
         setLoading(true);
         setTimeout(async () => {
             try {
-                console.log("searching value for", page)
                 const response: AxiosResponse<apiResponse> = await api.get<apiResponse>(`${config.url}/resources`,
                     { params: { page, limit } }
                 );
                 const { data, currentPage, totalItems, totalPages } = response.data;
-                console.log(response.data);
 
                 const savedData = saveToLocalStorage(data);
                 setFilteredResources(savedData);
@@ -108,7 +107,7 @@ export const ResourceList = () => {
                                     {item.title}
                                 </Link>
                                 <span> {" "}
-                                    {item.description}
+                                {stripHTML(item.description)}
                                 </span>
                             </div>
                         ))

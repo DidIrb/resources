@@ -18,7 +18,7 @@ const TagsFilter: React.FC<TagsFilterProps> = ({ allTags, error, onTagSelect }) 
 
     const filteredTags = allTags
         .filter((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()))
-        .slice(0, 6);
+        // .slice(0, 6); // removed limitation of 6 tags
 
     const isHighlighted = (tag: string) => {
         return selectedTags.includes(tag) && allTags.includes(tag);
@@ -56,7 +56,7 @@ const TagsFilter: React.FC<TagsFilterProps> = ({ allTags, error, onTagSelect }) 
             </div>
 
             <div className='text-sm mb-1'>Selected tags: {selectedTags.length} / {allTags.length}</div>
-            <div className={`${error && selectedTags.length == 0 && "text-red-700 border-red-600"} border bg-background p-2`}>
+            <div className={`${error && selectedTags.length == 0 && "text-red-700 border-red-600"} border bg-background p-2 max-h-24 overflow-auto`}>
                 {selectedTags.length == 0 ?
                     <div className="text-sm">
                         Choose tags

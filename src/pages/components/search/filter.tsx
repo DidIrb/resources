@@ -5,8 +5,8 @@ import { useSearch } from "@/context/search.context";
 import { filterData } from "@/lib/filter-func";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import { SlidersHorizontal } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { toast } from "sonner";
 
 export function Filter() {
@@ -14,6 +14,7 @@ export function Filter() {
   const [isLoading, setIsLoading] = useState(false);
   const { handleTypes, handleTags, handleTopics, selectedTopics, query, selectedTypes, selectedTags } = useSearch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const Reload = async () => {
     setIsLoading(true);

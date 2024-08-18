@@ -3,7 +3,8 @@ import { filterResources, saveToLocalStorage } from '@/lib/func';
 import { SearchContextType } from '@/types/context.types';
 import { Resources } from '@/types/forms.types';
 import axios, { AxiosResponse } from 'axios';
-import { createContext, ReactNode, useContext, useState } from 'react';
+import { createContext, ReactNode, useContext, useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const SearchContext = createContext<SearchContextType | null>(null);
 
@@ -24,6 +25,21 @@ const SearchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [query, setQuery] = useState<string>("");
+
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const queryParam = params.get('query');
+    const tagsParam = params.get('tags');
+    const typesParam = params.get('types');
+    const topicsParam = params.get('topics');
+
+    if (queryParam) setQuery(queryParam);
+    if (tagsParam) setSelectedTags(tagsParam.split(','));
+    if (typesParam) setSelectedTypes(typesParam.split(','));
+    if (topicsParam) setSelectedTopics(topicsParam.split(','));
+  }, [location.search]);
 
   const search_db = async (query: string, tags: string[], types: string[], topics: string[], page: number, pageSize: number) => {
     try {
@@ -87,7 +103,6 @@ const SearchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       return updatedTopics;
     });
   };
-
 
   return (
     <SearchContext.Provider value={{ resources, setQuery, setFilteredData, query, filteredData, handleTopics, setResources, selectedTopics, filteredResources, isLoading, search_db, handleTypes, handleTags, selectedTypes, selectedTags, setFilteredResources }}>

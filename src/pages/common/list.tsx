@@ -39,7 +39,7 @@ export const ResourceList = () => {
     const [page, setPage] = useState(appConfig?.currentPage || 1);
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState<boolean>(isLastPage || true);
-    const limit = 2;
+    const limit = 50;
 
     const hasFetched = useRef(false);
     useEffect(() => {
@@ -92,7 +92,7 @@ export const ResourceList = () => {
                 <div className="flex gap-3 flex-wrap w-full">
                     {filteredResources &&
                         filteredResources.map((resource: Resources, index: number) => (
-                            <div key={index} className="sm:w-72 w-full">
+                            <div key={index} className="sm:w-[284px] w-full">
                                 <Resource item={resource} />
                             </div>
                         ))}

@@ -101,16 +101,25 @@ export const ResourceList = () => {
                 <div className="md:px-10 px-0 md:text-base text-sm">
                     {filteredResources && filteredResources.length > 0 &&
                         // Show list of filtered resources
-                        filteredResources.map((item: Resources, index: number) => (
-                            <div className="truncate" key={index} >
+                        filteredResources.map((item: Resources, index: number) => {
+                            // Strip HTML from the description
+                            const strippedText = stripHTML(item.description);
+                          
+                            // Split the stripped text at "Introduction" and take the first part
+                            const displayedText = strippedText.split('Introduction')[0];
+                          
+                            return (
+                              <div className="truncate" key={index}>
                                 <Link to={`/resource/${item.title.toLowerCase()}`} className="font-semibold hover:underline hover:text-blue-600 px-0 capitalize">
-                                    {item.title}
+                                  {item.title}
                                 </Link>
                                 <span> {" "}
-                                {stripHTML(item.description)}
+                                  {displayedText}
                                 </span>
-                            </div>
-                        ))
+                              </div>
+                            );
+                          })
+                          
                     }
                 </div>
             }
